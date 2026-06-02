@@ -1,0 +1,6 @@
+# Claude Code — personal, machine-local settings (do not commit)
+.claude/settings.local.json
+
+# OS cruft
+.DS_Store
+Thumbs.db
