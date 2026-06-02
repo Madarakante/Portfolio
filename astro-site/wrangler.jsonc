@@ -1,0 +1,12 @@
+{
+  // Deploy this Astro site as a static-asset Worker on Cloudflare.
+  // The site is fully static (no SSR), so there is no `main` worker script —
+  // Cloudflare just serves the files in ./dist. Having this file present stops
+  // `wrangler deploy` from trying to auto-run `astro add cloudflare`.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "portfolio",
+  "compatibility_date": "2026-06-02",
+  "assets": {
+    "directory": "./dist"
+  }
+}
