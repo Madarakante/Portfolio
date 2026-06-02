@@ -1,0 +1,98 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Project data — add to this array to add a card. `slug` points at the detail page.
+const projects = [
+  { slug: "line-following-robot", num: "06", title: "Line-Following Robot", blurb: "Arduino + 5 IR sensors keeping two motors glued to a black line.", label: "line follower — on track", tags: ["Robotics", "Embedded", "Control"] },
+  { slug: "line-following-robot", num: "05", title: "My First KiCad Shield", blurb: "A tidy sensor breakout shield — my first board sent off to be made.", label: "first KiCad shield — render", tags: ["PCB", "CAD"] },
+  { slug: "line-following-robot", num: "04", title: "Obstacle-Avoiding Car", blurb: "An ultrasonic sensor on a sweeping servo so the car steers around walls.", label: "obstacle car — 3/4 view", tags: ["Robotics", "Embedded"] },
+  { slug: "line-following-robot", num: "03", title: "Automatic Plant Waterer", blurb: "A soil-moisture sensor and a little pump that keep my basil alive.", label: "plant waterer — on the windowsill", tags: ["Embedded", "Control"] },
+  { slug: "line-following-robot", num: "02", title: "Arduino Weather Station", blurb: "Temperature, humidity and pressure on a little LCD, logged to an SD card.", label: "weather station — LCD readout", tags: ["Embedded", "CAD"] },
+  { slug: "line-following-robot", num: "01", title: "Bluetooth RC Car", blurb: "An HC-05 module and a phone app driving a 2WD car around the flat.", label: "bluetooth car — with phone", tags: ["Robotics", "Embedded", "Control"] },
+];
+const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
+---
+
+<BaseLayout title="Projects — Ngwashi Anthony" active="projects">
+  <main data-screen-label="Projects gallery">
+    <section class="page-head wrap">
+      <span class="kicker">Things I've built — 2023–2026</span>
+      <h1 class="h-xl">Projects</h1>
+      <p class="lede">Coursework, club builds, and weekend experiments — where I learned to make a circuit, a chassis, and some code actually agree. Most have a build log on the blog.</p>
+    </section>
+
+    <div class="wrap">
+      <div class="filterbar" id="filterbar">
+        <span class="fb-label">Filter</span>
+        <button class="chip active" data-filter="all">All <span class="count">0{projects.length}</span></button>
+        {filters.map((f) => <button class="chip" data-filter={f}>{f}</button>)}
+      </div>
+
+      <div class="proj-grid" id="grid">
+        {projects.map((p) => (
+          <a class="card proj-card" href={`/projects/${p.slug}`} data-tags={p.tags.join(" ")}>
+            <div class="frame">
+              <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+              <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+              <span class="frame-label">{p.label}</span>
+            </div>
+            <div class="pc-body">
+              <div class="pc-top"><h3>{p.title}</h3><span class="mono">{p.num}</span></div>
+              <p>{p.blurb}</p>
+              <div class="tags">
+                {p.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+      <div class="empty is-hidden" id="empty">// no projects match that filter</div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const grid = document.getElementById("grid");
+  const cards = [...grid.querySelectorAll(".proj-card")];
+  const empty = document.getElementById("empty");
+  document.getElementById("filterbar").addEventListener("click", (e) => {
+    const btn = e.target.closest(".chip");
+    if (!btn) return;
+    document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+    btn.classList.add("active");
+    const f = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach((card) => {
+      const show = f === "all" || card.dataset.tags.split(" ").includes(f);
+      card.classList.toggle("is-hidden", !show);
+      if (show) visible++;
+    });
+    empty.classList.toggle("is-hidden", visible > 0);
+  });
+</script>
+
+<style>
+  .page-head { padding-block: clamp(48px, 7vw, 84px) 36px; }
+  .page-head h1 { margin-top: 16px; }
+  .page-head .lede { margin-top: 22px; max-width: 52ch; }
+
+  .filterbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin-bottom: 40px; }
+  .filterbar .fb-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
+  .chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 3px; background: var(--paper); color: var(--ink-2); cursor: pointer; transition: all 0.14s ease; }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip .count { opacity: 0.5; margin-left: 6px; }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .proj-card .frame { aspect-ratio: 4 / 3; }
+  .proj-card .pc-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .proj-card .pc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .proj-card h3 { font-size: 21px; font-weight: 500; letter-spacing: -0.02em; }
+  .proj-card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .proj-card .tags { margin-top: 4px; }
+  .is-hidden { display: none !important; }
+  .empty { padding: 48px 0; color: var(--ink-3); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; }
+
+  @media (max-width: 920px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .proj-grid { grid-template-columns: 1fr; } }
+</style>

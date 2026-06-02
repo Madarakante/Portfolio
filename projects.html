@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Mara Voss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .page-head { padding-block: clamp(48px, 7vw, 84px) 36px; }
+  .page-head h1 { margin-top: 16px; }
+  .page-head .lede { margin-top: 22px; max-width: 52ch; }
+
+  .filterbar {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    padding: 16px 0; margin-bottom: 40px;
+  }
+  .filterbar .fb-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
+  .chip {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 3px;
+    background: var(--paper); color: var(--ink-2); cursor: pointer;
+    transition: all 0.14s ease;
+  }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .chip .count { opacity: 0.5; margin-left: 6px; }
+
+  .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .proj-card .frame { aspect-ratio: 4 / 3; }
+  .proj-card .pc-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .proj-card .pc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .proj-card h3 { font-size: 21px; font-weight: 500; letter-spacing: -0.02em; }
+  .proj-card p { margin: 0; color: var(--ink-2); font-size: 15px; }
+  .proj-card .tags { margin-top: 4px; }
+  .is-hidden { display: none !important; }
+  .empty { padding: 48px 0; color: var(--ink-3); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; }
+
+  @media (max-width: 920px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .proj-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">MV</span>
+      <span class="brand-name">Mara Voss<span> / mechatronics</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html" class="active">Projects</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main data-screen-label="Projects gallery">
+  <section class="page-head wrap">
+    <span class="kicker">Things I've built — 2023–2026</span>
+    <h1 class="h-xl">Projects</h1>
+    <p class="lede">Coursework, club builds, and weekend experiments — where I learned to make a circuit, a chassis, and some code actually agree. Most have a build log on the blog.</p>
+  </section>
+
+  <div class="wrap">
+    <div class="filterbar" id="filterbar">
+      <span class="fb-label">Filter</span>
+      <button class="chip active" data-filter="all">All <span class="count">06</span></button>
+      <button class="chip" data-filter="Robotics">Robotics</button>
+      <button class="chip" data-filter="PCB">PCB</button>
+      <button class="chip" data-filter="Control">Control</button>
+      <button class="chip" data-filter="CAD">CAD</button>
+      <button class="chip" data-filter="Embedded">Embedded</button>
+    </div>
+
+    <div class="proj-grid" id="grid">
+
+      <a class="card proj-card" href="project.html" data-tags="Robotics Control Embedded">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">line follower — on track</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>Line-Following Robot</h3><span class="mono">06</span></div>
+          <p>Arduino + 5 IR sensors keeping two motors glued to a black line.</p>
+          <div class="tags"><span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span><span class="tag">Control</span></div>
+        </div>
+      </a>
+
+      <a class="card proj-card" href="project.html" data-tags="PCB CAD">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">first KiCad shield — render</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>My First KiCad Shield</h3><span class="mono">05</span></div>
+          <p>A tidy sensor breakout shield — my first board sent off to be made.</p>
+          <div class="tags"><span class="tag tag-accent">PCB</span><span class="tag">CAD</span></div>
+        </div>
+      </a>
+
+      <a class="card proj-card" href="project.html" data-tags="Robotics Embedded">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">obstacle car — 3/4 view</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>Obstacle-Avoiding Car</h3><span class="mono">04</span></div>
+          <p>An ultrasonic sensor on a sweeping servo so the car steers around walls.</p>
+          <div class="tags"><span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span></div>
+        </div>
+      </a>
+
+      <a class="card proj-card" href="project.html" data-tags="Embedded Control">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">plant waterer — on the windowsill</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>Automatic Plant Waterer</h3><span class="mono">03</span></div>
+          <p>A soil-moisture sensor and a little pump that keep my basil alive.</p>
+          <div class="tags"><span class="tag tag-accent">Embedded</span><span class="tag">Control</span></div>
+        </div>
+      </a>
+
+      <a class="card proj-card" href="project.html" data-tags="Embedded CAD">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">weather station — LCD readout</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>Arduino Weather Station</h3><span class="mono">02</span></div>
+          <p>Temperature, humidity and pressure on a little LCD, logged to an SD card.</p>
+          <div class="tags"><span class="tag tag-accent">Embedded</span><span class="tag">CAD</span></div>
+        </div>
+      </a>
+
+      <a class="card proj-card" href="project.html" data-tags="Robotics Embedded Control">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">bluetooth car — with phone</span></div>
+        <div class="pc-body">
+          <div class="pc-top"><h3>Bluetooth RC Car</h3><span class="mono">01</span></div>
+          <p>An HC-05 module and a phone app driving a 2WD car around the flat.</p>
+          <div class="tags"><span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span><span class="tag">Control</span></div>
+        </div>
+      </a>
+
+    </div>
+    <div class="empty is-hidden" id="empty">// no projects match that filter</div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <a class="brand" href="index.html"><span class="brand-mark">MV</span><span class="brand-name">Mara Voss</span></a>
+      <p class="muted" style="max-width:34ch;margin-top:14px;font-size:15px;">Mechatronics student learning electronics, embedded code, and robotics in public. Build notes and beginner guides.</p>
+    </div>
+    <div><h4>Navigate</h4><div class="footer-links"><a href="projects.html">Projects</a><a href="blog.html">Blog</a><a href="about.html">About</a></div></div>
+    <div><h4>Elsewhere</h4><div class="footer-links"><a href="about.html">GitHub</a><a href="about.html">Hackaday.io</a><a href="about.html">mara@student.edu</a></div></div>
+  </div>
+  <div class="footer-base">
+    <span class="mono">© 2026 MARA VOSS</span>
+    <span class="mono">BUILT AT THE KITCHEN TABLE</span>
+  </div>
+</footer>
+
+<script>
+  const grid = document.getElementById('grid');
+  const cards = [...grid.querySelectorAll('.proj-card')];
+  const empty = document.getElementById('empty');
+  document.getElementById('filterbar').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach(card => {
+      const show = f === 'all' || card.dataset.tags.split(' ').includes(f);
+      card.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+    });
+    empty.classList.toggle('is-hidden', visible > 0);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,25 @@
+---
+// Site header / navigation.
+// Pass `active` ("home" | "projects" | "blog" | "about") to highlight the current page.
+const { active = "" } = Astro.props;
+const links = [
+  { href: "/", label: "Home", key: "home" },
+  { href: "/projects", label: "Projects", key: "projects" },
+  { href: "/blog", label: "Blog", key: "blog" },
+  { href: "/about", label: "About", key: "about" },
+];
+---
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="/">
+      <span class="brand-mark">NA</span>
+      <span class="brand-name">Ngwashi Anthony<span> / mechatronics</span></span>
+    </a>
+    <nav class="nav-links">
+      {links.map((l) => (
+        <a href={l.href} class={active === l.key ? "active" : ""}>{l.label}</a>
+      ))}
+    </nav>
+  </div>
+</header>

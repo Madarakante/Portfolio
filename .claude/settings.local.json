@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm --version)",
+      "Bash(curl -s -o /dev/null -w \"Home: %{http_code}\\\\n\" http://localhost:4321/)",
+      "Bash(curl -s -o /dev/null -w \"About: %{http_code}\\\\n\" http://localhost:4321/about)",
+      "Bash(curl -s -o /dev/null -w \"Blog post: %{http_code}\\\\n\" http://localhost:4321/blog/breadboard-mistakes)"
+    ]
+  }
+}
