@@ -1,0 +1,154 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Line-Following Robot — Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-06 · Robotics · 2025</span>
+        <h1 class="h-xl">Line-Following Robot</h1>
+        <p class="lede">My first robot that actually does something on its own: an Arduino reads a row of infrared sensors and steers two motors to keep a black line underneath it.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span><span class="tag">Control</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
+        <div class="meta-row"><span class="k">Time</span><span class="v">~3 weekends</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Working · tuning speed</span></div>
+        <div class="meta-row"><span class="k">Write-up</span><span class="v">Build log #1 on blog</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+        <span class="frame-label">hero — finished robot on the test track</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The idea</h2>
+          <p>I wanted a first robot that did something visibly clever but wasn't over my head. A line follower is perfect: it senses the world (where the line is), makes a decision (turn left, turn right, go straight), and acts (drives the motors). That's the whole sense–decide–act loop in one cheap little machine.</p>
+          <p class="mono-note">// goal: build it from parts I understand, not a kit — so I can fix it when it misbehaves (it did).</p>
+
+          <h2>Building the chassis</h2>
+          <p>The base is a laser-cut acrylic plate with two yellow TT gear motors at the back and a single caster wheel up front. Getting the motors mounted square mattered more than I expected — a couple of degrees off and the robot drifts even on a straight line. The sensor bar hangs off the front, about 8 mm above the floor.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><span class="frame-label">chassis — underside</span></div>
+              <div class="photo-cap">FIG 1 — motors, caster, and the battery holder underneath</div>
+            </div>
+            <div>
+              <div class="frame"><span class="frame-label">sensor bar — close up</span></div>
+              <div class="photo-cap">FIG 2 — five IR reflectance sensors across the front</div>
+            </div>
+          </div>
+
+          <h2>Reading the line</h2>
+          <p>Each IR sensor shines light down and measures how much bounces back — black line reflects little, white floor reflects a lot. With five sensors in a row I can tell not just <em>that</em> the robot is off the line but <em>which way</em>. I read them as a simple position value: negative means the line drifted left, positive means right.</p>
+
+          <div class="photo-single">
+            <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram — sensor readings to steering direction</span></div>
+            <div class="photo-cap">FIG 3 — how the five sensor values map to a turn</div>
+          </div>
+
+          <h2>Making it steer</h2>
+          <p>My first version was “bang-bang”: if the line is left, turn hard left; if right, turn hard right. It worked but wobbled like crazy. The fix was to make the turn <em>proportional</em> — a small error gives a gentle correction, a big error a sharp one. That one change turned a drunken zig-zag into a smooth curve. It's the same idea behind PID, just the easy first piece of it.</p>
+
+          <h2>What I'd change next</h2>
+          <p>It loses the line on tight corners if I push the speed up, so the next version gets faster sensors and I'll finally add the other two PID terms. I'd also move the messy breadboard wiring onto the little shield I designed (PROJ-05) so it stops falling apart in my bag.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Brains</div>
+              <div class="spec-line"><span class="sk">Board</span><span class="sv">Arduino Uno R3</span></div>
+              <div class="spec-line"><span class="sk">Language</span><span class="sv">Arduino C/C++</span></div>
+              <div class="spec-line"><span class="sk">Wiring</span><span class="sv">Breadboard</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Sensors</div>
+              <div class="spec-line"><span class="sk">Line</span><span class="sv">5× IR reflectance</span></div>
+              <div class="spec-line"><span class="sk">Mounting</span><span class="sv">Front bar, ~8 mm</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Actuators</div>
+              <div class="spec-line"><span class="sk">Motors</span><span class="sv">2× TT gear, 6 V</span></div>
+              <div class="spec-line"><span class="sk">Driver</span><span class="sv">L298N H-bridge</span></div>
+              <div class="spec-line"><span class="sk">Drive</span><span class="sv">2WD + caster</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Body &amp; power</div>
+              <div class="spec-line"><span class="sk">Chassis</span><span class="sv">Laser-cut acrylic</span></div>
+              <div class="spec-line"><span class="sk">Battery</span><span class="sv">4× AA (6 V)</span></div>
+              <div class="spec-line"><span class="sk">Mass</span><span class="sv">~320 g</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/line-following-robot">Next: Obstacle-Avoiding Car <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>

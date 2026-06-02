@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mara Voss — Mechatronics Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  /* ---- home-specific ---- */
+  .hero { padding-block: clamp(56px, 9vw, 104px) clamp(48px, 7vw, 80px); }
+  .hero-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: end; }
+  .hero-grid > * { min-width: 0; }
+  .hero h1 { margin: 22px 0 0; }
+  .hero .name-line { display: block; }
+  .hero .role-line { display: block; color: var(--ink-3); font-weight: 400; }
+  .hero-tag { margin-top: 26px; max-width: 30ch; }
+  .hero-cta { margin-top: 32px; display: flex; gap: 14px; flex-wrap: wrap; }
+
+  .hero-aside {
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    background: var(--paper);
+    padding: 22px;
+  }
+  .stat-row { display: flex; justify-content: space-between; align-items: baseline; padding: 13px 0; border-bottom: 1px dashed var(--line-2); }
+  .stat-row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .stat-row:first-child { padding-top: 0; }
+  .stat-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .stat-row .v { font-size: 16px; font-weight: 500; }
+
+  /* featured projects */
+  .home-projects { padding-block: clamp(48px, 7vw, 80px) 0; }
+  .feat-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+  .feat-main .frame { aspect-ratio: 16 / 10; }
+  .feat-side { display: flex; flex-direction: column; gap: 24px; }
+  .feat-side .card { flex-direction: row; }
+  .feat-side .card .frame { width: 132px; flex: none; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
+  .feat-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
+  .feat-main .feat-body { padding: 22px 24px 26px; }
+
+  /* latest posts */
+  .home-blog { padding-block: clamp(48px, 7vw, 80px) 0; }
+  .post-list { border-top: 1px solid var(--line); }
+  .post-row {
+    display: grid; grid-template-columns: 120px 1fr auto; gap: 28px; align-items: baseline;
+    padding: 22px 4px; border-bottom: 1px solid var(--line);
+    transition: background 0.15s ease, padding-left 0.15s ease;
+  }
+  .post-row:hover { background: var(--paper-2); padding-left: 14px; }
+  .post-row .pr-date { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; }
+  .post-row .pr-title { font-size: 20px; font-weight: 500; letter-spacing: -0.018em; }
+  .post-row .pr-excerpt { color: var(--ink-2); font-size: 15px; margin-top: 5px; max-width: 62ch; }
+  .post-row .pr-meta { display: flex; align-items: center; gap: 10px; margin-top: 9px; }
+  .post-row .pr-cat { justify-self: end; white-space: nowrap; }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; align-items: start; }
+    .feat-grid { grid-template-columns: 1fr; }
+    .post-row { grid-template-columns: 1fr; gap: 6px; }
+    .post-row .pr-cat { justify-self: start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">MV</span>
+      <span class="brand-name">Mara Voss<span> / mechatronics</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="blog.html">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main data-screen-label="Home">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <span class="kicker">Portfolio &amp; Build Notes — Student</span>
+        <h1 class="display">
+          <span class="name-line">Mara Voss.</span>
+          <span class="role-line">Mechatronics&nbsp;Student.</span>
+        </h1>
+        <p class="lede hero-tag">Learning to make things move — one Arduino sketch, one soldered joint at a time.</p>
+        <div class="hero-cta">
+          <a class="btn" href="projects.html">View projects <span class="arrow">→</span></a>
+          <a class="btn btn-ghost" href="blog.html">Read the blog</a>
+        </div>
+      </div>
+      <aside class="hero-aside">
+        <div class="mono mono-accent" style="margin-bottom:16px;">// currently</div>
+        <div class="stat-row"><span class="k">Year</span><span class="v">3rd-year B.Eng</span></div>
+        <div class="stat-row"><span class="k">Learning</span><span class="v">Arduino · KiCad</span></div>
+        <div class="stat-row"><span class="k">Bench</span><span class="v">Breadboard + iron</span></div>
+        <div class="stat-row"><span class="k">Club</span><span class="v">Robotics society</span></div>
+        <div class="stat-row"><span class="k">Status</span><span class="v accent">Open to internships</span></div>
+      </aside>
+    </div>
+  </section>
+
+  <hr class="divider wrap" style="border:0;height:1px;background:var(--line);">
+
+  <!-- ============ FEATURED PROJECTS ============ -->
+  <section class="home-projects wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">01 / Selected work</span>
+        <h2 class="h-lg" style="margin-top:14px;">Featured projects</h2>
+      </div>
+      <a class="txtlink" href="projects.html">All projects <span class="arrow">→</span></a>
+    </div>
+
+    <div class="feat-grid">
+      <a class="card feat-main" href="project.html">
+        <div class="frame">
+          <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+          <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+          <span class="frame-label">build photo — line follower on the track</span>
+        </div>
+        <div class="feat-body">
+          <div class="mono">PROJ-06 · 2025</div>
+          <h3 class="h-md">Line-Following Robot</h3>
+          <p class="muted" style="margin:0;">My first proper robot — an Arduino, a row of IR sensors, and two motors learning to stay on a black line. Build log on the blog.</p>
+          <div class="tags" style="margin-top:6px;">
+            <span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span><span class="tag">Control</span>
+          </div>
+        </div>
+      </a>
+
+      <div class="feat-side">
+        <a class="card" href="project.html">
+          <div class="frame"><span class="frame-label">PCB render</span></div>
+          <div class="feat-body">
+            <div class="mono">PROJ-05 · 2025</div>
+            <h3 class="h-md" style="font-size:21px;">First KiCad Shield</h3>
+            <div class="tags"><span class="tag tag-accent">PCB</span><span class="tag">CAD</span></div>
+          </div>
+        </a>
+        <a class="card" href="project.html">
+          <div class="frame"><span class="frame-label">build photo</span></div>
+          <div class="feat-body">
+            <div class="mono">PROJ-04 · 2024</div>
+            <h3 class="h-md" style="font-size:21px;">Obstacle-Avoiding Car</h3>
+            <div class="tags"><span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span></div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ LATEST POSTS ============ -->
+  <section class="home-blog wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">02 / From the bench</span>
+        <h2 class="h-lg" style="margin-top:14px;">Latest writing</h2>
+      </div>
+      <a class="txtlink" href="blog.html">All posts <span class="arrow">→</span></a>
+    </div>
+
+    <div class="post-list">
+      <a class="post-row" href="post.html">
+        <span class="pr-date">28 May 2026</span>
+        <span>
+          <span class="pr-title">Getting your first servo moving with Arduino</span>
+          <span class="pr-excerpt" style="display:block;">Three wires, five lines of code, and the little moment when the horn actually sweeps. A gentle start for anyone who's never made anything move.</span>
+        </span>
+        <span class="pr-cat tag tag-accent">Tutorial</span>
+      </a>
+      <a class="post-row" href="post.html">
+        <span class="pr-date">14 May 2026</span>
+        <span>
+          <span class="pr-title">Line follower build log #1: the chassis</span>
+          <span class="pr-excerpt" style="display:block;">Cutting acrylic for the first time, mounting two TT motors dead straight, and the caster wheel that ruined my evening.</span>
+        </span>
+        <span class="pr-cat tag">Project Log</span>
+      </a>
+      <a class="post-row" href="post.html">
+        <span class="pr-date">02 May 2026</span>
+        <span>
+          <span class="pr-title">Why my LED wouldn't light up: a beginner's checklist</span>
+          <span class="pr-excerpt" style="display:block;">The five embarrassing things I check first now — polarity, the missing resistor, and a breadboard rail that wasn't actually powered.</span>
+        </span>
+        <span class="pr-cat tag">Notes</span>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <a class="brand" href="index.html" style="margin-bottom:14px;">
+        <span class="brand-mark">MV</span>
+        <span class="brand-name">Mara Voss</span>
+      </a>
+      <p class="muted" style="max-width:34ch;margin-top:14px;font-size:15px;">Mechatronics student learning electronics, embedded code, and robotics in public. Build notes and beginner guides.</p>
+    </div>
+    <div>
+      <h4>Navigate</h4>
+      <div class="footer-links">
+        <a href="projects.html">Projects</a>
+        <a href="blog.html">Blog</a>
+        <a href="about.html">About</a>
+      </div>
+    </div>
+    <div>
+      <h4>Elsewhere</h4>
+      <div class="footer-links">
+        <a href="about.html">GitHub</a>
+        <a href="about.html">Hackaday.io</a>
+        <a href="about.html">mara@student.edu</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span class="mono">© 2026 MARA VOSS</span>
+    <span class="mono">BUILT AT THE KITCHEN TABLE</span>
+  </div>
+</footer>
+
+</body>
+</html>

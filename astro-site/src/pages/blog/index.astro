@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+// Auto-collect every Markdown post in this folder. Add a .md file → it shows up here.
+const modules = import.meta.glob("./*.md", { eager: true });
+const posts = Object.values(modules)
+  .map((m) => ({ ...m.frontmatter, url: m.url }))
+  .sort((a, b) => b.order - a.order);
+
+const [featured, ...rest] = posts;
+
+// Map a post's display category to the filter-bar group it belongs to.
+const groupOf = {
+  Tutorial: "Tutorials",
+  "Project Log": "Project Logs",
+  Review: "Reviews",
+  Notes: "Notes",
+};
+const filters = ["Tutorials", "Project Logs", "Reviews", "Notes"];
+---
+
+<BaseLayout title="Blog — Ngwashi Anthony" active="blog">
+  <main data-screen-label="Blog index">
+    <section class="wrap blog-head">
+      <div>
+        <span class="kicker">Build notes from a beginner</span>
+        <h1 class="h-xl">The Blog</h1>
+        <p class="lede">Beginner guides, build logs, and honest notes on everything I'm figuring out as I learn mechatronics from scratch.</p>
+      </div>
+      <div class="feed">
+        <span class="mono">{posts.length} POSTS · SINCE 2023</span>
+        <span class="mono mono-accent">⎯ RSS / ATOM FEED</span>
+      </div>
+    </section>
+
+    <!-- FEATURED / MOST RECENT -->
+    <section class="wrap">
+      <a class="featured" href={featured.url}>
+        <div class="frame">
+          <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+          <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+          <span class="frame-label">{featured.heroLabel}</span>
+        </div>
+        <div class="feat-text">
+          <span class="pin">★ Most recent</span>
+          <h2>{featured.title}</h2>
+          <p class="ex">{featured.description}</p>
+          <div class="feat-foot">
+            <span class="tag tag-accent">{featured.category}</span>
+            <span class="meta-inline"><span>{featured.date}</span><span class="dot"></span><span>{featured.readTime}</span></span>
+          </div>
+        </div>
+      </a>
+    </section>
+
+    <!-- FILTER -->
+    <div class="wrap">
+      <div class="filterbar" id="filterbar">
+        <span class="fb-label">Category</span>
+        <button class="chip active" data-filter="all">All</button>
+        {filters.map((f) => <button class="chip" data-filter={f}>{f}</button>)}
+      </div>
+
+      <div class="blog-grid" id="grid">
+        {rest.map((p) => (
+          <a class="post-card" href={p.url} data-cat={groupOf[p.category] ?? p.category}>
+            <div class="pc-meta"><span class="tag">{p.category}</span><span class="mono">·</span></div>
+            <h3>{p.title}</h3>
+            <p class="ex">{p.description}</p>
+            <div class="pc-foot"><span class="meta-inline"><span>{p.date}</span><span class="dot"></span><span>{p.readTime}</span></span></div>
+          </a>
+        ))}
+      </div>
+      <div class="empty is-hidden mono" id="empty" style="padding:48px 0;color:var(--ink-3);letter-spacing:0.06em;">// nothing filed under that category yet</div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  const grid = document.getElementById("grid");
+  const cards = [...grid.querySelectorAll(".post-card")];
+  const empty = document.getElementById("empty");
+  document.getElementById("filterbar").addEventListener("click", (e) => {
+    const btn = e.target.closest(".chip");
+    if (!btn) return;
+    document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+    btn.classList.add("active");
+    const f = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach((card) => {
+      const show = f === "all" || card.dataset.cat === f;
+      card.classList.toggle("is-hidden", !show);
+      if (show) visible++;
+    });
+    empty.classList.toggle("is-hidden", visible > 0);
+  });
+</script>
+
+<style>
+  .blog-head { padding-block: clamp(48px, 7vw, 84px) 32px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; }
+  .blog-head h1 { margin-top: 16px; }
+  .blog-head .lede { margin-top: 18px; max-width: 46ch; }
+  .blog-head .feed { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .blog-head .feed .mono { font-size: 11px; }
+
+  .featured { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--paper); margin-bottom: 14px; transition: border-color .18s, box-shadow .18s; }
+  .featured:hover { border-color: var(--line-2); box-shadow: 0 18px 40px -28px rgba(27,26,23,0.5); }
+  .featured .frame { border: 0; border-radius: 0; min-height: 340px; border-right: 1px solid var(--line); }
+  .featured .feat-text { padding: clamp(26px, 4vw, 44px); display: flex; flex-direction: column; }
+  .featured .pin { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+  .featured h2 { margin: 18px 0 0; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.028em; font-weight: 500; line-height: 1.04; }
+  .featured .ex { color: var(--ink-2); margin: 16px 0 0; font-size: 16px; }
+  .featured .feat-foot { margin-top: auto; padding-top: 28px; display: flex; align-items: center; gap: 14px; }
+  .meta-inline { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; }
+
+  .filterbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin: 40px 0; }
+  .filterbar .fb-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
+  .chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 3px; background: var(--paper); color: var(--ink-2); cursor: pointer; transition: all 0.14s ease; }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .post-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); transition: border-color .16s, transform .16s, box-shadow .16s; }
+  .post-card:hover { border-color: var(--line-2); transform: translateY(-3px); box-shadow: 0 14px 30px -24px rgba(27,26,23,0.5); }
+  .post-card .pc-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .post-card h3 { margin: 16px 0 0; font-size: 23px; font-weight: 500; letter-spacing: -0.022em; line-height: 1.12; }
+  .post-card .ex { color: var(--ink-2); font-size: 15px; margin: 12px 0 0; }
+  .post-card .pc-foot { margin-top: 18px; display: flex; align-items: center; gap: 10px; }
+  .is-hidden { display: none !important; }
+
+  @media (max-width: 860px) {
+    .blog-head { grid-template-columns: 1fr; align-items: start; }
+    .blog-head .feed { align-items: flex-start; }
+    .featured { grid-template-columns: 1fr; }
+    .featured .frame { border-right: 0; border-bottom: 1px solid var(--line); min-height: 240px; }
+    .blog-grid { grid-template-columns: 1fr; }
+  }
+</style>

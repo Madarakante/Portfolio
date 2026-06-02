@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Mara Voss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .blog-head { padding-block: clamp(48px, 7vw, 84px) 32px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; }
+  .blog-head h1 { margin-top: 16px; }
+  .blog-head .lede { margin-top: 18px; max-width: 46ch; }
+  .blog-head .feed { display: flex; flex-direction: column; gap: 6px; align-items: flex-end; }
+  .blog-head .feed .mono { font-size: 11px; }
+
+  /* featured */
+  .featured { display: grid; grid-template-columns: 1.15fr 1fr; gap: 0; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; background: var(--paper); margin-bottom: 14px; transition: border-color .18s, box-shadow .18s; }
+  .featured:hover { border-color: var(--line-2); box-shadow: 0 18px 40px -28px rgba(27,26,23,0.5); }
+  .featured .frame { border: 0; border-radius: 0; min-height: 340px; border-right: 1px solid var(--line); }
+  .featured .feat-text { padding: clamp(26px, 4vw, 44px); display: flex; flex-direction: column; }
+  .featured .pin { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 8px; }
+  .featured h2 { margin: 18px 0 0; font-size: clamp(28px, 3.4vw, 40px); letter-spacing: -0.028em; font-weight: 500; line-height: 1.04; }
+  .featured .ex { color: var(--ink-2); margin: 16px 0 0; font-size: 16px; }
+  .featured .feat-foot { margin-top: auto; padding-top: 28px; display: flex; align-items: center; gap: 14px; }
+  .meta-inline { display: flex; align-items: center; gap: 10px; font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; }
+
+  /* filter */
+  .filterbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin: 40px 0; }
+  .filterbar .fb-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
+  .chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 3px; background: var(--paper); color: var(--ink-2); cursor: pointer; transition: all 0.14s ease; }
+  .chip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  /* post grid */
+  .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .post-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); transition: border-color .16s, transform .16s, box-shadow .16s; }
+  .post-card:hover { border-color: var(--line-2); transform: translateY(-3px); box-shadow: 0 14px 30px -24px rgba(27,26,23,0.5); }
+  .post-card .pc-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .post-card h3 { margin: 16px 0 0; font-size: 23px; font-weight: 500; letter-spacing: -0.022em; line-height: 1.12; }
+  .post-card .ex { color: var(--ink-2); font-size: 15px; margin: 12px 0 0; }
+  .post-card .pc-foot { margin-top: 18px; display: flex; align-items: center; gap: 10px; }
+  .is-hidden { display: none !important; }
+
+  @media (max-width: 860px) {
+    .blog-head { grid-template-columns: 1fr; align-items: start; }
+    .blog-head .feed { align-items: flex-start; }
+    .featured { grid-template-columns: 1fr; }
+    .featured .frame { border-right: 0; border-bottom: 1px solid var(--line); min-height: 240px; }
+    .blog-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">MV</span>
+      <span class="brand-name">Mara Voss<span> / mechatronics</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main data-screen-label="Blog index">
+  <section class="wrap blog-head">
+    <div>
+      <span class="kicker">Build notes from a beginner</span>
+      <h1 class="h-xl">The Blog</h1>
+      <p class="lede">Beginner guides, build logs, and honest notes on everything I'm figuring out as I learn mechatronics from scratch.</p>
+    </div>
+    <div class="feed">
+      <span class="mono">18 POSTS · SINCE 2023</span>
+      <span class="mono mono-accent">⎯ RSS / ATOM FEED</span>
+    </div>
+  </section>
+
+  <!-- FEATURED / MOST RECENT -->
+  <section class="wrap">
+    <a class="featured" href="post.html">
+      <div class="frame">
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
+        <span class="frame-label">cover — servo, Arduino and three jumper wires</span>
+      </div>
+      <div class="feat-text">
+        <span class="pin">★ Most recent</span>
+        <h2>Getting your first servo moving with Arduino</h2>
+        <p class="ex">If you've never made anything move before, start here. Three wires, a handful of lines of code, and the little thrill when the horn actually sweeps back and forth. I'll explain what every line does — no prior electronics needed.</p>
+        <div class="feat-foot">
+          <span class="tag tag-accent">Tutorial</span>
+          <span class="meta-inline"><span>28 MAY 2026</span><span class="dot"></span><span>6 MIN READ</span></span>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <!-- FILTER -->
+  <div class="wrap">
+    <div class="filterbar" id="filterbar">
+      <span class="fb-label">Category</span>
+      <button class="chip active" data-filter="all">All</button>
+      <button class="chip" data-filter="Tutorials">Tutorials</button>
+      <button class="chip" data-filter="Project Logs">Project Logs</button>
+      <button class="chip" data-filter="Reviews">Reviews</button>
+      <button class="chip" data-filter="Notes">Notes</button>
+    </div>
+
+    <div class="blog-grid" id="grid">
+
+      <a class="post-card" href="post.html" data-cat="Project Logs">
+        <div class="pc-meta"><span class="tag">Project Log</span><span class="mono">#01</span></div>
+        <h3>Line follower build log #1: the chassis</h3>
+        <p class="ex">Cutting acrylic for the first time, mounting two TT motors dead straight, and the caster wheel that ruined my evening.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>14 MAY 2026</span><span class="dot"></span><span>7 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Notes">
+        <div class="pc-meta"><span class="tag">Notes</span><span class="mono">·</span></div>
+        <h3>Why my LED wouldn't light up</h3>
+        <p class="ex">A beginner's checklist: polarity, the resistor I forgot, and a breadboard power rail that wasn't actually connected.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>02 MAY 2026</span><span class="dot"></span><span>4 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Tutorials">
+        <div class="pc-meta"><span class="tag">Tutorial</span><span class="mono">·</span></div>
+        <h3>How to actually read a resistor's colour bands</h3>
+        <p class="ex">The trick that finally made the colour code stick for me — plus why you should just buy a cheap component tester.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>21 APR 2026</span><span class="dot"></span><span>5 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Reviews">
+        <div class="pc-meta"><span class="tag">Review</span><span class="mono">·</span></div>
+        <h3>Arduino Uno starter kit: is it worth it?</h3>
+        <p class="ex">After three months with one, here's what I actually used, what stayed in the box, and what I'd buy instead.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>09 APR 2026</span><span class="dot"></span><span>8 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Project Logs">
+        <div class="pc-meta"><span class="tag">Project Log</span><span class="mono">·</span></div>
+        <h3>My first time soldering (and what went wrong)</h3>
+        <p class="ex">Cold joints, a singed thumb, and the moment it finally clicked. Photos of the carnage included.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>27 MAR 2026</span><span class="dot"></span><span>6 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Notes">
+        <div class="pc-meta"><span class="tag">Notes</span><span class="mono">·</span></div>
+        <h3>Breadboard mistakes that cost me an afternoon</h3>
+        <p class="ex">Power rails split down the middle, jumpers in the wrong row, and other things nobody warned me about.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>12 MAR 2026</span><span class="dot"></span><span>5 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Reviews">
+        <div class="pc-meta"><span class="tag">Review</span><span class="mono">·</span></div>
+        <h3>Cheap multimeter vs the lab bench one</h3>
+        <p class="ex">Do you need the expensive meter as a student? What the €12 one gets right, and the one feature worth paying for.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>28 FEB 2026</span><span class="dot"></span><span>6 MIN</span></span></div>
+      </a>
+
+      <a class="post-card" href="post.html" data-cat="Notes">
+        <div class="pc-meta"><span class="tag">Notes</span><span class="mono">·</span></div>
+        <h3>How I keep my components organised</h3>
+        <p class="ex">A cheap drawer unit, masking-tape labels, and the system that stopped me buying the same resistors twice.</p>
+        <div class="pc-foot"><span class="meta-inline"><span>15 FEB 2026</span><span class="dot"></span><span>4 MIN</span></span></div>
+      </a>
+
+    </div>
+    <div class="empty is-hidden mono" id="empty" style="padding:48px 0;color:var(--ink-3);letter-spacing:0.06em;">// nothing filed under that category yet</div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <a class="brand" href="index.html"><span class="brand-mark">MV</span><span class="brand-name">Mara Voss</span></a>
+      <p class="muted" style="max-width:34ch;margin-top:14px;font-size:15px;">Mechatronics student learning electronics, embedded code, and robotics in public. Build notes and beginner guides.</p>
+    </div>
+    <div><h4>Navigate</h4><div class="footer-links"><a href="projects.html">Projects</a><a href="blog.html">Blog</a><a href="about.html">About</a></div></div>
+    <div><h4>Elsewhere</h4><div class="footer-links"><a href="about.html">GitHub</a><a href="about.html">Hackaday.io</a><a href="about.html">mara@student.edu</a></div></div>
+  </div>
+  <div class="footer-base">
+    <span class="mono">© 2026 MARA VOSS</span>
+    <span class="mono">BUILT AT THE KITCHEN TABLE</span>
+  </div>
+</footer>
+
+<script>
+  const grid = document.getElementById('grid');
+  const cards = [...grid.querySelectorAll('.post-card')];
+  const empty = document.getElementById('empty');
+  document.getElementById('filterbar').addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip');
+    if (!btn) return;
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    let visible = 0;
+    cards.forEach(card => {
+      const show = f === 'all' || card.dataset.cat === f;
+      card.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+    });
+    empty.classList.toggle('is-hidden', visible > 0);
+  });
+</script>
+
+</body>
+</html>

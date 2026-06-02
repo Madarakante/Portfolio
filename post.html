@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Getting your first servo moving with Arduino — Mara Voss</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .post-wrap { max-width: 720px; margin: 0 auto; padding-inline: var(--gutter); }
+
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .post-hd { padding-block: 30px 30px; }
+  .post-hd .post-cat { margin-bottom: 18px; }
+  .post-hd h1 { font-size: clamp(34px, 5.2vw, 54px); letter-spacing: -0.032em; font-weight: 500; line-height: 1.02; }
+  .post-hd .standfirst { font-size: clamp(18px, 2.1vw, 21px); color: var(--ink-2); margin: 22px 0 0; line-height: 1.5; }
+  .byline { display: flex; align-items: center; gap: 14px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line); }
+  .byline .av { width: 38px; height: 38px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-family: var(--mono); font-size: 13px; font-weight: 600; }
+  .byline .bl-meta { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; display: flex; align-items: center; gap: 9px; }
+  .byline .bl-name { font-size: 15px; font-weight: 500; color: var(--ink); }
+
+  .lead-fig { margin: 8px 0 44px; }
+  .lead-fig .frame { aspect-ratio: 16 / 8; }
+  figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 9px; }
+
+  /* article body */
+  .article { font-size: 18px; line-height: 1.72; color: #2a2823; }
+  .article p { margin: 0 0 1.35em; }
+  .article h2 { font-size: 27px; letter-spacing: -0.02em; margin: 48px 0 14px; }
+  .article h2 .num { font-family: var(--mono); font-size: 14px; color: var(--accent); margin-right: 12px; font-weight: 500; vertical-align: middle; }
+  .article h3 { font-size: 20px; margin: 32px 0 10px; }
+  .article a { border-bottom: 1px solid var(--accent-line); }
+  .article a:hover { border-color: var(--accent); }
+  .article strong { font-weight: 600; }
+  .article ul { margin: 0 0 1.35em; padding-left: 0; list-style: none; }
+  .article ul li { position: relative; padding-left: 26px; margin-bottom: 10px; }
+  .article ul li::before { content: "—"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+
+  blockquote { margin: 32px 0; padding: 6px 0 6px 22px; border-left: 2px solid var(--accent); font-size: 21px; line-height: 1.5; color: var(--ink); letter-spacing: -0.01em; }
+
+  /* code block */
+  .code { margin: 28px 0; border: 1px solid var(--line-2); border-radius: 5px; overflow: hidden; background: #1B1A17; }
+  .code-bar { display: flex; align-items: center; justify-content: space-between; padding: 9px 16px; background: #232118; border-bottom: 1px solid #322f26; }
+  .code-bar .fn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: #b8b2a4; }
+  .code-bar .lang { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .code pre { margin: 0; padding: 18px 18px; overflow-x: auto; }
+  .code code { font-family: var(--mono); font-size: 13.5px; line-height: 1.7; color: #e8e3d6; white-space: pre; }
+  .code .c { color: #7c7768; }
+  .code .k { color: oklch(0.72 0.14 38); }
+  .code .n { color: #c9b98a; }
+  .code .f { color: #a9c5b0; }
+
+  .diagram { margin: 32px 0; }
+  .diagram .frame { aspect-ratio: 16 / 7; }
+
+  .pull-note { font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ink-2); background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 16px 18px; margin: 28px 0; }
+  .pull-note b { color: var(--accent); }
+
+  /* footer of post */
+  .post-foot { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 28px; }
+  .post-foot .ft-tags { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .post-foot .ft-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); }
+
+  .prevnext { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 36px; }
+  .pn { border: 1px solid var(--line); border-radius: 5px; padding: 20px; transition: border-color .15s, background .15s; }
+  .pn:hover { border-color: var(--line-2); background: var(--paper-2); }
+  .pn .dir { font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); }
+  .pn .t { font-size: 17px; font-weight: 500; margin-top: 8px; letter-spacing: -0.015em; }
+  .pn.next { text-align: right; }
+  .pn.next .dir .arrow { color: var(--accent); }
+  .pn.prev .dir .arrow { color: var(--accent); }
+
+  @media (max-width: 520px) { .prevnext { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-in">
+    <a class="brand" href="index.html">
+      <span class="brand-mark">MV</span>
+      <span class="brand-name">Mara Voss<span> / mechatronics</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="projects.html">Projects</a>
+      <a href="blog.html" class="active">Blog</a>
+      <a href="about.html">About</a>
+    </nav>
+  </div>
+</header>
+
+<main data-screen-label="Blog post">
+  <div class="post-wrap crumb"><a href="blog.html">← Blog</a></div>
+
+  <header class="post-wrap post-hd">
+    <span class="tag tag-accent post-cat">Tutorial</span>
+    <h1>Getting your first servo moving with Arduino</h1>
+    <p class="standfirst">If you've never made anything move before, this is a lovely place to start. Three wires, a few lines of code, and a part that moves when you tell it to.</p>
+    <div class="byline">
+      <span class="av">MV</span>
+      <div>
+        <div class="bl-name">Mara Voss</div>
+        <div class="bl-meta"><span>28 MAY 2026</span><span class="dot"></span><span>6 MIN READ</span><span class="dot"></span><span>BEGINNER</span></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="post-wrap">
+    <figure class="lead-fig">
+      <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">photo — servo wired to an Arduino on a breadboard</span></div>
+      <figcaption>The whole setup: one servo, one Arduino, three jumper wires. That's all you need for your first moving thing.</figcaption>
+    </figure>
+
+    <article class="article">
+      <p>A servo is the friendliest motor to start with. You tell it an angle — say 90 degrees — and it goes there and holds. No motor driver, no fiddly wiring. If you've got an Arduino and a hobby servo (the little blue SG90 is the classic), you can have something moving in about ten minutes.</p>
+
+      <p>Here's the mental model: <strong>the servo is always listening for an angle, and your job is just to keep telling it which one you want.</strong> Everything below is in service of that one idea.</p>
+
+      <blockquote>Wire it up, upload the sketch, watch it sweep. Then start changing numbers.</blockquote>
+
+      <h2><span class="num">01</span>What you'll need</h2>
+      <p>Nothing exotic — most of this is in any starter kit:</p>
+      <ul>
+        <li>An Arduino Uno (or any compatible board).</li>
+        <li>A hobby servo — an SG90 9g servo is perfect and cheap.</li>
+        <li>Three jumper wires, and a USB cable to the board.</li>
+      </ul>
+
+      <h2><span class="num">02</span>Wiring it up</h2>
+      <p>Servos have three wires. The colours vary, but the order is standard: <strong>brown or black is ground, red is power, and orange or yellow is the signal.</strong> Connect ground to a GND pin on the Arduino, power to 5V, and the signal wire to pin 9. That's the whole circuit.</p>
+
+      <div class="pull-note">// <b>beginner tip</b> — one small servo can run off the Arduino's 5V pin, but two or more will brown out the board and cause random resets. Once you add a second servo, give them their own battery and just share the ground wire.</div>
+
+      <h2><span class="num">03</span>The code</h2>
+      <p>Arduino comes with a built-in <code>Servo</code> library, so this is genuinely short. Open the Arduino IDE, paste this in, pick your board and port, and hit upload.</p>
+
+      <div class="code">
+        <div class="code-bar"><span class="fn">servo_sweep.ino</span><span class="lang">Arduino</span></div>
+        <pre><code><span class="c">// Sweep a servo back and forth, 0 to 180 and back</span>
+<span class="k">#include</span> <span class="n">&lt;Servo.h&gt;</span>
+
+Servo myServo;            <span class="c">// create a servo object</span>
+
+<span class="k">void</span> <span class="f">setup</span>() {
+  myServo.<span class="f">attach</span>(<span class="n">9</span>);     <span class="c">// signal wire is on pin 9</span>
+}
+
+<span class="k">void</span> <span class="f">loop</span>() {
+  <span class="k">for</span> (<span class="k">int</span> a = <span class="n">0</span>; a &lt;= <span class="n">180</span>; a++) {
+    myServo.<span class="f">write</span>(a);   <span class="c">// go to angle 'a'</span>
+    <span class="f">delay</span>(<span class="n">15</span>);          <span class="c">// give it time to get there</span>
+  }
+  <span class="k">for</span> (<span class="k">int</span> a = <span class="n">180</span>; a &gt;= <span class="n">0</span>; a--) {
+    myServo.<span class="f">write</span>(a);
+    <span class="f">delay</span>(<span class="n">15</span>);
+  }
+}</code></pre>
+      </div>
+
+      <p>That's it. <code>write(a)</code> tells the servo the angle you want; the <code>delay(15)</code> simply gives it a moment to physically move before you ask for the next angle. Change that 15 to a bigger number and the sweep slows down — your first taste of tuning a motion by changing one value.</p>
+
+      <div class="diagram">
+        <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram — servo wiring: GND, 5V, signal to pin 9</span></div>
+        <figcaption>FIG 1 — the three connections between the servo and the Arduino.</figcaption>
+      </div>
+
+      <h2><span class="num">04</span>If it doesn't move</h2>
+      <p>Don't panic — it's almost always one of these:</p>
+      <ul>
+        <li>Signal wire in the wrong pin. The code says pin 9, so the orange wire goes to 9.</li>
+        <li>Power and ground swapped — double-check red to 5V, brown/black to GND.</li>
+        <li>The board didn't actually upload. Check you picked the right board and port in the IDE.</li>
+        <li>A buzzing servo that won't settle usually means it's underpowered — give it its own battery.</li>
+      </ul>
+      <p>Get those right and you'll have a part moving on command. It's a small thing, but it's the exact loop every robot runs on, just scaled up.</p>
+
+      <p>Once your servo sweeps, try making it move to an angle <em>you</em> choose — wire up a potentiometer and have the servo follow the knob. <a href="blog.html">The next post</a> does exactly that, and it's where this starts to feel like control.</p>
+    </article>
+
+    <!-- post footer -->
+    <footer class="post-foot">
+      <div class="ft-tags">
+        <span class="ft-label">Filed under</span>
+        <span class="tag tag-accent">Tutorial</span>
+        <span class="tag">Arduino</span>
+        <span class="tag">Servo</span>
+        <span class="tag">Beginner</span>
+      </div>
+
+      <div class="prevnext">
+        <a class="pn prev" href="post.html">
+          <div class="dir"><span class="arrow">←</span> Previous</div>
+          <div class="t">Why my LED wouldn't light up: a checklist</div>
+        </a>
+        <a class="pn next" href="post.html">
+          <div class="dir">Next <span class="arrow">→</span></div>
+          <div class="t">Make the servo follow a potentiometer knob</div>
+        </a>
+      </div>
+    </footer>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-in">
+    <div>
+      <a class="brand" href="index.html"><span class="brand-mark">MV</span><span class="brand-name">Mara Voss</span></a>
+      <p class="muted" style="max-width:34ch;margin-top:14px;font-size:15px;">Mechatronics student learning electronics, embedded code, and robotics in public. Build notes and beginner guides.</p>
+    </div>
+    <div><h4>Navigate</h4><div class="footer-links"><a href="projects.html">Projects</a><a href="blog.html">Blog</a><a href="about.html">About</a></div></div>
+    <div><h4>Elsewhere</h4><div class="footer-links"><a href="about.html">GitHub</a><a href="about.html">Hackaday.io</a><a href="about.html">mara@student.edu</a></div></div>
+  </div>
+  <div class="footer-base">
+    <span class="mono">© 2026 MARA VOSS</span>
+    <span class="mono">BUILT AT THE KITCHEN TABLE</span>
+  </div>
+</footer>
+
+</body>
+</html>
