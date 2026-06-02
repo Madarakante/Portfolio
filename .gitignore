@@ -1,6 +1,16 @@
 # Claude Code — personal, machine-local settings (do not commit)
 .claude/settings.local.json
 
+# Original standalone HTML mockups — superseded by the Astro app in astro-site/
+/about.html
+/blog.html
+/index.html
+/post.html
+/project.html
+/projects.html
+/styles.css
+/screenshots/
+
 # OS cruft
 .DS_Store
 Thumbs.db
