@@ -1,4 +1,4 @@
-# Mara Voss — Mechatronics Portfolio & Blog
+# Ngwashi Anthony — Mechatronics Portfolio & Blog
 
 A minimal, engineering-flavoured portfolio + blog built with **[Astro](https://astro.build)**.
 Static, fast, and easy to edit — no framework knowledge required.
@@ -41,16 +41,22 @@ src/
 ├─ layouts/
 │  ├─ BaseLayout.astro        ← the page shell: <head>, fonts, header, footer
 │  └─ BlogPost.astro          ← the reading layout for blog posts
+├─ data/
+│  └─ projects.js             ← YOUR PROJECT LIST (home + /projects both read this)
 └─ pages/                      ← every file here becomes a URL
    ├─ index.astro             ← Home            →  /
    ├─ about.astro             ← About           →  /about
    ├─ projects/
    │  ├─ index.astro          ← Projects gallery →  /projects
-   │  └─ line-following-robot.astro  ← a project detail page → /projects/line-following-robot
+   │  └─ _example.astro       ← project detail TEMPLATE (the _ means it's not published)
    └─ blog/
       ├─ index.astro          ← Blog index (lists every post automatically) → /blog
       └─ *.md                 ← one Markdown file per blog post
 ```
+
+> **Starting fresh:** the project list in `src/data/projects.js` is empty on
+> purpose — add your own real builds. Two example blog posts are kept as
+> editable templates; replace them with your own write-ups.
 
 ---
 
@@ -88,15 +94,29 @@ To use a real photo: put it in a new `public/images/` folder and replace a
 Everything lives at the top of `src/styles/global.css` under `:root`.
 For example, change the accent colour by editing `--accent`.
 
+### 🤖 Add a project
+1. Open `src/data/projects.js` and copy the template object into the `projects`
+   array — fill in the slug, title, blurb, tags, etc. (Set `featured: true` on
+   the one you want as the big card on the home page.)
+2. Copy `src/pages/projects/_example.astro` to
+   `src/pages/projects/<your-slug>.astro` (the file name must match the `slug`),
+   then edit its text. That's the page the card links to.
+
+The home page and `/projects` both read the same `projects.js`, so there's only
+one list to keep up to date. Leave it empty and the site shows a tidy
+"coming soon" panel instead of fake projects.
+
 ### 🧩 Edit a page's text
 Open the matching file in `src/pages/` and edit the text directly — it's mostly
-plain HTML. The project list lives in an array at the top of
-`src/pages/projects/index.astro`.
+plain HTML (e.g. your bio, skills, and contact details live in
+`src/pages/about.astro`).
 
 ---
 
 ## Notes
 
 - Fonts (Space Grotesk + IBM Plex Mono) load from Google Fonts.
-- All content is placeholder — swap in your own name, projects, posts, and photos.
-- Built as a starting point: everything is meant to be edited.
+- Name, about, and contact details are set up for Ngwashi Anthony — edit them in
+  `src/pages/about.astro`, `src/components/Header.astro`, and `src/components/Footer.astro`.
+- Projects start empty and two blog posts remain as templates — add your real work.
+- Images are still grey placeholders until you drop photos into `public/images/`.

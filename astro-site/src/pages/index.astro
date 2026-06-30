@@ -1,5 +1,19 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { projects } from "../data/projects.js";
+
+// Featured projects come from the shared data file (src/data/projects.js).
+const featured = projects.find((p) => p.featured) ?? projects[0] ?? null;
+const sideProjects = projects.filter((p) => p !== featured).slice(0, 2);
+const hasProjects = projects.length > 0;
+
+// Latest writing is pulled straight from the Markdown posts, newest first,
+// so this section never goes stale — add a post and it appears here.
+const modules = import.meta.glob("./blog/*.md", { eager: true });
+const latestPosts = Object.values(modules)
+  .map((m) => ({ ...m.frontmatter, url: m.url }))
+  .sort((a, b) => b.order - a.order)
+  .slice(0, 3);
 ---
 
 <BaseLayout title="Ngwashi Anthony — Mechatronics Student" active="home">
@@ -42,42 +56,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <a class="txtlink" href="/projects">All projects <span class="arrow">→</span></a>
       </div>
 
-      <div class="feat-grid">
-        <a class="card feat-main" href="/projects/line-following-robot">
-          <div class="frame">
-            <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
-            <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-            <span class="frame-label">build photo — line follower on the track</span>
-          </div>
-          <div class="feat-body">
-            <div class="mono">PROJ-06 · 2025</div>
-            <h3 class="h-md">Line-Following Robot</h3>
-            <p class="muted" style="margin:0;">My first proper robot — an Arduino, a row of IR sensors, and two motors learning to stay on a black line. Build log on the blog.</p>
-            <div class="tags" style="margin-top:6px;">
-              <span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span><span class="tag">Control</span>
+      {hasProjects ? (
+        <div class="feat-grid">
+          <a class="card feat-main" href={`/projects/${featured.slug}`}>
+            <div class="frame">
+              <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+              <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+              <span class="frame-label">{featured.label}</span>
             </div>
-          </div>
-        </a>
+            <div class="feat-body">
+              <div class="mono">PROJ-{featured.num} · {featured.year}</div>
+              <h3 class="h-md">{featured.title}</h3>
+              <p class="muted" style="margin:0;">{featured.blurb}</p>
+              <div class="tags" style="margin-top:6px;">
+                {featured.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
+              </div>
+            </div>
+          </a>
 
-        <div class="feat-side">
-          <a class="card" href="/projects/line-following-robot">
-            <div class="frame"><span class="frame-label">PCB render</span></div>
-            <div class="feat-body">
-              <div class="mono">PROJ-05 · 2025</div>
-              <h3 class="h-md" style="font-size:21px;">First KiCad Shield</h3>
-              <div class="tags"><span class="tag tag-accent">PCB</span><span class="tag">CAD</span></div>
+          {sideProjects.length > 0 && (
+            <div class="feat-side">
+              {sideProjects.map((p) => (
+                <a class="card" href={`/projects/${p.slug}`}>
+                  <div class="frame"><span class="frame-label">{p.label}</span></div>
+                  <div class="feat-body">
+                    <div class="mono">PROJ-{p.num} · {p.year}</div>
+                    <h3 class="h-md" style="font-size:21px;">{p.title}</h3>
+                    <div class="tags">
+                      {p.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
+                    </div>
+                  </div>
+                </a>
+              ))}
             </div>
-          </a>
-          <a class="card" href="/projects/line-following-robot">
-            <div class="frame"><span class="frame-label">build photo</span></div>
-            <div class="feat-body">
-              <div class="mono">PROJ-04 · 2024</div>
-              <h3 class="h-md" style="font-size:21px;">Obstacle-Avoiding Car</h3>
-              <div class="tags"><span class="tag tag-accent">Robotics</span><span class="tag">Embedded</span></div>
-            </div>
-          </a>
+          )}
         </div>
-      </div>
+      ) : (
+        <div class="feat-empty">
+          <span class="mono mono-accent">// nothing here yet</span>
+          <p>My first projects are coming soon. Until then, the build logs on the <a href="/blog">blog</a> show what I'm working on.</p>
+        </div>
+      )}
     </section>
 
     <!-- ============ LATEST POSTS ============ -->
@@ -91,30 +110,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <div class="post-list">
-        <a class="post-row" href="/blog/getting-your-first-servo-moving-with-arduino">
-          <span class="pr-date">28 May 2026</span>
-          <span>
-            <span class="pr-title">Getting your first servo moving with Arduino</span>
-            <span class="pr-excerpt" style="display:block;">Three wires, five lines of code, and the little moment when the horn actually sweeps. A gentle start for anyone who's never made anything move.</span>
-          </span>
-          <span class="pr-cat tag tag-accent">Tutorial</span>
-        </a>
-        <a class="post-row" href="/blog/line-follower-build-log-1">
-          <span class="pr-date">14 May 2026</span>
-          <span>
-            <span class="pr-title">Line follower build log #1: the chassis</span>
-            <span class="pr-excerpt" style="display:block;">Cutting acrylic for the first time, mounting two TT motors dead straight, and the caster wheel that ruined my evening.</span>
-          </span>
-          <span class="pr-cat tag">Project Log</span>
-        </a>
-        <a class="post-row" href="/blog/why-my-led-wouldnt-light-up">
-          <span class="pr-date">02 May 2026</span>
-          <span>
-            <span class="pr-title">Why my LED wouldn't light up: a beginner's checklist</span>
-            <span class="pr-excerpt" style="display:block;">The five embarrassing things I check first now — polarity, the missing resistor, and a breadboard rail that wasn't actually powered.</span>
-          </span>
-          <span class="pr-cat tag">Notes</span>
-        </a>
+        {latestPosts.map((p) => (
+          <a class="post-row" href={p.url}>
+            <span class="pr-date">{p.date}</span>
+            <span>
+              <span class="pr-title">{p.title}</span>
+              <span class="pr-excerpt" style="display:block;">{p.description}</span>
+            </span>
+            <span class={`pr-cat tag ${p.category === "Tutorial" ? "tag-accent" : ""}`}>{p.category}</span>
+          </a>
+        ))}
       </div>
     </section>
   </main>
@@ -145,6 +150,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .feat-side .card .frame { width: 132px; flex: none; aspect-ratio: auto; border-bottom: 0; border-right: 1px solid var(--line); }
   .feat-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; }
   .feat-main .feat-body { padding: 22px 24px 26px; }
+  .feat-empty { border: 1px dashed var(--line-2); border-radius: 6px; padding: clamp(32px, 5vw, 52px); text-align: center; }
+  .feat-empty .mono { display: block; }
+  .feat-empty p { color: var(--ink-2); margin: 12px auto 0; max-width: 44ch; }
+  .feat-empty a { border-bottom: 1px solid var(--accent-line); }
 
   .home-blog { padding-block: clamp(48px, 7vw, 80px) 0; }
   .post-list { border-top: 1px solid var(--line); }

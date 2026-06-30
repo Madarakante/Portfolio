@@ -1,4 +1,19 @@
 ---
+// ─────────────────────────────────────────────────────────────────────────
+// PROJECT DETAIL TEMPLATE.
+// The leading underscore in the filename means Astro does NOT publish this as
+// a page — it's only here as a worked example to copy.
+//
+// To make a real project page:
+//   1. Copy this file to  src/pages/projects/<your-slug>.astro
+//      (the name must match the `slug` you used in src/data/projects.js).
+//   2. Replace the title, headings, and body text with your own.
+//   3. Add the matching entry to src/data/projects.js so it shows on /projects.
+//
+// Every grey ".frame" box is an image placeholder. To use a real photo, put it
+// in  public/images/  and swap the <div class="frame">…</div> for:
+//      <img src="/images/your-photo.jpg" alt="describe the photo" />
+// ─────────────────────────────────────────────────────────────────────────
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
@@ -99,7 +114,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
       <div class="nextprev">
         <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
-        <a class="txtlink" href="/projects/line-following-robot">Next: Obstacle-Avoiding Car <span class="arrow">→</span></a>
+        <a class="txtlink" href="/projects">Back to all projects <span class="arrow">→</span></a>
       </div>
     </div>
   </main>
