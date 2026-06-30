@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────────────────
-// YOUR PROJECTS — the single source of truth.
+// YOUR PROJECTS: the single source of truth.
 //
 // Both the home page (featured grid) and /projects read from this one array,
 // so you only edit your project list in ONE place.
@@ -12,7 +12,7 @@
 //            src/pages/projects/<your-slug>.astro
 //      (the file name must match `slug`), then edit its text.
 //
-// Leaving the array empty is fine — the site shows a tidy "coming soon" state.
+// Leaving the array empty is fine, the site shows a tidy "coming soon" state.
 //
 // Field reference:
 //   slug    URL + detail-page filename, e.g. "my-robot" → /projects/my-robot
@@ -29,14 +29,14 @@
 export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
 
 export const projects = [
-  // ── TEMPLATE — copy this, fill it in, remove the leading // on each line ──
+  // ── TEMPLATE: copy this, fill it in, remove the leading // on each line ──
   // {
   //   slug: "my-first-robot",
   //   num: "01",
   //   year: "2026",
   //   title: "My First Robot",
   //   blurb: "One or two sentences describing what it does and why you built it.",
-  //   label: "build photo — describe the cover image",
+  //   label: "build photo: describe the cover image",
   //   featured: true,
   //   tags: ["Robotics", "Embedded"],
   // },

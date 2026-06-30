@@ -7,8 +7,8 @@ date: 14 MAY 2026
 readTime: 7 MIN READ
 badge: BUILD LOG
 order: 8
-heroLabel: photo — bare chassis with motors mounted
-heroCaption: Day one of the line follower — just a plate, two motors, and a lot of optimism.
+heroLabel: photo, bare chassis with motors mounted
+heroCaption: Day one of the line follower, just a plate, two motors, and a lot of optimism.
 tags: [Project Log, Robotics, Chassis]
 next: { title: "Getting your first servo moving with Arduino", url: "/blog/getting-your-first-servo-moving-with-arduino" }
 ---
@@ -23,7 +23,7 @@ I drew the base in CAD and had it laser-cut from 3 mm acrylic at the campus make
 
 This mattered far more than I expected. The two yellow TT gear motors have to be *parallel*, or the robot pulls to one side even when both wheels spin at the same speed. I ended up cutting a little alignment jig so both motor brackets sit at exactly the same angle.
 
-<div class="pull-note">// <b>note to self</b> — a couple of degrees of motor misalignment is the difference between "follows the line" and "drives gently into a wall".</div>
+<div class="pull-note">// <b>note to self</b>: a couple of degrees of motor misalignment is the difference between "follows the line" and "drives gently into a wall".</div>
 
 ## The caster wheel
 

@@ -7,13 +7,13 @@ date: 28 MAY 2026
 readTime: 6 MIN READ
 badge: BEGINNER
 order: 9
-heroLabel: photo — servo wired to an Arduino on a breadboard
-heroCaption: The whole setup — one servo, one Arduino, three jumper wires. That's all you need for your first moving thing.
+heroLabel: photo, servo wired to an Arduino on a breadboard
+heroCaption: The whole setup, one servo, one Arduino, three jumper wires. That's all you need for your first moving thing.
 tags: [Tutorial, Arduino, Servo, Beginner]
 prev: { title: "Line follower build log #1: the chassis", url: "/blog/line-follower-build-log-1" }
 ---
 
-A servo is the friendliest motor to start with. You tell it an angle — say 90 degrees — and it goes there and holds. No motor driver, no fiddly wiring. If you've got an Arduino and a hobby servo (the little blue SG90 is the classic), you can have something moving in about ten minutes.
+A servo is the friendliest motor to start with. You tell it an angle (say 90 degrees) and it goes there and holds. No motor driver, no fiddly wiring. If you've got an Arduino and a hobby servo (the little blue SG90 is the classic), you can have something moving in about ten minutes.
 
 Here's the mental model: **the servo is always listening for an angle, and your job is just to keep telling it which one you want.** Everything below is in service of that one idea.
 
@@ -21,17 +21,17 @@ Here's the mental model: **the servo is always listening for an angle, and your 
 
 ## What you'll need
 
-Nothing exotic — most of this is in any starter kit:
+Nothing exotic. Most of this is in any starter kit:
 
 - An Arduino Uno (or any compatible board).
-- A hobby servo — an SG90 9g servo is perfect and cheap.
+- A hobby servo, an SG90 9g, is perfect and cheap.
 - Three jumper wires, and a USB cable to the board.
 
 ## Wiring it up
 
 Servos have three wires. The colours vary, but the order is standard: **brown or black is ground, red is power, and orange or yellow is the signal.** Connect ground to a GND pin on the Arduino, power to 5V, and the signal wire to pin 9. That's the whole circuit.
 
-<div class="pull-note">// <b>beginner tip</b> — one small servo can run off the Arduino's 5V pin, but two or more will brown out the board and cause random resets. Once you add a second servo, give them their own battery and just share the ground wire.</div>
+<div class="pull-note">// <b>beginner tip</b>: one small servo can run off the Arduino's 5V pin, but two or more will brown out the board and cause random resets. Once you add a second servo, give them their own battery and just share the ground wire.</div>
 
 ## The code
 
@@ -59,22 +59,22 @@ void loop() {
 }
 ```
 
-That's it. `write(a)` tells the servo the angle you want; the `delay(15)` simply gives it a moment to physically move before you ask for the next angle. Change that 15 to a bigger number and the sweep slows down — your first taste of tuning a motion by changing one value.
+That's it. `write(a)` tells the servo the angle you want; the `delay(15)` simply gives it a moment to physically move before you ask for the next angle. Change that 15 to a bigger number and the sweep slows down, your first taste of tuning a motion by changing one value.
 
 <figure class="diagram">
-  <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram — servo wiring: GND, 5V, signal to pin 9</span></div>
-  <figcaption>FIG 1 — the three connections between the servo and the Arduino.</figcaption>
+  <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram, servo wiring: GND, 5V, signal to pin 9</span></div>
+  <figcaption>FIG 1: the three connections between the servo and the Arduino.</figcaption>
 </figure>
 
 ## If it doesn't move
 
-Don't panic — it's almost always one of these:
+Don't panic, it's almost always one of these:
 
 - Signal wire in the wrong pin. The code says pin 9, so the orange wire goes to 9.
-- Power and ground swapped — double-check red to 5V, brown/black to GND.
+- Power and ground swapped: double-check red to 5V, brown/black to GND.
 - The board didn't actually upload. Check you picked the right board and port in the IDE.
-- A buzzing servo that won't settle usually means it's underpowered — give it its own battery.
+- A buzzing servo that won't settle usually means it's underpowered: give it its own battery.
 
 Get those right and you'll have a part moving on command. It's a small thing, but it's the exact loop every robot runs on, just scaled up.
 
-Once your servo sweeps, try making it move to an angle *you* choose — wire up a potentiometer and have the servo follow the knob. The next post does exactly that, and it's where this starts to feel like control.
+Once your servo sweeps, try making it move to an angle *you* choose: wire up a potentiometer and have the servo follow the knob. The next post does exactly that, and it's where this starts to feel like control.

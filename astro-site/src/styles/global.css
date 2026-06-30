@@ -1,5 +1,5 @@
 /* =========================================================================
-   Ngwashi Anthony — Mechatronics Portfolio & Blog
+   Ngwashi Anthony · Mechatronics Portfolio & Blog
    Shared design system
    Type:  Space Grotesk (display/body) · IBM Plex Mono (labels/meta)
    Color: warm ink-on-paper, single restrained vermilion accent
@@ -47,7 +47,7 @@ body {
   font-family: var(--sans);
   color: var(--ink);
   background-color: var(--paper);
-  /* faint graph-paper grid — restraint, not decoration */
+  /* faint graph-paper grid, restraint, not decoration */
   background-image:
     linear-gradient(var(--grid) 1px, transparent 1px),
     linear-gradient(90deg, var(--grid) 1px, transparent 1px),
@@ -90,7 +90,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.05; letter-spacing:
 p { margin: 0 0 1.1em; text-wrap: pretty; }
 .lede { font-size: clamp(19px, 2.2vw, 23px); line-height: 1.5; color: var(--ink-2); letter-spacing: -0.012em; }
 
-/* monospace metadata — the technical voice */
+/* monospace metadata, the technical voice */
 .mono {
   font-family: var(--mono);
   font-size: 12px;
@@ -213,7 +213,7 @@ p { margin: 0 0 1.1em; text-wrap: pretty; }
   border-radius: 4px;
 }
 .frame::after {
-  /* corner ticks — like a datasheet figure */
+  /* corner ticks, like a datasheet figure */
   content: "";
   position: absolute; inset: 9px;
   border: 1px dashed transparent;
