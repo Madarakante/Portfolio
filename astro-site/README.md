@@ -1,7 +1,7 @@
-# Ngwashi Anthony — Mechatronics Portfolio & Blog
+# Ngwashi Anthony · Mechatronics Portfolio & Blog
 
 A minimal, engineering-flavoured portfolio + blog built with **[Astro](https://astro.build)**.
-Static, fast, and easy to edit — no framework knowledge required.
+Static, fast, and easy to edit, no framework knowledge required.
 
 ---
 
@@ -16,7 +16,7 @@ npm install      # download dependencies (first time only)
 npm run dev      # start the local dev server
 ```
 
-Then open the URL it prints — usually **http://localhost:4321** — in your browser.
+Then open the URL it prints (usually **http://localhost:4321**) in your browser.
 Edits you save appear instantly.
 
 When you want a finished site to upload somewhere:
@@ -26,7 +26,7 @@ npm run build    # outputs a static site into ./dist
 npm run preview  # preview that built site locally
 ```
 
-The `dist/` folder is plain HTML/CSS/JS — drop it on Netlify, Vercel, GitHub Pages, or any web host.
+The `dist/` folder is plain HTML/CSS/JS; drop it on Netlify, Vercel, GitHub Pages, or any web host.
 
 ---
 
@@ -55,7 +55,7 @@ src/
 ```
 
 > **Starting fresh:** the project list in `src/data/projects.js` is empty on
-> purpose — add your own real builds. Two example blog posts are kept as
+> purpose; add your own real builds. Two example blog posts are kept as
 > editable templates; replace them with your own write-ups.
 
 ---
@@ -75,7 +75,7 @@ category: Tutorial          # Tutorial | Project Log | Review | Notes
 date: 01 JUN 2026
 readTime: 5 MIN READ
 order: 10                   # higher number = newer; controls sort order
-heroLabel: photo — describe the cover image
+heroLabel: photo, describe the cover image
 tags: [Tutorial, Arduino]
 ---
 
@@ -83,7 +83,7 @@ Write your post here in Markdown. **Bold**, lists, links, and
 ```code blocks``` all just work.
 ```
 
-Save it, and it appears on `/blog` automatically — no other file to touch.
+Save it, and it appears on `/blog` automatically, no other file to touch.
 
 ### 🖼️ Add real images
 Right now every image is a labelled grey placeholder (the `.frame` boxes).
@@ -96,7 +96,7 @@ For example, change the accent colour by editing `--accent`.
 
 ### 🤖 Add a project
 1. Open `src/data/projects.js` and copy the template object into the `projects`
-   array — fill in the slug, title, blurb, tags, etc. (Set `featured: true` on
+   array, fill in the slug, title, blurb, tags, etc. (Set `featured: true` on
    the one you want as the big card on the home page.)
 2. Copy `src/pages/projects/_example.astro` to
    `src/pages/projects/<your-slug>.astro` (the file name must match the `slug`),
@@ -107,7 +107,7 @@ one list to keep up to date. Leave it empty and the site shows a tidy
 "coming soon" panel instead of fake projects.
 
 ### 🧩 Edit a page's text
-Open the matching file in `src/pages/` and edit the text directly — it's mostly
+Open the matching file in `src/pages/` and edit the text directly, it's mostly
 plain HTML (e.g. your bio, skills, and contact details live in
 `src/pages/about.astro`).
 
@@ -116,7 +116,7 @@ plain HTML (e.g. your bio, skills, and contact details live in
 ## Notes
 
 - Fonts (Space Grotesk + IBM Plex Mono) load from Google Fonts.
-- Name, about, and contact details are set up for Ngwashi Anthony — edit them in
+- Name, about, and contact details are set up for Ngwashi Anthony; edit them in
   `src/pages/about.astro`, `src/components/Header.astro`, and `src/components/Footer.astro`.
-- Projects start empty and two blog posts remain as templates — add your real work.
+- Projects start empty and two blog posts remain as templates; add your real work.
 - Images are still grey placeholders until you drop photos into `public/images/`.

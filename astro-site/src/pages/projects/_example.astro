@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 // PROJECT DETAIL TEMPLATE.
 // The leading underscore in the filename means Astro does NOT publish this as
-// a page — it's only here as a worked example to copy.
+// a page; it's only here as a worked example to copy.
 //
 // To make a real project page:
 //   1. Copy this file to  src/pages/projects/<your-slug>.astro
@@ -17,7 +17,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Line-Following Robot — Ngwashi Anthony" active="projects">
+<BaseLayout title="Line-Following Robot · Ngwashi Anthony" active="projects">
   <main data-screen-label="Project detail">
     <div class="wrap crumb"><a href="/projects">← Projects</a></div>
 
@@ -42,7 +42,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div class="frame hero-frame">
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-        <span class="frame-label">hero — finished robot on the test track</span>
+        <span class="frame-label">hero: finished robot on the test track</span>
       </div>
     </div>
 
@@ -51,32 +51,32 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <article class="writeup">
           <h2>The idea</h2>
           <p>I wanted a first robot that did something visibly clever but wasn't over my head. A line follower is perfect: it senses the world (where the line is), makes a decision (turn left, turn right, go straight), and acts (drives the motors). That's the whole sense–decide–act loop in one cheap little machine.</p>
-          <p class="mono-note">// goal: build it from parts I understand, not a kit — so I can fix it when it misbehaves (it did).</p>
+          <p class="mono-note">// goal: build it from parts I understand, not a kit, so I can fix it when it misbehaves (it did).</p>
 
           <h2>Building the chassis</h2>
-          <p>The base is a laser-cut acrylic plate with two yellow TT gear motors at the back and a single caster wheel up front. Getting the motors mounted square mattered more than I expected — a couple of degrees off and the robot drifts even on a straight line. The sensor bar hangs off the front, about 8 mm above the floor.</p>
+          <p>The base is a laser-cut acrylic plate with two yellow TT gear motors at the back and a single caster wheel up front. Getting the motors mounted square mattered more than I expected: a couple of degrees off and the robot drifts even on a straight line. The sensor bar hangs off the front, about 8 mm above the floor.</p>
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><span class="frame-label">chassis — underside</span></div>
-              <div class="photo-cap">FIG 1 — motors, caster, and the battery holder underneath</div>
+              <div class="frame"><span class="frame-label">chassis, underside</span></div>
+              <div class="photo-cap">FIG 1: motors, caster, and the battery holder underneath</div>
             </div>
             <div>
-              <div class="frame"><span class="frame-label">sensor bar — close up</span></div>
-              <div class="photo-cap">FIG 2 — five IR reflectance sensors across the front</div>
+              <div class="frame"><span class="frame-label">sensor bar, close up</span></div>
+              <div class="photo-cap">FIG 2: five IR reflectance sensors across the front</div>
             </div>
           </div>
 
           <h2>Reading the line</h2>
-          <p>Each IR sensor shines light down and measures how much bounces back — black line reflects little, white floor reflects a lot. With five sensors in a row I can tell not just <em>that</em> the robot is off the line but <em>which way</em>. I read them as a simple position value: negative means the line drifted left, positive means right.</p>
+          <p>Each IR sensor shines light down and measures how much bounces back: black line reflects little, white floor reflects a lot. With five sensors in a row I can tell not just <em>that</em> the robot is off the line but <em>which way</em>. I read them as a simple position value: negative means the line drifted left, positive means right.</p>
 
           <div class="photo-single">
-            <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram — sensor readings to steering direction</span></div>
-            <div class="photo-cap">FIG 3 — how the five sensor values map to a turn</div>
+            <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram: sensor readings to steering direction</span></div>
+            <div class="photo-cap">FIG 3: how the five sensor values map to a turn</div>
           </div>
 
           <h2>Making it steer</h2>
-          <p>My first version was “bang-bang”: if the line is left, turn hard left; if right, turn hard right. It worked but wobbled like crazy. The fix was to make the turn <em>proportional</em> — a small error gives a gentle correction, a big error a sharp one. That one change turned a drunken zig-zag into a smooth curve. It's the same idea behind PID, just the easy first piece of it.</p>
+          <p>My first version was “bang-bang”: if the line is left, turn hard left; if right, turn hard right. It worked but wobbled like crazy. The fix was to make the turn <em>proportional</em>: a small error gives a gentle correction, a big error a sharp one. That one change turned a drunken zig-zag into a smooth curve. It's the same idea behind PID, just the easy first piece of it.</p>
 
           <h2>What I'd change next</h2>
           <p>It loses the line on tight corners if I push the speed up, so the next version gets faster sensors and I'll finally add the other two PID terms. I'd also move the messy breadboard wiring onto the little shield I designed (PROJ-05) so it stops falling apart in my bag.</p>

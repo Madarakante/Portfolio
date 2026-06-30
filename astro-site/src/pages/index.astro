@@ -8,7 +8,7 @@ const sideProjects = projects.filter((p) => p !== featured).slice(0, 2);
 const hasProjects = projects.length > 0;
 
 // Latest writing is pulled straight from the Markdown posts, newest first,
-// so this section never goes stale — add a post and it appears here.
+// so this section never goes stale, add a post and it appears here.
 const modules = import.meta.glob("./blog/*.md", { eager: true });
 const latestPosts = Object.values(modules)
   .map((m) => ({ ...m.frontmatter, url: m.url }))
@@ -16,18 +16,18 @@ const latestPosts = Object.values(modules)
   .slice(0, 3);
 ---
 
-<BaseLayout title="Ngwashi Anthony — Mechatronics Student" active="home">
+<BaseLayout title="Ngwashi Anthony · Mechatronics Student" active="home">
   <main data-screen-label="Home">
     <!-- ============ HERO ============ -->
     <section class="hero wrap">
       <div class="hero-grid">
         <div>
-          <span class="kicker">Portfolio &amp; Build Notes — Student</span>
+          <span class="kicker">Portfolio &amp; Build Notes, Student</span>
           <h1 class="display">
             <span class="name-line">Ngwashi Anthony.</span>
             <span class="role-line">Mechatronics Student.</span>
           </h1>
-          <p class="lede hero-tag">Learning to make things move — one Arduino sketch, one soldered joint at a time.</p>
+          <p class="lede hero-tag">Learning to make things move, one Arduino sketch, one soldered joint at a time.</p>
           <div class="hero-cta">
             <a class="btn" href="/projects">View projects <span class="arrow">→</span></a>
             <a class="btn btn-ghost" href="/blog">Read the blog</a>

@@ -19,7 +19,7 @@ const {
 } = frontmatter;
 ---
 
-<BaseLayout title={`${title} — Ngwashi Anthony`} active="blog">
+<BaseLayout title={`${title} · Ngwashi Anthony`} active="blog">
   <main data-screen-label="Blog post">
     <div class="post-wrap crumb"><a href="/blog">← Blog</a></div>
 
@@ -99,7 +99,7 @@ const {
   .lead-fig .frame { aspect-ratio: 16 / 8; }
   figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 9px; }
 
-  /* article body — markdown output is slotted, so target it with :global() */
+  /* article body: markdown output is slotted, so target it with :global() */
   .article { font-size: 18px; line-height: 1.72; color: #2a2823; }
   .article :global(p) { margin: 0 0 1.35em; }
   .article :global(h2) { font-size: 27px; letter-spacing: -0.02em; margin: 48px 0 14px; font-weight: 600; line-height: 1.1; color: var(--ink); }
@@ -110,7 +110,7 @@ const {
   .article :global(strong) { font-weight: 600; color: var(--ink); }
   .article :global(ul) { margin: 0 0 1.35em; padding-left: 0; list-style: none; }
   .article :global(li) { position: relative; padding-left: 26px; margin-bottom: 10px; }
-  .article :global(li)::before { content: "—"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+  .article :global(li)::before { content: "-"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
   .article :global(blockquote) { margin: 32px 0; padding: 6px 0 6px 22px; border-left: 2px solid var(--accent); font-size: 21px; line-height: 1.5; color: var(--ink); letter-spacing: -0.01em; }
   .article :global(blockquote p) { margin: 0; }
 
