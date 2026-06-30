@@ -10,7 +10,6 @@ order: 8
 heroLabel: photo — bare chassis with motors mounted
 heroCaption: Day one of the line follower — just a plate, two motors, and a lot of optimism.
 tags: [Project Log, Robotics, Chassis]
-prev: { title: "Why my LED wouldn't light up: a checklist", url: "/blog/why-my-led-wouldnt-light-up" }
 next: { title: "Getting your first servo moving with Arduino", url: "/blog/getting-your-first-servo-moving-with-arduino" }
 ---
 

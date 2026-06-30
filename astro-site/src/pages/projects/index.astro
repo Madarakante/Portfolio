@@ -1,16 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { projects, filters } from "../../data/projects.js";
 
-// Project data — add to this array to add a card. `slug` points at the detail page.
-const projects = [
-  { slug: "line-following-robot", num: "06", title: "Line-Following Robot", blurb: "Arduino + 5 IR sensors keeping two motors glued to a black line.", label: "line follower — on track", tags: ["Robotics", "Embedded", "Control"] },
-  { slug: "line-following-robot", num: "05", title: "My First KiCad Shield", blurb: "A tidy sensor breakout shield — my first board sent off to be made.", label: "first KiCad shield — render", tags: ["PCB", "CAD"] },
-  { slug: "line-following-robot", num: "04", title: "Obstacle-Avoiding Car", blurb: "An ultrasonic sensor on a sweeping servo so the car steers around walls.", label: "obstacle car — 3/4 view", tags: ["Robotics", "Embedded"] },
-  { slug: "line-following-robot", num: "03", title: "Automatic Plant Waterer", blurb: "A soil-moisture sensor and a little pump that keep my basil alive.", label: "plant waterer — on the windowsill", tags: ["Embedded", "Control"] },
-  { slug: "line-following-robot", num: "02", title: "Arduino Weather Station", blurb: "Temperature, humidity and pressure on a little LCD, logged to an SD card.", label: "weather station — LCD readout", tags: ["Embedded", "CAD"] },
-  { slug: "line-following-robot", num: "01", title: "Bluetooth RC Car", blurb: "An HC-05 module and a phone app driving a 2WD car around the flat.", label: "bluetooth car — with phone", tags: ["Robotics", "Embedded", "Control"] },
-];
-const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
+const hasProjects = projects.length > 0;
+const count = String(projects.length).padStart(2, "0");
 ---
 
 <BaseLayout title="Projects — Ngwashi Anthony" active="projects">
@@ -22,53 +15,67 @@ const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
     </section>
 
     <div class="wrap">
-      <div class="filterbar" id="filterbar">
-        <span class="fb-label">Filter</span>
-        <button class="chip active" data-filter="all">All <span class="count">0{projects.length}</span></button>
-        {filters.map((f) => <button class="chip" data-filter={f}>{f}</button>)}
-      </div>
+      {hasProjects ? (
+        <>
+          <div class="filterbar" id="filterbar">
+            <span class="fb-label">Filter</span>
+            <button class="chip active" data-filter="all">All <span class="count">{count}</span></button>
+            {filters.map((f) => <button class="chip" data-filter={f}>{f}</button>)}
+          </div>
 
-      <div class="proj-grid" id="grid">
-        {projects.map((p) => (
-          <a class="card proj-card" href={`/projects/${p.slug}`} data-tags={p.tags.join(" ")}>
-            <div class="frame">
-              <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
-              <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-              <span class="frame-label">{p.label}</span>
-            </div>
-            <div class="pc-body">
-              <div class="pc-top"><h3>{p.title}</h3><span class="mono">{p.num}</span></div>
-              <p>{p.blurb}</p>
-              <div class="tags">
-                {p.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-      <div class="empty is-hidden" id="empty">// no projects match that filter</div>
+          <div class="proj-grid" id="grid">
+            {projects.map((p) => (
+              <a class="card proj-card" href={`/projects/${p.slug}`} data-tags={p.tags.join(" ")}>
+                <div class="frame">
+                  <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+                  <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+                  <span class="frame-label">{p.label}</span>
+                </div>
+                <div class="pc-body">
+                  <div class="pc-top"><h3>{p.title}</h3><span class="mono">{p.num}</span></div>
+                  <p>{p.blurb}</p>
+                  <div class="tags">
+                    {p.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+          <div class="empty is-hidden" id="empty">// no projects match that filter</div>
+        </>
+      ) : (
+        <div class="coming-soon">
+          <span class="cs-mark">// coming soon</span>
+          <h2>First builds in progress.</h2>
+          <p>I'm putting my projects together right now — robots, boards, and the odd weekend experiment. In the meantime, the build notes on the blog are where the work-in-progress lives.</p>
+          <a class="btn" href="/blog">Read the blog <span class="arrow">→</span></a>
+        </div>
+      )}
     </div>
   </main>
 </BaseLayout>
 
 <script>
   const grid = document.getElementById("grid");
-  const cards = [...grid.querySelectorAll(".proj-card")];
-  const empty = document.getElementById("empty");
-  document.getElementById("filterbar").addEventListener("click", (e) => {
-    const btn = e.target.closest(".chip");
-    if (!btn) return;
-    document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
-    btn.classList.add("active");
-    const f = btn.dataset.filter;
-    let visible = 0;
-    cards.forEach((card) => {
-      const show = f === "all" || card.dataset.tags.split(" ").includes(f);
-      card.classList.toggle("is-hidden", !show);
-      if (show) visible++;
+  const filterbar = document.getElementById("filterbar");
+  if (grid && filterbar) {
+    const cards = [...grid.querySelectorAll(".proj-card")];
+    const empty = document.getElementById("empty");
+    filterbar.addEventListener("click", (e) => {
+      const btn = e.target.closest(".chip");
+      if (!btn) return;
+      document.querySelectorAll(".chip").forEach((c) => c.classList.remove("active"));
+      btn.classList.add("active");
+      const f = btn.dataset.filter;
+      let visible = 0;
+      cards.forEach((card) => {
+        const show = f === "all" || card.dataset.tags.split(" ").includes(f);
+        card.classList.toggle("is-hidden", !show);
+        if (show) visible++;
+      });
+      empty.classList.toggle("is-hidden", visible > 0);
     });
-    empty.classList.toggle("is-hidden", visible > 0);
-  });
+  }
 </script>
 
 <style>
@@ -92,6 +99,11 @@ const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
   .proj-card .tags { margin-top: 4px; }
   .is-hidden { display: none !important; }
   .empty { padding: 48px 0; color: var(--ink-3); font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; }
+
+  .coming-soon { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); padding: clamp(40px, 7vw, 80px) clamp(28px, 5vw, 56px); text-align: center; max-width: 620px; margin: 8px auto 0; }
+  .coming-soon .cs-mark { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+  .coming-soon h2 { font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.028em; font-weight: 500; margin: 16px 0 0; }
+  .coming-soon p { color: var(--ink-2); margin: 16px auto 28px; max-width: 46ch; }
 
   @media (max-width: 920px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 560px) { .proj-grid { grid-template-columns: 1fr; } }
