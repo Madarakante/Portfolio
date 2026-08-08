@@ -1,0 +1,157 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Auralink · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-01 · PCB · Embedded · 2026</span>
+        <h1 class="h-xl">Auralink</h1>
+        <p class="lede">An ESP32-C3 paired with a SIMCom A7670E LTE Cat-1 modem on one board: two very different power rails, a level-shifted UART bridge, and RF antenna matching, taken from a blank schematic to a DRC-clean, ordered PCB.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Embedded</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
+        <div class="meta-row"><span class="k">Time</span><span class="v">~2 weeks</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">In progress · board on order</span></div>
+        <div class="meta-row"><span class="k">Fab</span><span class="v">JLCPCB · 4-layer</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+        <span class="frame-label">hero: Auralink board render, top copper</span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The idea</h2>
+          <p>I wanted a board that could reach the internet even where Wi-Fi isn't an option: an ESP32-C3 for compute, Wi-Fi, and BLE, paired with a SIMCom A7670E LTE Cat-1 modem for a cellular uplink. That pairing sounds simple until you actually lay it out. An MCU module and a 124-pad cellular modem want different voltages, different power budgets, and don't inherently know how to talk to each other.</p>
+          <p class="mono-note">// goal: two well-documented modules, wired together properly, not a dev-kit stack glued together.</p>
+
+          <h2>Two power rails, two very different jobs</h2>
+          <p>The ESP32 just needs a steady 3.3 V, so a small ME6211 LDO handles it. The modem is a different animal: SIMCom's datasheet specifies transmit bursts up to 2.8 A on a 3.4–4.2 V rail, so that side runs off a synchronous MP2315 buck set to 3.8 V and sized for real burst current instead of average draw. Getting the bulk capacitance right, matching the ≥300 µF the datasheet calls for, plus the 33 pF / 10 pF / 0.1 µF / 1 µF ceramic stack right at the VBAT pins, was one of the first things I checked against the reference design rather than assumed.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><span class="frame-label">schematic: power section</span></div>
+              <div class="photo-cap">FIG 1: LDO and buck rails side by side</div>
+            </div>
+            <div>
+              <div class="frame"><span class="frame-label">PCB: modem VBAT area</span></div>
+              <div class="photo-cap">FIG 2: bulk capacitance at the modem's power pins</div>
+            </div>
+          </div>
+
+          <h2>Bridging 3.3 V logic to a 1.8 V modem</h2>
+          <p>The modem's UART, PWRKEY, and RESET are all 1.8 V, so a TXS0102 level shifter sits between it and the ESP32's 3.3 V side, with PWRKEY and RESET each driven through their own small NPN stage instead of straight off a GPIO, matching SIMCom's reference power-on circuit. One early mistake worth admitting: I first named the modem's power-enable net the same as the ESP32's reset net, which silently tied the two together, so resetting the microcontroller would have also killed power to the modem. Splitting that into two independent nets was one of the more important fixes in the whole design.</p>
+
+          <h2>Getting the antenna right</h2>
+          <p>The A7670E needs a real RF path: a π-matching network into a U.FL connector, routed as a short, straight 50 Ω microstrip with a solid ground plane directly underneath and stitching vias along both sides. The matching components are placed but left unpopulated, so the network can be tuned once boards are in hand. I also had to walk back an early ESD-protection choice: a standard TVS diode has far too much capacitance for a transmit antenna line, so that spot needed a proper polymer ESD suppressor instead. The same lesson applied to the USB data lines.</p>
+
+          <div class="photo-single">
+            <div class="frame"><span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span><span class="frame-label">diagram: antenna matching network + U.FL launch</span></div>
+            <div class="photo-cap">FIG 3: 50 Ω trace, ground plane beneath, stitched both sides</div>
+          </div>
+
+          <h2>Getting to zero DRC errors</h2>
+          <p>The board is 4 layers, with both inner layers run as ground planes sandwiching the signal layers, so the RF trace and the USB differential pairs both get a close, unbroken reference. Getting from a routed board to a clean DRC run meant working through a real list: a SIM-socket mounting pad with no annular ring, thermal-relief spoke counts, and zone fill priority so the ground pour didn't starve the two high-current power islands. Every part in the BOM is checked against its actual datasheet rather than assumed, down to picking a buck inductor rated for the modem's burst current instead of its average draw.</p>
+
+          <h2>What's next</h2>
+          <p>The PCB and SMT assembly are on order at JLCPCB (a few parts, the buck regulator and a couple of connectors, I'm hand-soldering myself once the assembled boards land). First bring-up is the power rails and the UART bridge, then registering on a cellular network, and eventually tuning the antenna match with a NanoVNA.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Compute &amp; connectivity</div>
+              <div class="spec-line"><span class="sk">MCU / Wi-Fi</span><span class="sv">ESP32-C3-MINI-1U-H4</span></div>
+              <div class="spec-line"><span class="sk">Cellular</span><span class="sv">SIMCom A7670E, LTE Cat-1</span></div>
+              <div class="spec-line"><span class="sk">SIM</span><span class="sv">Nano-SIM, push-push</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Power</div>
+              <div class="spec-line"><span class="sk">Logic rail</span><span class="sv">3.3 V, ME6211 LDO</span></div>
+              <div class="spec-line"><span class="sk">Modem rail</span><span class="sv">3.8 V / 3 A, MP2315 buck</span></div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">5 V, external supply</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">4, dual GND planes</span></div>
+              <div class="spec-line"><span class="sk">Size</span><span class="sv">116.5 × 52.5 mm</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Fab &amp; assembly</div>
+              <div class="spec-line"><span class="sk">Fab</span><span class="sv">JLCPCB, 4-layer</span></div>
+              <div class="spec-line"><span class="sk">Assembly</span><span class="sv">Standard SMT + hand-solder</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects">Back to all projects <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>

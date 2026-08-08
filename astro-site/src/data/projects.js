@@ -29,6 +29,16 @@
 export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
 
 export const projects = [
+  {
+    slug: "auralink",
+    num: "01",
+    year: "2026",
+    title: "Auralink",
+    blurb: "A 4-layer ESP32-C3 + LTE Cat-1 cellular board: dual-rail power, an RF-matched antenna, and a level-shifted UART bridge, taken from schematic to a DRC-clean, ordered PCB.",
+    label: "board render: Auralink cellular IoT PCB",
+    featured: true,
+    tags: ["PCB", "Embedded"],
+  },
   // ── TEMPLATE: copy this, fill it in, remove the leading // on each line ──
   // {
   //   slug: "my-first-robot",
