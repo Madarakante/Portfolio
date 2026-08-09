@@ -25,7 +25,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/hero-3d.png" alt="Auralink 4-layer PCB, 3D rendered top view" />
+        <img src="/images/hero-3d.png" alt="Auralink 4-layer PCB, 3D rendered top view" class="expandable" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -43,11 +43,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><img src="/images/power-schematic.png" alt="Schematic: LDO 3.3V rail and MP2315 3.8V/3A buck step-down" /></div>
+              <div class="frame"><img src="/images/power-schematic.png" alt="Schematic: LDO 3.3V rail and MP2315 3.8V/3A buck step-down" class="expandable" /></div>
               <div class="photo-cap">FIG 1: LDO and buck rails side by side</div>
             </div>
             <div>
-              <div class="frame"><img src="/images/vbat-closeup.png" alt="PCB layout close-up: modem VBAT bulk capacitors and ground pour" /></div>
+              <div class="frame"><img src="/images/vbat-closeup.png" alt="PCB layout close-up: modem VBAT bulk capacitors and ground pour" class="expandable" /></div>
               <div class="photo-cap">FIG 2: bulk capacitance at the modem's power pins</div>
             </div>
           </div>
@@ -60,7 +60,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-single">
             <div class="frame">
-              <img src="/images/antenna-closeup.png" alt="PCB layout close-up: antenna matching network and U.FL launch" />
+              <img src="/images/antenna-closeup.png" alt="PCB layout close-up: antenna matching network and U.FL launch" class="expandable" />
               <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
             </div>
             <div class="photo-cap">FIG 3: 50 Ω trace, ground plane beneath, stitched both sides</div>
@@ -108,6 +108,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <a class="txtlink" href="/projects">Back to all projects <span class="arrow">→</span></a>
       </div>
     </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
   </main>
 </BaseLayout>
 
@@ -125,8 +129,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
   .meta-row .v { font-size: 15px; font-weight: 500; }
 
-  .frame { position: relative; overflow: hidden; }
-  .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
 
   .hero-frame { aspect-ratio: 21 / 9; }
 
@@ -154,6 +160,26 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
   @media (max-width: 900px) {
     .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
     .body-grid { grid-template-columns: 1fr; gap: 40px; }
@@ -161,3 +187,24 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
   @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
