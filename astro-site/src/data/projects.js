@@ -26,9 +26,19 @@
 // ───────────────────────────────────────────────────────────────────────────
 
 // Tags that appear as filter buttons on /projects. Add/remove to taste.
-export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded"];
+export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"];
 
 export const projects = [
+  {
+    slug: "voltage-regulator",
+    num: "02",
+    year: "2026",
+    title: "Adjustable Voltage Regulator",
+    blurb: "An LM317-based adjustable DC-DC converter: 12V input to a smooth 1.25V–12.8V output, with bridge rectification and thermal management.",
+    label: "3D render: LM317 adjustable voltage regulator PCB",
+    featured: false,
+    tags: ["PCB", "Power"],
+  },
   {
     slug: "auralink",
     num: "01",
