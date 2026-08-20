@@ -92,6 +92,7 @@ const latestPosts = Object.values(modules)
                   <div class="feat-body">
                     <div class="mono">PROJ-{p.num} · {p.year}</div>
                     <h3 class="h-md" style="font-size:21px;">{p.title}</h3>
+                    <p class="muted" style="margin:0;font-size:14px;">{p.blurb}</p>
                     <div class="tags">
                       {p.tags.map((t, i) => <span class={i === 0 ? "tag tag-accent" : "tag"}>{t}</span>)}
                     </div>
