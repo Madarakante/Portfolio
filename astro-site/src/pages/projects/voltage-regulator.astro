@@ -1,0 +1,215 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Adjustable Voltage Regulator · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-02 · PCB · Power · 2026</span>
+        <h1 class="h-xl">Adjustable Voltage Regulator</h1>
+        <p class="lede">An LM317-based adjustable DC-DC converter that accepts 12V input and outputs a continuously adjustable 1.25V to 12.8V, with full bridge rectification, reverse polarity protection, and thermal management for up to 1.5A load current.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Power</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
+        <div class="meta-row"><span class="k">Input</span><span class="v">12V DC (AC or DC)</span></div>
+        <div class="meta-row"><span class="k">Output</span><span class="v">1.25V – 12.8V adjustable</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Design complete · PCB ordered</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/regulator-3d-render.png" alt="3D rendered view of the adjustable voltage regulator PCB" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The idea</h2>
+          <p>I needed a reliable, adjustable power supply for prototyping various electronics projects. Rather than buying a commercial bench supply, I designed a compact regulator board based on the classic LM317 linear regulator — a chip that's been a staple in power electronics for decades. The goal was a simple, robust circuit that could handle both AC and DC input sources via a bridge rectifier, with a potentiometer for smooth, continuous voltage adjustment.</p>
+          <p class="mono-note">// goal: a breadboard-friendly regulator with clean output, proper filtering, and thermal headroom.</p>
+
+          <h2>Circuit design</h2>
+          <p>The design follows the standard LM317 configuration with a few key additions. The input stage features a B40C1500G bridge rectifier, which provides reverse polarity protection whether you're feeding in AC from a transformer or DC from a wall wart — either polarity works correctly. This is followed by a 1000µF bulk capacitor for ripple smoothing.</p>
+          <p>The LM317's output voltage is set by the ratio of R1 (240Ω, fixed) and R2 (2.5kΩ potentiometer). With this combination, the output sweeps from the LM317's minimum 1.25V reference up to nearly the input voltage minus dropout. Protection diodes (1N4002) are placed across both the input-output and output-adjust terminals to prevent capacitor discharge from damaging the regulator during power-down.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/regulator-schematic.png" alt="KiCad schematic of the LM317 adjustable voltage regulator circuit" class="expandable" /></div>
+              <div class="photo-cap">FIG 1: Full schematic — bridge rectifier, LM317 regulator, and output filtering</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/regulator-pcb-layout.png" alt="PCB layout showing copper traces and component placement" class="expandable" /></div>
+              <div class="photo-cap">FIG 2: PCB layout with wide power traces for thermal management</div>
+            </div>
+          </div>
+
+          <h2>Key components</h2>
+          <p><strong>LM317T</strong> — The heart of the circuit. A 1.5A adjustable linear regulator in a TO-220 package, mounted to a heatsink for thermal dissipation. With proper heatsinking, it can safely deliver full current across the entire voltage range.</p>
+          <p><strong>B40C1500G bridge rectifier</strong> — A 4A, 1500V bridge that handles both AC and DC input seamlessly. Its forward voltage drop (~1.4V) is accounted for in the input voltage headroom calculations.</p>
+          <p><strong>Capacitor network</strong> — 1000µF electrolytic for input bulk filtering, 0.1µF ceramic for high-frequency decoupling at the regulator input, 10µF at the adjust pin for ripple rejection, and 1µF output capacitor for transient response.</p>
+
+          <div class="photo-single">
+            <div class="frame">
+              <img src="/images/regulator-simulation.gif" alt="Animated simulation showing voltage output adjustment from 1.25V to 12.8V" class="expandable" />
+              <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
+            </div>
+            <div class="photo-cap">FIG 3: Proteus simulation — output voltage sweeps from 1.25V to 12.8V as potentiometer adjusts</div>
+          </div>
+
+          <h2>Thermal considerations</h2>
+          <p>Linear regulators waste the voltage difference as heat: at 12V input and 3.3V output at 1A, the LM317 dissipates nearly 9W. The TO-220 heatsink footprint on the PCB ensures thermal headroom for moderate loads. For sustained high-current operation at large voltage drops, external airflow or a larger heatsink would be advisable — a limitation inherent to any linear design versus a switching regulator.</p>
+
+          <h2>Design choices</h2>
+          <p>I chose a linear regulator over a switching converter deliberately for this project. Yes, it's less efficient, but the output is inherently quiet — no switching noise, no EMI concerns, no inductor selection headaches. For powering sensitive analog circuits, audio gear, or MCU prototyping where you just need a clean, adjustable rail, a linear regulator remains the simpler and cleaner choice.</p>
+          <p>The wide copper pours on the PCB serve double duty: they carry current efficiently and act as heatsinking planes, spreading thermal energy away from the TO-220 package.</p>
+
+          <h2>What's next</h2>
+          <p>The board is ordered and I'm waiting for delivery. Bring-up plan is straightforward: verify the bridge rectifier works with both AC and DC input, sweep the potentiometer across its full range while monitoring output with a multimeter, and then load-test at various voltage/current combinations to verify thermal performance matches the simulation.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Regulator</div>
+              <div class="spec-line"><span class="sk">IC</span><span class="sv">LM317T (TO-220)</span></div>
+              <div class="spec-line"><span class="sk">Type</span><span class="sv">Linear, adjustable</span></div>
+              <div class="spec-line"><span class="sk">Max current</span><span class="sv">1.5A (with heatsink)</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Voltage</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">12V DC (or AC via bridge)</span></div>
+              <div class="spec-line"><span class="sk">Output range</span><span class="sv">1.25V – 12.8V adj</span></div>
+              <div class="spec-line"><span class="sk">Ripple rejection</span><span class="sv">~80dB</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Protection</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">Bridge rectifier (B40C1500G)</span></div>
+              <div class="spec-line"><span class="sk">Diodes</span><span class="sv">1N4002 ×2 (discharge protection)</span></div>
+              <div class="spec-line"><span class="sk">Thermal</span><span class="sv">TO-220 heatsink</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Size</span><span class="sv">Compact (hand-solder friendly)</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad</span></div>
+              <div class="spec-line"><span class="sk">Simulation</span><span class="sv">Proteus ISIS</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/auralink"><span class="arrow">←</span> Auralink</a>
+        <a class="txtlink" href="/projects">Back to all projects <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
