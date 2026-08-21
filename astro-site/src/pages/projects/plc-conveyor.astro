@@ -1,0 +1,218 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+
+<BaseLayout title="PLC Conveyor Control · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-03 · Control · PLC · 2025</span>
+        <h1 class="h-xl">PLC Conveyor Control</h1>
+        <p class="lede">A fully automated conveyor sorting system using a Siemens S7-1200 PLC, Factory I/O simulation, and ladder logic programming for industrial-grade material handling and object sorting by color and size.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">Control</span><span class="tag">PLC</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Academic project</span></div>
+        <div class="meta-row"><span class="k">PLC</span><span class="v">Siemens S7-1200</span></div>
+        <div class="meta-row"><span class="k">Simulation</span><span class="v">Factory I/O</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Complete</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/plc-editor-overview.png" alt="Siemens TIA Portal showing ladder logic for conveyor control program" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The idea</h2>
+          <p>Industrial automation is the backbone of modern manufacturing, and PLCs (Programmable Logic Controllers) sit at the heart of every automated production line. For this project, I designed and programmed a conveyor sorting system that automatically detects, routes, and sorts objects on a multi-stage conveyor belt using sensor inputs and pneumatic actuators.</p>
+          <p class="mono-note">// goal: build a complete PLC program that handles object detection, sorting, and fault recovery in a simulated factory environment.</p>
+
+          <h2>System architecture</h2>
+          <p>The system uses a Siemens S7-1200 CPU as the central controller, communicating with a network of sensors and actuators through digital I/O modules. The conveyor setup includes three main stations: an entry point with proximity sensors for object detection, a color detection station using a photoelectric sensor array, and a sorting station with three pneumatic pushers that divert objects to their respective bins.</p>
+          <p>Factory I/O provided the 3D simulation environment, allowing me to test and iterate on the PLC logic without physical hardware. The simulation connects to TIA Portal via OPC UA, creating a realistic testbed for validating every control scenario before deployment.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/plc-ladder-logic.png" alt="Ladder logic diagram showing the main conveyor control program" class="expandable" /></div>
+              <div class="photo-cap">FIG 1: Main program block: conveyor start/stop and speed control logic</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/plc-factory-io.png" alt="Factory I/O simulation showing the conveyor sorting system in operation" class="expandable" /></div>
+              <div class="photo-cap">FIG 2: Factory I/O simulation: objects being routed to sorting bins</div>
+            </div>
+          </div>
+
+          <h2>Ladder logic design</h2>
+          <p>The control program is structured into four function blocks (FBs), each handling a specific subsystem: conveyor motor control, sensor processing, sorting actuator logic, and fault handling. The main OB1 (Organization Block 1) orchestrates the data flow between these blocks and manages the overall state machine.</p>
+          <p>The state machine cycles through five states: IDLE, RUNNING, SORTING, EMERGENCY_STOP, and FAULT. Each state has clearly defined entry conditions, actions, and exit transitions, making the logic deterministic and easy to debug. Sensor inputs are debounced using timer-on-delay instructions to prevent false triggers from mechanical bouncing.</p>
+
+          <h2>Sensor integration</h2>
+          <p>Object detection uses a combination of proximity sensors (inductive for metallic objects, capacitive for non-metallic) and photoelectric sensors for color detection. The color detection logic maps analog sensor values to discrete color categories (red, green, blue) using threshold comparisons in the PLC's analog processing block.</p>
+          <p>Position tracking is handled by encoder pulses from the conveyor motor drive. Each object's position is calculated by counting encoder ticks and comparing against calibrated reference points for each sorting station. This approach eliminates the need for expensive vision systems while maintaining reliable object tracking.</p>
+
+          <div class="photo-single">
+            <div class="frame">
+              <img src="/images/plc-factory-io.gif" alt="Animated simulation of the conveyor sorting system in action" class="expandable" />
+              <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
+            </div>
+            <div class="photo-cap">FIG 3: Live simulation: objects sorted into three bins based on color</div>
+          </div>
+
+          <h2>Actuator control</h2>
+          <p>The three pneumatic pushers are controlled through solenoid valves, with each pusher assigned to a specific object color. The actuation timing is critical: the pusher must extend and retract within a precise window determined by the conveyor speed and object position. I implemented a position-triggered actuation scheme where the pusher fires when the encoder count matches the station's calibrated trigger point, with a retraction timer that ensures the pusher clears before the next object arrives.</p>
+
+          <h2>Fault handling and safety</h2>
+          <p>Industrial systems must handle failures gracefully. The program includes detection for: conveyor motor overload (monitored via a virtual current signal), sensor failure (timeout if no signal within expected window), jam detection (object at a station longer than threshold), and emergency stop (hardwired safety input with immediate motor shutdown). Each fault triggers a specific recovery sequence: from simple retry logic to full system halt requiring manual reset.</p>
+
+          <h2>What I learned</h2>
+          <p>This project gave me hands-on experience with industrial PLC programming, from understanding I/O addressing and data types to structuring programs for maintainability and safety. Working with Factory I/O bridged the gap between theoretical control theory and practical implementation, showing how timing diagrams and state machines translate into real-world automation. The key takeaway: industrial control is less about clever algorithms and more about robust, predictable behavior under every possible condition, including the ones you didn't plan for.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Controller</div>
+              <div class="spec-line"><span class="sk">PLC</span><span class="sv">Siemens S7-1200</span></div>
+              <div class="spec-line"><span class="sk">CPU</span><span class="sv">1214C DC/DC/DC</span></div>
+              <div class="spec-line"><span class="sk">Program</span><span class="sv">Ladder Logic (LAD)</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">I/O</div>
+              <div class="spec-line"><span class="sk">Digital inputs</span><span class="sv">8 (sensors, E-stop)</span></div>
+              <div class="spec-line"><span class="sk">Digital outputs</span><span class="sv">6 (pushers, motor, indicator)</span></div>
+              <div class="spec-line"><span class="sk">Analog inputs</span><span class="sv">2 (color sensors)</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Simulation</div>
+              <div class="spec-line"><span class="sk">Environment</span><span class="sv">Factory I/O</span></div>
+              <div class="spec-line"><span class="sk">Connection</span><span class="sv">OPC UA</span></div>
+              <div class="spec-line"><span class="sk">Scenario</span><span class="sv">Sorting Station 3-bin</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Software</div>
+              <div class="spec-line"><span class="sk">IDE</span><span class="sv">TIA Portal V17</span></div>
+              <div class="spec-line"><span class="sk">Simulation</span><span class="sv">Factory I/O 3.0</span></div>
+              <div class="spec-line"><span class="sk">Structure</span><span class="sv">4 FBs + OB1</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/voltage-regulator"><span class="arrow">←</span> Voltage Regulator</a>
+        <a class="txtlink" href="/projects/auralink">Auralink <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
