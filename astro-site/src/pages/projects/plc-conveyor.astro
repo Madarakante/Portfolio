@@ -11,22 +11,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div>
         <span class="kicker">PROJ-03 · Control · PLC · 2025</span>
         <h1 class="h-xl">PLC Conveyor Control</h1>
-        <p class="lede">A fully automated conveyor sorting system using a Siemens S7-1200 PLC, Factory I/O simulation, and ladder logic programming for industrial-grade material handling and object sorting by color and size.</p>
+        <p class="lede">A simple conveyor system programmed in OpenPLC that detects boxes with a sensor and pushes them from one conveyor to another using a pneumatic pusher.</p>
         <div class="tags" style="margin-top:24px;">
           <span class="tag tag-accent">Control</span><span class="tag">PLC</span>
         </div>
       </div>
       <div class="head-meta">
         <div class="meta-row"><span class="k">Type</span><span class="v">Academic project</span></div>
-        <div class="meta-row"><span class="k">PLC</span><span class="v">Siemens S7-1200</span></div>
-        <div class="meta-row"><span class="k">Simulation</span><span class="v">Factory I/O</span></div>
+        <div class="meta-row"><span class="k">PLC</span><span class="v">OpenPLC</span></div>
         <div class="meta-row"><span class="k">Status</span><span class="v accent">Complete</span></div>
       </div>
     </section>
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/plc-editor-overview.png" alt="Siemens TIA Portal showing ladder logic for conveyor control program" class="expandable" />
+        <img src="/images/plc-editor-overview.png" alt="OpenPLC editor showing the conveyor control program" class="expandable" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -36,48 +35,38 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div class="body-grid">
         <article class="writeup">
           <h2>The idea</h2>
-          <p>Industrial automation is the backbone of modern manufacturing, and PLCs (Programmable Logic Controllers) sit at the heart of every automated production line. For this project, I designed and programmed a conveyor sorting system that automatically detects, routes, and sorts objects on a multi-stage conveyor belt using sensor inputs and pneumatic actuators.</p>
-          <p class="mono-note">// goal: build a complete PLC program that handles object detection, sorting, and fault recovery in a simulated factory environment.</p>
+          <p>This project introduced me to PLC programming using OpenPLC, an open-source platform for programmable logic controllers. The task was straightforward: build a program that moves boxes from one conveyor belt to another using a sensor to detect when a box is in position and a pusher to shove it across.</p>
+          <p class="mono-note">// goal: detect a box, push it to the next conveyor, repeat.</p>
 
-          <h2>System architecture</h2>
-          <p>The system uses a Siemens S7-1200 CPU as the central controller, communicating with a network of sensors and actuators through digital I/O modules. The conveyor setup includes three main stations: an entry point with proximity sensors for object detection, a color detection station using a photoelectric sensor array, and a sorting station with three pneumatic pushers that divert objects to their respective bins.</p>
-          <p>Factory I/O provided the 3D simulation environment, allowing me to test and iterate on the PLC logic without physical hardware. The simulation connects to TIA Portal via OPC UA, creating a realistic testbed for validating every control scenario before deployment.</p>
+          <h2>How it works</h2>
+          <p>The system has two conveyors running side by side. When a box arrives on the first conveyor, a sensor detects its presence. Once the box is in the right position, the PLC triggers a pneumatic pusher that slides the box sideways onto the second conveyor. After the pusher extends and retracts, the system waits for the next box.</p>
+          <p>The entire logic is written in ladder diagram (LD) within the OpenPLC editor. It reads the sensor input, controls the pusher output, and uses timers to manage the push and retract cycle. Simple, but it covers the core concepts: inputs, outputs, timing, and sequential control.</p>
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><img src="/images/plc-ladder-logic.png" alt="Ladder logic diagram showing the main conveyor control program" class="expandable" /></div>
-              <div class="photo-cap">FIG 1: Main program block: conveyor start/stop and speed control logic</div>
+              <div class="frame"><img src="/images/plc-ladder-logic.png" alt="Ladder logic diagram for the conveyor pusher control" class="expandable" /></div>
+              <div class="photo-cap">FIG 1: Ladder logic program controlling the sensor and pusher</div>
             </div>
             <div>
-              <div class="frame"><img src="/images/plc-factory-io.png" alt="Factory I/O simulation showing the conveyor sorting system in operation" class="expandable" /></div>
-              <div class="photo-cap">FIG 2: Factory I/O simulation: objects being routed to sorting bins</div>
+              <div class="frame"><img src="/images/plc-factory-io.png" alt="Conveyor system with boxes being pushed between belts" class="expandable" /></div>
+              <div class="photo-cap">FIG 2: The conveyor setup with sensor and pusher mechanism</div>
             </div>
           </div>
 
-          <h2>Ladder logic design</h2>
-          <p>The control program is structured into four function blocks (FBs), each handling a specific subsystem: conveyor motor control, sensor processing, sorting actuator logic, and fault handling. The main OB1 (Organization Block 1) orchestrates the data flow between these blocks and manages the overall state machine.</p>
-          <p>The state machine cycles through five states: IDLE, RUNNING, SORTING, EMERGENCY_STOP, and FAULT. Each state has clearly defined entry conditions, actions, and exit transitions, making the logic deterministic and easy to debug. Sensor inputs are debounced using timer-on-delay instructions to prevent false triggers from mechanical bouncing.</p>
-
-          <h2>Sensor integration</h2>
-          <p>Object detection uses a combination of proximity sensors (inductive for metallic objects, capacitive for non-metallic) and photoelectric sensors for color detection. The color detection logic maps analog sensor values to discrete color categories (red, green, blue) using threshold comparisons in the PLC's analog processing block.</p>
-          <p>Position tracking is handled by encoder pulses from the conveyor motor drive. Each object's position is calculated by counting encoder ticks and comparing against calibrated reference points for each sorting station. This approach eliminates the need for expensive vision systems while maintaining reliable object tracking.</p>
+          <h2>Program structure</h2>
+          <p>The ladder logic is split into two main rungs. The first rung reads the sensor input and sets a flag when a box is detected in position. The second rung uses that flag to trigger the pusher, with a timer controlling how long the pusher stays extended before retracting. A second timer ensures the pusher is fully retracted before the system accepts the next box.</p>
+          <p>OpenPLC made this easy to prototype. The editor compiles the ladder diagram to run on standard hardware, so I could test the logic without needing a physical PLC unit. The simulation showed the sensor triggering, the pusher firing, and the box moving to the second conveyor in real time.</p>
 
           <div class="photo-single">
             <div class="frame">
-              <img src="/images/plc-factory-io.gif" alt="Animated simulation of the conveyor sorting system in action" class="expandable" />
+              <img src="/images/plc-factory-io.gif" alt="Animation of boxes being pushed from one conveyor to another" class="expandable" />
               <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
             </div>
-            <div class="photo-cap">FIG 3: Live simulation: objects sorted into three bins based on color</div>
+            <div class="photo-cap">FIG 3: Simulation showing the full sensor-push-reset cycle in action</div>
           </div>
 
-          <h2>Actuator control</h2>
-          <p>The three pneumatic pushers are controlled through solenoid valves, with each pusher assigned to a specific object color. The actuation timing is critical: the pusher must extend and retract within a precise window determined by the conveyor speed and object position. I implemented a position-triggered actuation scheme where the pusher fires when the encoder count matches the station's calibrated trigger point, with a retraction timer that ensures the pusher clears before the next object arrives.</p>
-
-          <h2>Fault handling and safety</h2>
-          <p>Industrial systems must handle failures gracefully. The program includes detection for: conveyor motor overload (monitored via a virtual current signal), sensor failure (timeout if no signal within expected window), jam detection (object at a station longer than threshold), and emergency stop (hardwired safety input with immediate motor shutdown). Each fault triggers a specific recovery sequence: from simple retry logic to full system halt requiring manual reset.</p>
-
           <h2>What I learned</h2>
-          <p>This project gave me hands-on experience with industrial PLC programming, from understanding I/O addressing and data types to structuring programs for maintainability and safety. Working with Factory I/O bridged the gap between theoretical control theory and practical implementation, showing how timing diagrams and state machines translate into real-world automation. The key takeaway: industrial control is less about clever algorithms and more about robust, predictable behavior under every possible condition, including the ones you didn't plan for.</p>
+          <p>This project was my first real exposure to PLC programming. Before this, I only knew about microcontrollers like Arduino. A PLC works differently: it scans inputs, executes the ladder logic, updates outputs, and repeats, cycle after cycle. Understanding that scan cycle, and how timers and flags work in ladder logic, was the key takeaway. It is a different way of thinking about control compared to writing code in C or Python.</p>
         </article>
 
         <aside>
@@ -85,27 +74,20 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
             <div class="spec-group">
               <div class="g-label">Controller</div>
-              <div class="spec-line"><span class="sk">PLC</span><span class="sv">Siemens S7-1200</span></div>
-              <div class="spec-line"><span class="sk">CPU</span><span class="sv">1214C DC/DC/DC</span></div>
-              <div class="spec-line"><span class="sk">Program</span><span class="sv">Ladder Logic (LAD)</span></div>
+              <div class="spec-line"><span class="sk">Platform</span><span class="sv">OpenPLC</span></div>
+              <div class="spec-line"><span class="sk">Language</span><span class="sv">Ladder Diagram (LD)</span></div>
             </div>
             <div class="spec-group">
-              <div class="g-label">I/O</div>
-              <div class="spec-line"><span class="sk">Digital inputs</span><span class="sv">8 (sensors, E-stop)</span></div>
-              <div class="spec-line"><span class="sk">Digital outputs</span><span class="sv">6 (pushers, motor, indicator)</span></div>
-              <div class="spec-line"><span class="sk">Analog inputs</span><span class="sv">2 (color sensors)</span></div>
+              <div class="g-label">Hardware</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">1x sensor (box detect)</span></div>
+              <div class="spec-line"><span class="sk">Output</span><span class="sv">1x pusher (pneumatic)</span></div>
+              <div class="spec-line"><span class="sk">Conveyors</span><span class="sv">2 (source + destination)</span></div>
             </div>
             <div class="spec-group">
-              <div class="g-label">Simulation</div>
-              <div class="spec-line"><span class="sk">Environment</span><span class="sv">Factory I/O</span></div>
-              <div class="spec-line"><span class="sk">Connection</span><span class="sv">OPC UA</span></div>
-              <div class="spec-line"><span class="sk">Scenario</span><span class="sv">Sorting Station 3-bin</span></div>
-            </div>
-            <div class="spec-group">
-              <div class="g-label">Software</div>
-              <div class="spec-line"><span class="sk">IDE</span><span class="sv">TIA Portal V17</span></div>
-              <div class="spec-line"><span class="sk">Simulation</span><span class="sv">Factory I/O 3.0</span></div>
-              <div class="spec-line"><span class="sk">Structure</span><span class="sv">4 FBs + OB1</span></div>
+              <div class="g-label">Logic</div>
+              <div class="spec-line"><span class="sk">Detection</span><span class="sv">Sensor on conveyor 1</span></div>
+              <div class="spec-line"><span class="sk">Action</span><span class="sv">Pusher extends, retracts</span></div>
+              <div class="spec-line"><span class="sk">Timing</span><span class="sv">Timer-controlled cycle</span></div>
             </div>
           </div>
         </aside>
