@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "plc-conveyor",
+    num: "03",
+    year: "2025",
+    title: "PLC Conveyor Control",
+    blurb: "A fully automated conveyor sorting system using a Siemens S7-1200 PLC, Factory I/O simulation, and ladder logic for industrial-grade material handling.",
+    label: "TIA Portal: PLC conveyor control program",
+    image: "/images/plc-editor-overview.png",
+    featured: false,
+    tags: ["Control", "PLC"],
+  },
+  {
     slug: "voltage-regulator",
     num: "02",
     year: "2026",

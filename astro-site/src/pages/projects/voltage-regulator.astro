@@ -35,17 +35,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div class="body-grid">
         <article class="writeup">
           <h2>The idea</h2>
-          <p>I needed a reliable, adjustable power supply for prototyping various electronics projects. Rather than buying a commercial bench supply, I designed a compact regulator board based on the classic LM317 linear regulator — a chip that's been a staple in power electronics for decades. The goal was a simple, robust circuit that could handle both AC and DC input sources via a bridge rectifier, with a potentiometer for smooth, continuous voltage adjustment.</p>
+          <p>I needed a reliable, adjustable power supply for prototyping various electronics projects. Rather than buying a commercial bench supply, I designed a compact regulator board based on the classic LM317 linear regulator, a chip that's been a staple in power electronics for decades. The goal was a simple, robust circuit that could handle both AC and DC input sources via a bridge rectifier, with a potentiometer for smooth, continuous voltage adjustment.</p>
           <p class="mono-note">// goal: a breadboard-friendly regulator with clean output, proper filtering, and thermal headroom.</p>
 
           <h2>Circuit design</h2>
-          <p>The design follows the standard LM317 configuration with a few key additions. The input stage features a B40C1500G bridge rectifier, which provides reverse polarity protection whether you're feeding in AC from a transformer or DC from a wall wart — either polarity works correctly. This is followed by a 1000µF bulk capacitor for ripple smoothing.</p>
+          <p>The design follows the standard LM317 configuration with a few key additions. The input stage features a B40C1500G bridge rectifier, which provides reverse polarity protection whether you're feeding in AC from a transformer or DC from a wall wart, either polarity works correctly. This is followed by a 1000µF bulk capacitor for ripple smoothing.</p>
           <p>The LM317's output voltage is set by the ratio of R1 (240Ω, fixed) and R2 (2.5kΩ potentiometer). With this combination, the output sweeps from the LM317's minimum 1.25V reference up to nearly the input voltage minus dropout. Protection diodes (1N4002) are placed across both the input-output and output-adjust terminals to prevent capacitor discharge from damaging the regulator during power-down.</p>
 
           <div class="photo-pair">
             <div>
               <div class="frame"><img src="/images/regulator-schematic.png" alt="KiCad schematic of the LM317 adjustable voltage regulator circuit" class="expandable" /></div>
-              <div class="photo-cap">FIG 1: Full schematic — bridge rectifier, LM317 regulator, and output filtering</div>
+              <div class="photo-cap">FIG 1: Full schematic: bridge rectifier, LM317 regulator, and output filtering</div>
             </div>
             <div>
               <div class="frame"><img src="/images/regulator-pcb-layout.png" alt="PCB layout showing copper traces and component placement" class="expandable" /></div>
@@ -54,23 +54,23 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
 
           <h2>Key components</h2>
-          <p><strong>LM317T</strong> — The heart of the circuit. A 1.5A adjustable linear regulator in a TO-220 package, mounted to a heatsink for thermal dissipation. With proper heatsinking, it can safely deliver full current across the entire voltage range.</p>
-          <p><strong>B40C1500G bridge rectifier</strong> — A 4A, 1500V bridge that handles both AC and DC input seamlessly. Its forward voltage drop (~1.4V) is accounted for in the input voltage headroom calculations.</p>
-          <p><strong>Capacitor network</strong> — 1000µF electrolytic for input bulk filtering, 0.1µF ceramic for high-frequency decoupling at the regulator input, 10µF at the adjust pin for ripple rejection, and 1µF output capacitor for transient response.</p>
+          <p><strong>LM317T</strong>: The heart of the circuit. A 1.5A adjustable linear regulator in a TO-220 package, mounted to a heatsink for thermal dissipation. With proper heatsinking, it can safely deliver full current across the entire voltage range.</p>
+          <p><strong>B40C1500G bridge rectifier</strong>: A 4A, 1500V bridge that handles both AC and DC input seamlessly. Its forward voltage drop (~1.4V) is accounted for in the input voltage headroom calculations.</p>
+          <p><strong>Capacitor network</strong>: 1000µF electrolytic for input bulk filtering, 0.1µF ceramic for high-frequency decoupling at the regulator input, 10µF at the adjust pin for ripple rejection, and 1µF output capacitor for transient response.</p>
 
           <div class="photo-single">
             <div class="frame">
               <img src="/images/regulator-simulation.gif" alt="Animated simulation showing voltage output adjustment from 1.25V to 12.8V" class="expandable" />
               <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
             </div>
-            <div class="photo-cap">FIG 3: Proteus simulation — output voltage sweeps from 1.25V to 12.8V as potentiometer adjusts</div>
+            <div class="photo-cap">FIG 3: Proteus simulation: output voltage sweeps from 1.25V to 12.8V as potentiometer adjusts</div>
           </div>
 
           <h2>Thermal considerations</h2>
-          <p>Linear regulators waste the voltage difference as heat: at 12V input and 3.3V output at 1A, the LM317 dissipates nearly 9W. The TO-220 heatsink footprint on the PCB ensures thermal headroom for moderate loads. For sustained high-current operation at large voltage drops, external airflow or a larger heatsink would be advisable — a limitation inherent to any linear design versus a switching regulator.</p>
+          <p>Linear regulators waste the voltage difference as heat: at 12V input and 3.3V output at 1A, the LM317 dissipates nearly 9W. The TO-220 heatsink footprint on the PCB ensures thermal headroom for moderate loads. For sustained high-current operation at large voltage drops, external airflow or a larger heatsink would be advisable, a limitation inherent to any linear design versus a switching regulator.</p>
 
           <h2>Design choices</h2>
-          <p>I chose a linear regulator over a switching converter deliberately for this project. Yes, it's less efficient, but the output is inherently quiet — no switching noise, no EMI concerns, no inductor selection headaches. For powering sensitive analog circuits, audio gear, or MCU prototyping where you just need a clean, adjustable rail, a linear regulator remains the simpler and cleaner choice.</p>
+          <p>I chose a linear regulator over a switching converter deliberately for this project. Yes, it's less efficient, but the output is inherently quiet: no switching noise, no EMI concerns, no inductor selection headaches. For powering sensitive analog circuits, audio gear, or MCU prototyping where you just need a clean, adjustable rail, a linear regulator remains the simpler and cleaner choice.</p>
           <p>The wide copper pours on the PCB serve double duty: they carry current efficiently and act as heatsinking planes, spreading thermal energy away from the TO-220 package.</p>
 
           <h2>What's next</h2>
@@ -109,8 +109,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       </div>
 
       <div class="nextprev">
-        <a class="txtlink" href="/projects/auralink"><span class="arrow">←</span> Auralink</a>
-        <a class="txtlink" href="/projects">Back to all projects <span class="arrow">→</span></a>
+        <a class="txtlink" href="/projects/plc-conveyor"><span class="arrow">←</span> PLC Conveyor Control</a>
+        <a class="txtlink" href="/projects/auralink">Auralink <span class="arrow">→</span></a>
       </div>
     </div>
 
