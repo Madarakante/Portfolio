@@ -11,7 +11,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div>
         <span class="kicker">PROJ-03 · Control · PLC · 2025</span>
         <h1 class="h-xl">PLC Conveyor Control</h1>
-        <p class="lede">A simple conveyor system programmed in OpenPLC that detects boxes with a sensor and pushes them from one conveyor to another using a pneumatic pusher.</p>
+        <p class="lede">A simple conveyor system programmed in OpenPLC that detects boxes with a sensor and pushes them from one conveyor to another using a pneumatic pusher. Controlled by an on/off switch to start and stop the system.</p>
         <div class="tags" style="margin-top:24px;">
           <span class="tag tag-accent">Control</span><span class="tag">PLC</span>
         </div>
@@ -25,7 +25,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/plc-editor-overview.png" alt="OpenPLC editor showing the conveyor control program" class="expandable" />
+        <img src="/images/plc-editor-overview.gif" alt="OpenPLC editor showing the conveyor control program" class="expandable" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -44,11 +44,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><img src="/images/plc-ladder-logic.png" alt="Ladder logic diagram for the conveyor pusher control" class="expandable" /></div>
+              <div class="frame"><img src="/images/plc-ladder-logic.gif" alt="Ladder logic diagram for the conveyor pusher control" class="expandable" /></div>
               <div class="photo-cap">FIG 1: Ladder logic program controlling the sensor and pusher</div>
             </div>
             <div>
-              <div class="frame"><img src="/images/plc-factory-io.png" alt="Conveyor system with boxes being pushed between belts" class="expandable" /></div>
+              <div class="frame"><img src="/images/plc-factory-io.gif" alt="Conveyor system with boxes being pushed between belts" class="expandable" /></div>
               <div class="photo-cap">FIG 2: The conveyor setup with sensor and pusher mechanism</div>
             </div>
           </div>
@@ -80,6 +80,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <div class="spec-group">
               <div class="g-label">Hardware</div>
               <div class="spec-line"><span class="sk">Input</span><span class="sv">1x sensor (box detect)</span></div>
+              <div class="spec-line"><span class="sk">Control</span><span class="sv">On/off switch</span></div>
               <div class="spec-line"><span class="sk">Output</span><span class="sv">1x pusher (pneumatic)</span></div>
               <div class="spec-line"><span class="sk">Conveyors</span><span class="sv">2 (source + destination)</span></div>
             </div>
