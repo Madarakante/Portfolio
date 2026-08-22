@@ -36,7 +36,7 @@ export const projects = [
     title: "PLC Conveyor Control",
     blurb: "A simple conveyor system in OpenPLC that detects boxes with a sensor and pushes them from one belt to another using a pneumatic pusher.",
     label: "OpenPLC editor: conveyor pusher control program",
-    image: "/images/plc-editor-overview.png",
+    image: "/images/plc-editor-overview.gif",
     featured: false,
     tags: ["Control", "PLC"],
   },
