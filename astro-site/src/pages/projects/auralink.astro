@@ -25,7 +25,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/hero-3d.png" alt="Auralink 4-layer PCB, 3D rendered top view" class="expandable" />
+        <img src="/images/hero-poured.png" alt="Auralink 4-layer PCB layout in KiCad, showing copper pours and Shark_Labs branding" class="expandable" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -64,6 +64,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
             </div>
             <div class="photo-cap">FIG 3: 50 Ω trace, ground plane beneath, stitched both sides</div>
+          </div>
+
+          <div class="photo-single">
+            <div class="frame">
+              <img src="/images/auralink-schematic.png" alt="Full KiCad schematic showing all board sections: power input, USB JTAG, LDO, buck converter, modem, and SIM card" class="expandable" />
+              <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
+            </div>
+            <div class="photo-cap">FIG 4: Complete schematic with all subsystems laid out</div>
           </div>
 
           <h2>Getting to zero DRC errors</h2>
