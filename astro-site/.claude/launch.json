@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bitsaura",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "../bitsaura-site", "run", "dev", "--", "--port", "4399"],
+      "port": 4399
+    }
+  ]
+}
