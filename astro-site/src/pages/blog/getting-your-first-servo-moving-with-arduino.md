@@ -11,6 +11,7 @@ heroLabel: photo, servo wired to an Arduino on a breadboard
 heroCaption: The whole setup, one servo, one Arduino, three jumper wires. That's all you need for your first moving thing.
 tags: [Tutorial, Arduino, Servo, Beginner]
 prev: { title: "Line follower build log #1: the chassis", url: "/blog/line-follower-build-log-1" }
+next: { title: "Your first blink without code: the 555 timer", url: "/blog/555-timer-blink-without-code" }
 ---
 
 A servo is the friendliest motor to start with. You tell it an angle (say 90 degrees) and it goes there and holds. No motor driver, no fiddly wiring. If you've got an Arduino and a hobby servo (the little blue SG90 is the classic), you can have something moving in about ten minutes.
