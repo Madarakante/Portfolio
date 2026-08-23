@@ -19,7 +19,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
         <div class="meta-row"><span class="k">Input</span><span class="v">12V DC (AC or DC)</span></div>
         <div class="meta-row"><span class="k">Output</span><span class="v">1.25V – 12.8V adjustable</span></div>
-        <div class="meta-row"><span class="k">Status</span><span class="v accent">Design complete · PCB ordered</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">MVP prototype built · Testing</span></div>
       </div>
     </section>
 
@@ -73,8 +73,23 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p>I chose a linear regulator over a switching converter deliberately for this project. Yes, it's less efficient, but the output is inherently quiet: no switching noise, no EMI concerns, no inductor selection headaches. For powering sensitive analog circuits, audio gear, or MCU prototyping where you just need a clean, adjustable rail, a linear regulator remains the simpler and cleaner choice.</p>
           <p>The wide copper pours on the PCB serve double duty: they carry current efficiently and act as heatsinking planes, spreading thermal energy away from the TO-220 package.</p>
 
+          <h2>MVP prototype</h2>
+          <p>The first functional build is up and running on perfboard. This is a stripped-down prototype—no bridge rectifier or full protection circuitry yet—just the core LM317 regulator, potentiometer for voltage adjustment, input and output filtering caps, and a screw terminal for easy hookup. It's the "does it actually work?" stage before committing to the final PCB.</p>
+          <p class="mono-note">// MVP: LM317 + pot + caps on perfboard. Bridge rectifier and protection diodes come in the next revision.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/regulator-mvp-front.jpg" alt="MVP prototype board showing LM317 regulator, potentiometer, and capacitors on perfboard" class="expandable" /></div>
+              <div class="photo-cap">FIG 4: MVP prototype — LM317 regulator with potentiometer and electrolytic caps on perfboard</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/regulator-mvp-angle.jpg" alt="Alternate angle of the MVP prototype showing component layout and wiring" class="expandable" /></div>
+              <div class="photo-cap">FIG 5: Alternate angle — screw terminal input, hand-soldered wiring, and component placement</div>
+            </div>
+          </div>
+
           <h2>What's next</h2>
-          <p>The board is ordered and I'm waiting for delivery. Bring-up plan is straightforward: verify the bridge rectifier works with both AC and DC input, sweep the potentiometer across its full range while monitoring output with a multimeter, and then load-test at various voltage/current combinations to verify thermal performance matches the simulation.</p>
+          <p>With the core regulator verified on the bench, the next step is adding the bridge rectifier and protection diodes, then laying out the final PCB with proper copper pours for thermal management. Load testing at various voltage/current combinations will confirm the simulation matches reality.</p>
         </article>
 
         <aside>
