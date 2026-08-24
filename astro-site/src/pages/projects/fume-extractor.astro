@@ -39,7 +39,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p class="mono-note">// goal: a simple PWM speed controller for a 12V DC fan, built on a custom PCB.</p>
 
           <h2>Circuit design</h2>
-          <p>The circuit is built around a 555 timer in astable mode, the same configuration I used in my <a href="/blog/555-timer-blink-without-code">555 timer blog post</a>. The 555 generates a PWM signal, and a potentiometer adjusts the duty cycle to control fan speed. Two diodes steer the charge and discharge paths through separate legs of the potentiometer, giving independent control over on-time and off-time. The output drives an N-channel MOSFET (IRF540N) which switches the fan motor.</p>
+          <p>The circuit is built around a 555 timer in astable mode. All the knowledge from my <a href="/blog/555-timer-blink-without-code">555 timer blog post</a> applied directly here: understanding how the RC charge and discharge cycles set the frequency, how a potentiometer can adjust the duty cycle, and how the output pin can drive a load. The 555 generates a PWM signal, and a potentiometer adjusts the duty cycle to control fan speed. Two diodes steer the charge and discharge paths through separate legs of the potentiometer, giving independent control over on-time and off-time. The output drives an N-channel MOSFET (IRF540N) which switches the fan motor.</p>
           <p>The MOSFET gate has a pull-down resistor to keep the fan off when the 555 is not running, and a gate series resistor to limit switching current. A flyback diode across the motor protects the MOSFET from voltage spikes when the motor turns off.</p>
 
           <div class="photo-single">
