@@ -12,6 +12,7 @@ const {
   readTime,
   badge = "POST",
   heroLabel = "cover image",
+  heroImage,
   heroCaption,
   tags = [],
   prev,
@@ -40,11 +41,15 @@ const {
 
     <div class="post-wrap">
       <figure class="lead-fig">
-        <div class="frame">
-          <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
-          <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-          <span class="frame-label">{heroLabel}</span>
-        </div>
+        {heroImage ? (
+          <img src={heroImage} alt={heroLabel} style="width:100%;border-radius:4px;" />
+        ) : (
+          <div class="frame">
+            <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+            <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+            <span class="frame-label">{heroLabel}</span>
+          </div>
+        )}
         {heroCaption && <figcaption>{heroCaption}</figcaption>}
       </figure>
 
