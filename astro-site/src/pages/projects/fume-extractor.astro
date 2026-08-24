@@ -1,0 +1,220 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="PWM Fume Extractor · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-04 · PCB · Control · 2026</span>
+        <h1 class="h-xl">PWM Fume Extractor</h1>
+        <p class="lede">A 555 timer-based PWM motor speed controller for a solder fume extractor. I was getting headaches from inhaling fumes during long soldering sessions, so I designed a board to control fan speed with a potentiometer. The PCB is done in KiCad, the enclosure is modeled in Fusion 360, and I still need to buy the parts and build it.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Control</span><span class="tag">Embedded</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
+        <div class="meta-row"><span class="k">Input</span><span class="v">12V DC</span></div>
+        <div class="meta-row"><span class="k">Control</span><span class="v">555 PWM + MOSFET</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">PCB designed · Awaiting parts</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/motor-pcb-3d view.png" alt="3D rendered view of the fume extractor motor speed controller PCB" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The problem</h2>
+          <p>I solder a lot. Small boards, headers, through-hole components, nothing fancy. But after a few hours the fumes build up and I end up with a headache. A fume extractor is the obvious solution, but the ones I found online either run at full speed (loud, wasteful) or cost more than I want to spend. I wanted something I could build myself, with speed control so I can turn it down for small jobs and crank it up when I am doing a lot of soldering.</p>
+          <p class="mono-note">// goal: a simple PWM speed controller for a 12V DC fan, built on a custom PCB.</p>
+
+          <h2>Circuit design</h2>
+          <p>The circuit is built around a 555 timer in astable mode, the same configuration I used in my <a href="/blog/555-timer-blink-without-code">555 timer blog post</a>. The 555 generates a PWM signal, and a potentiometer adjusts the duty cycle to control fan speed. Two diodes steer the charge and discharge paths through separate legs of the potentiometer, giving independent control over on-time and off-time. The output drives an N-channel MOSFET (IRF540N) which switches the fan motor.</p>
+          <p>The MOSFET gate has a pull-down resistor to keep the fan off when the 555 is not running, and a gate series resistor to limit switching current. A flyback diode across the motor protects the MOSFET from voltage spikes when the motor turns off.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/motor-schematic.png" alt="KiCad schematic of the 555 PWM motor speed controller" class="expandable" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. The 555 generates PWM, diodes steer the charge paths, and the MOSFET drives the motor.</div>
+          </div>
+
+          <h2>The simulation</h2>
+          <p>I ran the circuit in Proteus before laying out the PCB. The oscilloscope shows the PWM output at different potentiometer settings. At low duty cycle the fan barely spins, at high duty cycle it runs at full speed. The 555 oscillates cleanly across the full range, and the MOSFET switches sharply without ringing.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/motor-simulation.gif" alt="Proteus simulation of the 555 PWM circuit with oscilloscope" class="expandable" /></div>
+            <div class="photo-cap">FIG 2: Proteus simulation. The oscilloscope shows the PWM output waveform at different duty cycles.</div>
+          </div>
+
+          <h2>PCB layout</h2>
+          <p>The PCB is a simple two-layer board designed in KiCad. I kept the power traces wide for the motor current and placed the screw terminals at the edges for easy wiring. The potentiometer is mounted on the board so the speed adjustment is accessible without opening the enclosure.</p>
+          <p>I am still practicing my CAD skills so the layout is a little rough. The traces work and the DRC passes, but the routing is not as clean as it could be. That is something I will improve with more practice.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/motor-pcb-top copper.png" alt="PCB top copper layer showing component placement and traces" class="expandable" /></div>
+              <div class="photo-cap">FIG 3: Top copper layer with component placement</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/motor-pcb bottom copper.png" alt="PCB bottom copper layer showing trace routing" class="expandable" /></div>
+              <div class="photo-cap">FIG 4: Bottom copper layer with power traces</div>
+            </div>
+          </div>
+
+          <h2>The enclosure</h2>
+          <p>I modeled a simple enclosure in Fusion 360 to hold the fan, the PCB, and direct the fumes through a filter. The design is rough, I am still learning Fusion 360 and this is one of my first real models. The geometry works but the surfaces and fillets are not pretty. It will get the job done though, and I will refine it as I get better at CAD.</p>
+          <p class="mono-note">// CAD status: functional but rough. Learning in progress.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/Fusion360_6j93ckauwH.png" alt="Fusion 360 model of the fume extractor enclosure" class="expandable" /></div>
+            <div class="photo-cap">FIG 5: Fusion 360 model of the fume extractor enclosure. Functional geometry, still rough around the edges.</div>
+          </div>
+
+          <h2>What is next</h2>
+          <p>The PCB is designed and the simulation works. The next step is ordering the parts and the PCB, then soldering everything together. Once the board is built and tested, I will refine the Fusion 360 enclosure and 3D print it. The end goal is a compact unit that sits next to my soldering station and quietly pulls fumes away from my face.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Circuit</div>
+              <div class="spec-line"><span class="sk">Timer IC</span><span class="sv">ICM7555xB</span></div>
+              <div class="spec-line"><span class="sk">Mode</span><span class="sv">Astable (PWM)</span></div>
+              <div class="spec-line"><span class="sk">Control</span><span class="sv">10k potentiometer</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Power</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">12V DC</span></div>
+              <div class="spec-line"><span class="sk">MOSFET</span><span class="sv">IRF540N (N-ch)</span></div>
+              <div class="spec-line"><span class="sk">Protection</span><span class="sv">Flyback diode (UF4004)</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad</span></div>
+              <div class="spec-line"><span class="sk">Simulation</span><span class="sv">Proteus ISIS</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Enclosure</div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">Fusion 360</span></div>
+              <div class="spec-line"><span class="sk">Method</span><span class="sv">3D print (planned)</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/voltage-regulator"><span class="arrow">←</span> Adjustable Voltage Regulator</a>
+        <span></span>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
