@@ -169,21 +169,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* ── Print / PDF styles ── */
   @media print {
-    body { background: #fff !important; color: #111 !important; }
+    @page { margin: 1.5cm 1.8cm; size: A4; }
+    body { background: #fff !important; color: #111 !important; font-size: 9.5pt; }
+    .nav, .footer, header, footer, .cv-footer .btn { display: none !important; visibility: hidden !important; }
     .cv-page { max-width: 100%; padding: 0; }
-    .cv-header { border-bottom-color: #111; }
-    .cv-header h1 { font-size: 28pt; }
-    .cv-section { padding-top: 14px; }
-    .cv-section-label { color: #111; font-size: 9pt; }
-    .cv-section-label::before { background: #111; }
-    .cv-section > p, .cv-proj p, .cv-edu-detail { color: #333; font-size: 10pt; }
-    .cv-proj-title, .cv-edu-title, .cv-skill-col h3 { color: #111; }
+    .cv-header { border-bottom-color: #111; padding-bottom: 10px; margin-bottom: 6px; page-break-inside: avoid; }
+    .cv-header h1 { font-size: 20pt; }
+    .cv-subtitle { font-size: 8.5pt; }
+    .cv-contact-row { font-size: 8.5pt; padding: 4px 0; }
+    .cv-section { padding-top: 8px; page-break-inside: avoid; }
+    .cv-section-label { font-size: 7.5pt; margin-bottom: 6px; color: #111; }
+    .cv-section-label::before { background: #111; width: 14px; }
+    .cv-section > p { color: #333; font-size: 9pt; line-height: 1.45; }
+    .cv-proj p { color: #333; font-size: 8.5pt; line-height: 1.4; }
+    .cv-edu-detail { color: #333; font-size: 8.5pt; line-height: 1.4; }
+    .cv-proj-title, .cv-edu-title { color: #111; font-size: 9.5pt; }
+    .cv-skill-col h3 { color: #111; font-size: 7.5pt; margin-bottom: 4px; }
     .cv-contact-row .k, .cv-contact-row .v, .cv-proj-year, .cv-edu-yr, .cv-subtitle { color: #555; }
-    .cv-projects, .cv-skills-grid, .cv-edu { border-color: #ccc; }
+    .cv-projects, .cv-skills-grid, .cv-edu { border-color: #ccc; page-break-inside: avoid; }
     .cv-proj, .cv-skill-col, .cv-edu-row { border-color: #ddd; }
-    .cv-footer { border-top-color: #ccc; }
-    .cv-footer span { color: #888; }
-    .btn, .cv-footer .btn { display: none !important; }
+    .cv-proj { padding: 7px 12px; }
+    .cv-skill-col { padding: 8px 12px; }
+    .cv-skill-col li { font-size: 8.5pt; padding: 2px 0; }
+    .cv-edu-row { padding: 8px 12px; }
+    .cv-footer { display: none !important; }
     a { text-decoration: none; color: inherit; }
   }
 </style>
