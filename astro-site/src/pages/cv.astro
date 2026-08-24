@@ -1,0 +1,189 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="CV · Ngwashi Anthony" active="">
+  <main data-screen-label="CV">
+    <section class="wrap cv-page">
+      <div class="cv-header">
+        <div>
+          <h1 class="h-xl">Ngwashi Anthony</h1>
+          <p class="cv-subtitle">Mechatronics Engineering Student</p>
+        </div>
+        <div class="cv-contact">
+          <div class="cv-contact-row"><span class="k">Email</span><span class="v">antoniokante2.0@gmail.com</span></div>
+          <div class="cv-contact-row"><span class="k">GitHub</span><span class="v">github.com/Madarakante</span></div>
+          <div class="cv-contact-row"><span class="k">Portfolio</span><span class="v">madarakante.github.io/Portfolio</span></div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <div class="cv-section-label">Summary</div>
+        <p>A third-year B.Tech mechatronics engineering student with hands-on experience in embedded systems, PCB design, and small-scale robotics. Comfortable with Arduino, KiCad, Fusion 360, and Python. I learn by building: every project on my portfolio is a real circuit I soldered, a real board I laid out, or a real robot I programmed. Currently seeking a summer internship in robotics, embedded systems, or hardware.</p>
+      </div>
+
+      <div class="cv-section">
+        <div class="cv-section-label">Projects</div>
+        <div class="cv-projects">
+          <div class="cv-proj">
+            <div class="cv-proj-head">
+              <span class="cv-proj-title">PWM Fume Extractor</span>
+              <span class="cv-proj-year">2026</span>
+            </div>
+            <p>A 555-based PWM motor speed controller for a solder fume extractor. Designed the schematic and PCB in KiCad, simulated in Proteus, modeled the enclosure in Fusion 360. Uses a potentiometer-adjusted 555 astable to drive an N-channel MOSFET for fan speed control.</p>
+          </div>
+          <div class="cv-proj">
+            <div class="cv-proj-head">
+              <span class="cv-proj-title">Auralink</span>
+              <span class="cv-proj-year">2026</span>
+            </div>
+            <p>A 4-layer ESP32-C3 + LTE Cat-1 cellular IoT board with dual-rail power supply, RF-matched antenna, and level-shifted UART bridge. Taken from schematic capture to a DRC-clean, ordered PCB.</p>
+          </div>
+          <div class="cv-proj">
+            <div class="cv-proj-head">
+              <span class="cv-proj-title">Adjustable Voltage Regulator</span>
+              <span class="cv-proj-year">2026</span>
+            </div>
+            <p>An LM317-based adjustable DC-DC converter providing 1.25V to 12.8V output from a 12V DC input. Includes bridge rectification and thermal management. PCB designed in KiCad.</p>
+          </div>
+          <div class="cv-proj">
+            <div class="cv-proj-head">
+              <span class="cv-proj-title">PLC Conveyor Control</span>
+              <span class="cv-proj-year">2025</span>
+            </div>
+            <p>Programmed a conveyor system in OpenPLC using ladder logic. Box detection via sensor input triggers a pneumatic pusher to transfer items between belts.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <div class="cv-section-label">Skills</div>
+        <div class="cv-skills-grid">
+          <div class="cv-skill-col">
+            <h3>Electronics & PCB</h3>
+            <ul>
+              <li>KiCad (schematic + PCB)</li>
+              <li>Breadboarding & soldering</li>
+              <li>Motor drivers & MOSFET circuits</li>
+              <li>Power supply design (linear regulators)</li>
+              <li>Multimeter & basic test equipment</li>
+            </ul>
+          </div>
+          <div class="cv-skill-col">
+            <h3>Programming</h3>
+            <ul>
+              <li>Arduino C/C++</li>
+              <li>Python</li>
+              <li>PLC ladder logic (OpenPLC)</li>
+              <li>Git version control</li>
+              <li>Basic control loops & sensor I/O</li>
+            </ul>
+          </div>
+          <div class="cv-skill-col">
+            <h3>Mechanical & CAD</h3>
+            <ul>
+              <li>Fusion 360 (learning)</li>
+              <li>3D printing</li>
+              <li>Hand tools & bench work</li>
+              <li>Basic mechanisms</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <div class="cv-section-label">Education</div>
+        <div class="cv-edu">
+          <div class="cv-edu-row">
+            <span class="cv-edu-yr">2024 – present</span>
+            <div>
+              <div class="cv-edu-title">B.Tech Mechatronics Engineering, 3rd Year</div>
+              <div class="cv-edu-detail">Coursework in embedded systems, control systems, and electronics. All portfolio projects originate from coursework and self-directed practice.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-section">
+        <div class="cv-section-label">Goals</div>
+        <p>Looking for a summer internship or junior role in robotics, embedded systems, or hardware. I want to work on real products alongside experienced engineers, and bring the problem-solving habits I have built through self-directed projects.</p>
+      </div>
+
+      <div class="cv-footer">
+        <span>Last updated August 2026</span>
+        <a class="btn btn-sm" href="javascript:window.print()">Print / Save as PDF <span class="arrow">→</span></a>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .cv-page { max-width: 800px; padding-block: clamp(40px, 6vw, 72px); }
+
+  .cv-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; padding-bottom: 28px; border-bottom: 2px solid var(--ink); }
+  .cv-header h1 { font-size: clamp(32px, 4vw, 44px); letter-spacing: -0.025em; margin: 0; }
+  .cv-subtitle { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); margin-top: 6px; }
+  .cv-contact { display: flex; flex-direction: column; gap: 0; min-width: 220px; }
+  .cv-contact-row { display: flex; justify-content: space-between; gap: 16px; padding: 6px 0; border-bottom: 1px dashed var(--line-2); font-size: 14px; }
+  .cv-contact-row:last-child { border-bottom: 0; }
+  .cv-contact-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .cv-contact-row .v { color: var(--ink); font-weight: 500; text-align: right; }
+
+  .cv-section { padding-top: 28px; }
+  .cv-section-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; display: flex; align-items: center; gap: 12px; font-weight: 600; }
+  .cv-section-label::before { content: ""; width: 20px; height: 1.5px; background: var(--accent); }
+  .cv-section > p { color: var(--ink-2); font-size: 15px; line-height: 1.7; }
+
+  .cv-projects { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .cv-proj { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .cv-proj:last-child { border-bottom: 0; }
+  .cv-proj-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .cv-proj-title { font-weight: 600; font-size: 15px; }
+  .cv-proj-year { font-family: var(--mono); font-size: 12px; color: var(--ink-3); letter-spacing: 0.04em; }
+  .cv-proj p { margin-top: 6px; font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+
+  .cv-skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .cv-skill-col { padding: 18px 20px; border-right: 1px solid var(--line); }
+  .cv-skill-col:last-child { border-right: 0; }
+  .cv-skill-col h3 { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; font-weight: 600; }
+  .cv-skill-col ul { list-style: none; margin: 0; padding: 0; }
+  .cv-skill-col li { font-size: 14px; padding: 5px 0; color: var(--ink-2); border-bottom: 1px dashed var(--line-2); }
+  .cv-skill-col li:last-child { border-bottom: 0; }
+
+  .cv-edu { border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
+  .cv-edu-row { display: grid; grid-template-columns: 140px 1fr; gap: 20px; padding: 16px 20px; }
+  .cv-edu-yr { font-family: var(--mono); font-size: 13px; color: var(--ink-3); letter-spacing: 0.04em; padding-top: 2px; }
+  .cv-edu-title { font-weight: 600; font-size: 15px; }
+  .cv-edu-detail { color: var(--ink-2); font-size: 14px; margin-top: 4px; line-height: 1.6; }
+
+  .cv-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--line); }
+  .cv-footer span { font-family: var(--mono); font-size: 11px; color: var(--ink-3); letter-spacing: 0.04em; }
+
+  @media (max-width: 700px) {
+    .cv-header { flex-direction: column; gap: 20px; }
+    .cv-skills-grid { grid-template-columns: 1fr; }
+    .cv-skill-col { border-right: 0; border-bottom: 1px solid var(--line); }
+    .cv-skill-col:last-child { border-bottom: 0; }
+    .cv-edu-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* ── Print / PDF styles ── */
+  @media print {
+    body { background: #fff !important; color: #111 !important; }
+    .cv-page { max-width: 100%; padding: 0; }
+    .cv-header { border-bottom-color: #111; }
+    .cv-header h1 { font-size: 28pt; }
+    .cv-section { padding-top: 14px; }
+    .cv-section-label { color: #111; font-size: 9pt; }
+    .cv-section-label::before { background: #111; }
+    .cv-section > p, .cv-proj p, .cv-edu-detail { color: #333; font-size: 10pt; }
+    .cv-proj-title, .cv-edu-title, .cv-skill-col h3 { color: #111; }
+    .cv-contact-row .k, .cv-contact-row .v, .cv-proj-year, .cv-edu-yr, .cv-subtitle { color: #555; }
+    .cv-projects, .cv-skills-grid, .cv-edu { border-color: #ccc; }
+    .cv-proj, .cv-skill-col, .cv-edu-row { border-color: #ddd; }
+    .cv-footer { border-top-color: #ccc; }
+    .cv-footer span { color: #888; }
+    .btn, .cv-footer .btn { display: none !important; }
+    a { text-decoration: none; color: inherit; }
+  }
+</style>
