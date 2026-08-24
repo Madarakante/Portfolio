@@ -26,11 +26,15 @@ const count = String(projects.length).padStart(2, "0");
           <div class="proj-grid" id="grid">
             {projects.map((p) => (
               <a class="card proj-card" href={`/projects/${p.slug}`} data-tags={p.tags.join(" ")}>
-                <div class="frame">
-                  <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
-                  <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-                  <span class="frame-label">{p.label}</span>
-                </div>
+                {p.image ? (
+                  <div class="card-img"><img src={p.image} alt={p.label} /></div>
+                ) : (
+                  <div class="frame">
+                    <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+                    <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+                    <span class="frame-label">{p.label}</span>
+                  </div>
+                )}
                 <div class="pc-body">
                   <div class="pc-top"><h3>{p.title}</h3><span class="mono">{p.num}</span></div>
                   <p>{p.blurb}</p>
@@ -92,6 +96,8 @@ const count = String(projects.length).padStart(2, "0");
 
   .proj-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .proj-card .frame { aspect-ratio: 4 / 3; }
+  .proj-card .card-img { aspect-ratio: 4 / 3; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .proj-card .card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .proj-card .pc-body { padding: 18px 20px 20px; display: flex; flex-direction: column; gap: 10px; }
   .proj-card .pc-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .proj-card h3 { font-size: 21px; font-weight: 500; letter-spacing: -0.02em; }
