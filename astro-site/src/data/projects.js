@@ -26,9 +26,20 @@
 // ───────────────────────────────────────────────────────────────────────────
 
 // Tags that appear as filter buttons on /projects. Add/remove to taste.
-export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"];
+export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC"];
 
 export const projects = [
+  {
+    slug: "fume-extractor",
+    num: "04",
+    year: "2026",
+    title: "PWM Fume Extractor",
+    blurb: "A 555-based PWM motor speed controller for a solder fume extractor, with a custom PCB and 3D-printed enclosure designed in Fusion 360.",
+    label: "3D render: fume extractor motor speed controller PCB",
+    image: "/images/motor-pcb-3d view.png",
+    featured: false,
+    tags: ["PCB", "Control", "Embedded"],
+  },
   {
     slug: "plc-conveyor",
     num: "03",
