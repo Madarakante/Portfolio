@@ -1,0 +1,223 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Wireless LED Matrix · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-05 · Embedded · Wireless · 2026</span>
+        <h1 class="h-xl">Wireless LED Matrix</h1>
+        <p class="lede">A WiFi-controlled scrolling LED matrix built with a NodeMCU and a MAX7219 32x8 display. I wanted to scroll custom text from my phone without re-flashing the board every time, so I added a web interface over WiFi. Powered by a 3.7V LiPo battery, small enough to hold in one hand.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">Embedded</span><span class="tag">Wireless</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal build</span></div>
+        <div class="meta-row"><span class="k">MCU</span><span class="v">NodeMCU (ESP8266)</span></div>
+        <div class="meta-row"><span class="k">Display</span><span class="v">MAX7219 32x8</span></div>
+        <div class="meta-row"><span class="k">Power</span><span class="v">3.7V 2000mAh LiPo</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Working prototype</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/matrix finished.jpg" alt="Wireless LED matrix displaying scrolling text on a desk" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The idea</h2>
+          <p>I had seen those scrolling LED name badges online and thought they looked cool, but most of them need a USB cable and special software to change the text. I wanted something I could control from my phone, over WiFi, without plugging anything in. The ESP8266 (NodeMCU) has built-in WiFi and costs almost nothing, so it was the obvious choice. Pair it with a MAX7219 LED matrix module, write a simple web server, and you have a wireless scrolling display.</p>
+          <p class="mono-note">// goal: scroll custom text from a phone, no USB cable needed.</p>
+
+          <h2>The hardware</h2>
+          <p>The setup is simple. The NodeMCU drives four chained MAX7219 8x8 LED modules (32x8 total) over SPI. The whole thing runs off a 3.7V 2000mAh LiPo battery, which is enough for several hours of use. The ESP8266 is a power-hungry chip when WiFi is active, but the battery holds up fine for a portable demo.</p>
+          <p>I laid everything out on a breadboard first to make sure the wiring was correct, then moved to a more compact setup. The Fritzing diagram shows how the NodeMCU connects to the matrix: DIN to GPIO, CS to another GPIO, and CLK to a third. Power comes straight from the battery through the NodeMCU's voltage regulator.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/ffritzingmatrix.png" alt="Fritzing breadboard view of the NodeMCU and LED matrix wiring" class="expandable" /></div>
+              <div class="photo-cap">FIG 1: Fritzing diagram. NodeMCU on breadboard, wired to the MAX7219 matrix with a LiPo battery for power.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/nodemcu.png" alt="NodeMCU ESP8266 microcontroller board" class="expandable" /></div>
+              <div class="photo-cap">FIG 2: NodeMCU (ESP8266). The chip that makes it all wireless.</div>
+            </div>
+          </div>
+
+          <h2>The breadboard build</h2>
+          <p>First step was wiring everything on a breadboard. The MAX7219 module has five pins: VCC, GND, DIN, CS, and CLK. Three of those go to GPIO pins on the NodeMCU, and the other two are power. The module runs at 5V but the NodeMCU's 3.3V GPIO pins work fine for driving it. The LiPo battery connects to the NodeMCU's VIN pin, which has a built-in regulator.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/breadbard.png" alt="Breadboard with NodeMCU and LED matrix wired together" class="expandable" /></div>
+            <div class="photo-cap">FIG 3: The breadboard prototype. Messy wires, but it works.</div>
+          </div>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/matrix.png" alt="MAX7219 LED matrix module close-up" class="expandable" /></div>
+            <div class="photo-cap">FIG 4: The MAX7219 32x8 LED matrix module. Four 8x8 displays chained together.</div>
+          </div>
+
+          <h2>The software</h2>
+          <p>The NodeMCU runs a small web server. When you connect to it from your phone, it serves a page with a text input and a submit button. Type something, hit send, and the text scrolls across the matrix. The ESP8266 handles the WiFi and the web server, while the MAX7219 library takes care of the LED multiplexing.</p>
+          <p>The code is straightforward Arduino C++. The ESP8266WiFi library handles the access point mode, and MD_Parola or a similar library drives the scrolling text on the matrix. The whole thing compiles in the Arduino IDE and uploads over USB. After that, it is entirely wireless.</p>
+          <p class="mono-note">// the web interface is dead simple: one text field, one button, done.</p>
+
+          <h2>The demo</h2>
+          <p>The video shows the matrix in action. I typed "ANTHONY" from my phone and it started scrolling immediately. The text scrolls left at a steady pace, and you can change it anytime by opening the web page again. The battery lasts long enough for a demo, and the whole thing fits in the palm of your hand.</p>
+
+          <div class="video-wrap">
+            <video controls preload="metadata" class="expandable">
+              <source src="/images/led-matrix-demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div class="photo-cap">FIG 5: Demo video. Custom text scrolling on the LED matrix, controlled wirelessly from a phone.</div>
+          </div>
+
+          <h2>What I learned</h2>
+          <p>This project taught me a lot about SPI communication, WiFi on embedded devices, and power management with LiPo batteries. The ESP8266 is surprisingly capable for its price, and driving LED matrices is easier than I expected once you understand the MAX7219 protocol. The hardest part was getting the web interface to work reliably on different phones, but once that was sorted the rest was smooth sailing.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Hardware</div>
+              <div class="spec-line"><span class="sk">MCU</span><span class="sv">NodeMCU (ESP8266)</span></div>
+              <div class="spec-line"><span class="sk">Display</span><span class="sv">MAX7219 32x8</span></div>
+              <div class="spec-line"><span class="sk">Protocol</span><span class="sv">SPI</span></div>
+              <div class="spec-line"><span class="sk">Battery</span><span class="sv">3.7V 2000mAh LiPo</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Software</div>
+              <div class="spec-line"><span class="sk">IDE</span><span class="sv">Arduino IDE</span></div>
+              <div class="spec-line"><span class="sk">Language</span><span class="sv">C++ (Arduino)</span></div>
+              <div class="spec-line"><span class="sk">WiFi</span><span class="sv">ESP8266WiFi AP mode</span></div>
+              <div class="spec-line"><span class="sk">Interface</span><span class="sv">Web server (phone)</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Breadboard</div>
+              <div class="spec-line"><span class="sk">Wiring</span><span class="sv">SPI (3 GPIO)</span></div>
+              <div class="spec-line"><span class="sk">Tools</span><span class="sv">Fritzing</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/fume-extractor"><span class="arrow">←</span> PWM Fume Extractor</a>
+        <span></span>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 21 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 8; }
+
+  .video-wrap { margin: 28px 0; }
+  .video-wrap video { width: 100%; border-radius: 4px; background: #000; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
