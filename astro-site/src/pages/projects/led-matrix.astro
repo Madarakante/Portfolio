@@ -109,6 +109,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="spec-line"><span class="sk">Wiring</span><span class="sv">SPI (3 GPIO)</span></div>
               <div class="spec-line"><span class="sk">Tools</span><span class="sv">Fritzing</span></div>
             </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/led-matrix" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub →</span>
+              </a>
+            </div>
           </div>
         </aside>
       </div>
@@ -170,6 +175,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
   .spec-line .sk { color: var(--ink-3); }
   .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
