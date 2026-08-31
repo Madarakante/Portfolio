@@ -26,9 +26,20 @@
 // ───────────────────────────────────────────────────────────────────────────
 
 // Tags that appear as filter buttons on /projects. Add/remove to taste.
-export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC"];
+export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC", "Wireless"];
 
 export const projects = [
+  {
+    slug: "led-matrix",
+    num: "05",
+    year: "2026",
+    title: "Wireless LED Matrix",
+    blurb: "A WiFi-controlled scrolling LED matrix using a NodeMCU and MAX7219, powered by a LiPo battery and programmed to display custom text from a web browser.",
+    label: "Fritzing: NodeMCU driving a MAX7219 32x8 LED matrix",
+    image: "/images/ffritzingmatrix.png",
+    featured: false,
+    tags: ["Embedded", "Wireless"],
+  },
   {
     slug: "fume-extractor",
     num: "04",
