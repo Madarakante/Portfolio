@@ -121,7 +121,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
 
           <h2>What I learned</h2>
-          <p>This project reinforced how versatile the 555 timer is. The same astable configuration I used for the <a href="/projects/fume-extractor">fume extractor</a> and the <a href="/blog/555-timer-blink-without-code">blink-without-code blog post</a> works here at a completely different scale, driving real car lamps instead of a small fan or an LED. The math is the same, the topology is the same, only the component values change. That is the beauty of the 555: once you understand the astable formulas, you can build almost anything that needs a square wave.</p>
+          <p>This was my first time using the 555 in astable mode. Before this I had only used it in monostable mode for simple timing tasks, like the setup I wrote about in the <a href="/blog/555-timer-blink-without-code">555 timer blog post</a>. Astable is a different beast: instead of triggering one pulse, it runs continuously, generating a square wave that keeps repeating. Once I understood the charge and discharge paths through R1 and R2, the math clicked. The same 555 chip, the same pins, just wired differently to do a completely different job.</p>
         </article>
 
         <aside>
