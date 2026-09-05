@@ -26,9 +26,20 @@
 // ───────────────────────────────────────────────────────────────────────────
 
 // Tags that appear as filter buttons on /projects. Add/remove to taste.
-export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC", "Wireless"];
+export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC", "Wireless", "Automotive"];
 
 export const projects = [
+  {
+    slug: "flasher",
+    num: "06",
+    year: "2026",
+    title: "Relayless Turn Signal Flasher",
+    blurb: "A 555 timer-based turn signal flasher that replaces the factory relay with a solid-state MOSFET driver, designed on a custom KiCad PCB.",
+    label: "3D render: 555 timer turn signal flasher PCB",
+    image: "/images/flasher3Dview.png",
+    featured: false,
+    tags: ["PCB", "Automotive"],
+  },
   {
     slug: "led-matrix",
     num: "05",
