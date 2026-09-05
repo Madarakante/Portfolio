@@ -1,0 +1,279 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Relayless Turn Signal Flasher · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-06 · PCB · Automotive · 2026</span>
+        <h1 class="h-xl">Relayless Turn Signal Flasher</h1>
+        <p class="lede">My car's turn signal relay was clicking erratically, so I replaced it with a 555 timer circuit that drives the lamps through a MOSFET. No moving parts, no click, just a clean PCB that bolts into the fuse box. Designed in KiCad, tested in Proteus.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Automotive</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Car repair / upgrade</span></div>
+        <div class="meta-row"><span class="k">Timer</span><span class="v">NE555P (astable)</span></div>
+        <div class="meta-row"><span class="k">Switch</span><span class="v">IRLZ44N MOSFET</span></div>
+        <div class="meta-row"><span class="k">Input</span><span class="v">12V car battery</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Working prototype</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/flasher3Dview.png" alt="3D render of the relayless turn signal flasher PCB" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>The problem</h2>
+          <p>The turn signal relay in my car started acting up. Sometimes it would flash too fast, sometimes it would stick on. Relay contacts wear out, and the clicking noise gets annoying after a while. I wanted a solid-state replacement: no moving parts, no contact bounce, just a clean square wave driving the lamps through a MOSFET. A 555 timer in astable mode is the simplest way to generate that waveform, and an IRLZ44N logic-level MOSFET can switch the lamp current without any drama.</p>
+          <p class="mono-note">// goal: replace a mechanical relay with a 555 + MOSFET solid-state flasher.</p>
+
+          <h2>Why no relay</h2>
+          <p>Mechanical relays have a few downsides in this application. The contacts bounce when they close, causing the lamps to flicker at a microsecond scale. They wear out after a few hundred thousand cycles. And they click. A MOSFET switches cleanly in microseconds, has no moving parts to wear out, and is completely silent. The IRLZ44N is a logic-level MOSFET, meaning it turns fully on with the 555's output voltage (around 10-12V from the car battery) without needing a gate driver. One resistor to limit gate current, one pull-down to keep it off when the 555 is not running, done.</p>
+
+          <h2>The circuit</h2>
+          <p>The 555 runs in astable mode, continuously oscillating between high and low. The output (pin 3) drives the gate of the IRLZ44N through a 100 ohm resistor. When the output goes high, the MOSFET turns on and connects the lamp circuit to ground, lighting the bulbs. When it goes low, the MOSFET turns off and the lamps go dark.</p>
+          <p>Two diodes inside the 555 steer the charge and discharge paths through separate resistors, giving independent control over the on-time and off-time. A 10k pull-down resistor on the gate ensures the MOSFET stays off when the circuit is unpowered. Decoupling capacitors on the power rail filter out noise from the car's electrical system.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/flasherSchematic.png" alt="KiCad schematic of the 555 timer turn signal flasher" class="expandable" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. The NE555P oscillates in astable mode, driving an IRLZ44N MOSFET to switch the lamps.</div>
+          </div>
+
+          <h2>555 astable mode calculations</h2>
+          <p>The 555 astable frequency and duty cycle are set by three components: R1, R2, and C2. Here is how the math works, and what the values on my board give.</p>
+
+          <div class="calc-block">
+            <div class="calc-title">Component values</div>
+            <div class="calc-table">
+              <div class="calc-row"><span class="ck">R1 (charge resistor)</span><span class="cv">12 kohm</span></div>
+              <div class="calc-row"><span class="ck">R2 (discharge resistor)</span><span class="cv">24 kohm</span></div>
+              <div class="calc-row"><span class="ck">C2 (timing capacitor)</span><span class="cv">12 uF</span></div>
+            </div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Charge time (output HIGH, lamps ON)</div>
+            <div class="calc-eq">t_high = 0.693 x (R1 + R2) x C2</div>
+            <div class="calc-eq">t_high = 0.693 x (12000 + 24000) x 0.000012</div>
+            <div class="calc-eq">t_high = 0.693 x 36000 x 0.000012</div>
+            <div class="calc-result">t_high = 0.298 seconds</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Discharge time (output LOW, lamps OFF)</div>
+            <div class="calc-eq">t_low = 0.693 x R2 x C2</div>
+            <div class="calc-eq">t_low = 0.693 x 24000 x 0.000012</div>
+            <div class="calc-result">t_low = 0.199 seconds</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Total period</div>
+            <div class="calc-eq">T = t_high + t_low</div>
+            <div class="calc-eq">T = 0.298 + 0.199</div>
+            <div class="calc-result">T = 0.497 seconds</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Frequency</div>
+            <div class="calc-eq">f = 1 / T = 1.44 / ((R1 + 2 x R2) x C2)</div>
+            <div class="calc-eq">f = 1.44 / ((12000 + 48000) x 0.000012)</div>
+            <div class="calc-eq">f = 1.44 / (60000 x 0.000012)</div>
+            <div class="calc-eq">f = 1.44 / 0.72</div>
+            <div class="calc-result">f = 2.01 Hz (120 flashes per minute)</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Duty cycle</div>
+            <div class="calc-eq">D = (R1 + R2) / (R1 + 2 x R2) x 100%</div>
+            <div class="calc-eq">D = (12000 + 24000) / (12000 + 48000) x 100%</div>
+            <div class="calc-eq">D = 36000 / 60000 x 100%</div>
+            <div class="calc-result">D = 66.7% ON, 33.3% OFF</div>
+          </div>
+
+          <p>The lamps are on for about 0.3 seconds and off for about 0.2 seconds, giving a clean flash at roughly 2 Hz. The duty cycle is asymmetric: the lamps stay on longer than they stay off, which is typical for turn signal flashers and matches the behavior of most factory relays.</p>
+
+          <h2>The simulation</h2>
+          <p>I ran the circuit in Proteus before ordering the PCB. The oscilloscope shows the 555 output waveform and the MOSFET drain voltage. The square wave is clean, the switching is sharp, and there is no ringing on the transitions. The MOSFET turns on and off in microseconds, far faster than any mechanical relay.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/flasherProteusSim.gif" alt="Proteus simulation of the 555 flasher circuit" class="expandable" /></div>
+            <div class="photo-cap">FIG 2: Proteus simulation. The oscilloscope shows the 555 output driving the MOSFET gate.</div>
+          </div>
+
+          <h2>PCB layout</h2>
+          <p>The PCB is a small two-layer board designed in KiCad. I kept it compact enough to fit in the fuse box area. The screw terminals accept the car's wiring, and the MOSFET is placed near the edge for heat dissipation. The 555 and passives are grouped tightly in the center.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/flashePCB.png" alt="PCB layout of the turn signal flasher" class="expandable" /></div>
+            <div class="photo-cap">FIG 3: KiCad PCB layout. Compact two-layer board for the fuse box.</div>
+          </div>
+
+          <h2>What I learned</h2>
+          <p>This project reinforced how versatile the 555 timer is. The same astable configuration I used for the <a href="/projects/fume-extractor">fume extractor</a> and the <a href="/blog/555-timer-blink-without-code">blink-without-code blog post</a> works here at a completely different scale, driving real car lamps instead of a small fan or an LED. The math is the same, the topology is the same, only the component values change. That is the beauty of the 555: once you understand the astable formulas, you can build almost anything that needs a square wave.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Circuit</div>
+              <div class="spec-line"><span class="sk">Timer IC</span><span class="sv">NE555P</span></div>
+              <div class="spec-line"><span class="sk">Mode</span><span class="sv">Astable</span></div>
+              <div class="spec-line"><span class="sk">Frequency</span><span class="sv">2.01 Hz</span></div>
+              <div class="spec-line"><span class="sk">Duty cycle</span><span class="sv">66.7%</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Switching</div>
+              <div class="spec-line"><span class="sk">MOSFET</span><span class="sv">IRLZ44N (N-ch)</span></div>
+              <div class="spec-line"><span class="sk">Gate R</span><span class="sv">100 ohm</span></div>
+              <div class="spec-line"><span class="sk">Pull-down</span><span class="sv">10k ohm</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Timing</div>
+              <div class="spec-line"><span class="sk">R1</span><span class="sv">12 kohm</span></div>
+              <div class="spec-line"><span class="sk">R2</span><span class="sv">24 kohm</span></div>
+              <div class="spec-line"><span class="sk">C2</span><span class="sv">12 uF</span></div>
+              <div class="spec-line"><span class="sk">C1</span><span class="sv">10 nF</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Power</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">12V car battery</span></div>
+              <div class="spec-line"><span class="sk">Decoupling</span><span class="sv">100nF + 10uF</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10.0.3</span></div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+              <div class="spec-line"><span class="sk">Sim</span><span class="sv">Proteus ISIS</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/led-matrix"><span class="arrow">←</span> Wireless LED Matrix</a>
+        <a class="txtlink" href="/projects/fume-extractor">PWM Fume Extractor <span class="arrow">→</span></a>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 9; }
+
+  .calc-block { background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 18px 22px; margin: 16px 0; font-family: var(--mono); }
+  .calc-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .calc-eq { font-size: 13px; color: var(--ink-2); padding: 2px 0; line-height: 1.7; }
+  .calc-result { font-size: 14px; font-weight: 600; color: var(--ink); padding-top: 6px; border-top: 1px dashed var(--line-2); margin-top: 6px; }
+  .calc-table { display: flex; flex-direction: column; gap: 0; }
+  .calc-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--line-2); font-size: 13px; }
+  .calc-row:last-child { border-bottom: 0; }
+  .calc-row .ck { color: var(--ink-3); }
+  .calc-row .cv { color: var(--ink); font-weight: 500; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
