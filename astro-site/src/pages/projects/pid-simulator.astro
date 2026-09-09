@@ -411,15 +411,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   function loop() {
+    if (step >= maxSteps) return;
     for (let i = 0; i < 3; i++) doStep();
     render();
-    requestAnimationFrame(loop);
+    if (step < maxSteps) requestAnimationFrame(loop);
   }
 
   function doReset() {
     motor.reset(); pid.reset();
     angleHist = []; errorHist = []; timeHist = []; step = 0;
     render();
+    loop();
   }
 
   resetBtn.addEventListener("click", doReset);
