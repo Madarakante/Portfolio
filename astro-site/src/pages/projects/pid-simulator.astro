@@ -131,6 +131,46 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         </aside>
       </div>
 
+      <div class="sim-section">
+        <div class="sim-label">Try it live</div>
+        <div class="sim-wrap">
+          <div class="sim-charts">
+            <div class="sim-chart-box">
+              <div class="sim-chart-title">Motor Angle (rad) vs Time</div>
+              <canvas id="pid-angle" width="800" height="220"></canvas>
+            </div>
+            <div class="sim-chart-box">
+              <div class="sim-chart-title">Tracking Error (rad) vs Time</div>
+              <canvas id="pid-error" width="800" height="160"></canvas>
+            </div>
+          </div>
+          <div class="sim-controls">
+            <div class="sim-slider-group">
+              <label class="sim-sl-label">Kp <span id="kp-val">10.0</span></label>
+              <input type="range" id="kp" min="0.1" max="50" step="0.1" value="10" />
+            </div>
+            <div class="sim-slider-group">
+              <label class="sim-sl-label">Ki <span id="ki-val">1.0</span></label>
+              <input type="range" id="ki" min="0" max="10" step="0.1" value="1" />
+            </div>
+            <div class="sim-slider-group">
+              <label class="sim-sl-label">Kd <span id="kd-val">0.5</span></label>
+              <input type="range" id="kd" min="0" max="5" step="0.05" value="0.5" />
+            </div>
+            <div class="sim-slider-group">
+              <label class="sim-sl-label">Setpoint <span id="sp-val">3.14</span></label>
+              <input type="range" id="sp" min="0.1" max="6.28" step="0.01" value="3.14" />
+            </div>
+            <button id="pid-reset" class="sim-reset-btn">Reset</button>
+            <div class="sim-readout">
+              <span>theta: <strong id="ro-theta">0.00</strong></span>
+              <span>error: <strong id="ro-error">3.14</strong></span>
+              <span>voltage: <strong id="ro-voltage">0.00</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="nextprev">
         <a class="txtlink" href="/projects/flasher"><span class="arrow">←</span> Relayless Turn Signal Flasher</a>
         <span></span>
@@ -183,9 +223,206 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
+  .sim-section { margin-top: 56px; }
+  .sim-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .sim-label::before { content: ""; width: 20px; height: 1.5px; background: var(--accent); }
+  .sim-wrap { border: 1px solid var(--line); border-radius: 6px; background: var(--paper); overflow: hidden; display: grid; grid-template-columns: 1fr 240px; }
+  .sim-charts { padding: 20px; border-right: 1px solid var(--line); }
+  .sim-chart-box { margin-bottom: 12px; }
+  .sim-chart-box:last-child { margin-bottom: 0; }
+  .sim-chart-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+  .sim-chart-box canvas { width: 100%; height: auto; display: block; border-radius: 3px; background: var(--paper-2); }
+  .sim-controls { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  .sim-slider-group { display: flex; flex-direction: column; gap: 4px; }
+  .sim-sl-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-3); display: flex; justify-content: space-between; }
+  .sim-sl-label span { color: var(--accent); font-weight: 600; }
+  .sim-controls input[type="range"] { width: 100%; height: 4px; -webkit-appearance: none; appearance: none; background: var(--line); border-radius: 2px; outline: none; }
+  .sim-controls input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 2px solid var(--paper); }
+  .sim-reset-btn { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; padding: 8px 0; border: 1px solid var(--line); border-radius: 4px; background: var(--paper-2); color: var(--ink); cursor: pointer; transition: border-color .15s, color .15s; }
+  .sim-reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .sim-readout { font-family: var(--mono); font-size: 10px; color: var(--ink-3); display: flex; flex-direction: column; gap: 3px; padding-top: 8px; border-top: 1px dashed var(--line-2); }
+  .sim-readout strong { color: var(--ink); font-weight: 600; }
+
   @media (max-width: 900px) {
     .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
     .body-grid { grid-template-columns: 1fr; gap: 40px; }
     .specs { position: static; }
+    .sim-wrap { grid-template-columns: 1fr; }
+    .sim-charts { border-right: 0; border-bottom: 1px solid var(--line); }
   }
 </style>
+
+<script>
+  const dt = 0.01;
+  const maxSteps = 1000;
+  const clampV = 20;
+
+  class PID {
+    Kp: number; Ki: number; Kd: number; setpoint: number;
+    integral = 0; prevError = 0;
+    constructor(Kp: number, Ki: number, Kd: number, setpoint: number) {
+      this.Kp = Kp; this.Ki = Ki; this.Kd = Kd; this.setpoint = setpoint;
+    }
+    compute(measurement: number) {
+      const error = this.setpoint - measurement;
+      this.integral += error * dt;
+      const derivative = (error - this.prevError) / dt;
+      this.prevError = error;
+      return this.Kp * error + this.Ki * this.integral + this.Kd * derivative;
+    }
+    reset() { this.integral = 0; this.prevError = 0; }
+  }
+
+  class DCMotor {
+    J: number; B: number; K: number;
+    theta = 0; omega = 0;
+    constructor(J = 0.01, B = 0.1, K = 1.0) {
+      this.J = J; this.B = B; this.K = K;
+    }
+    update(voltage: number) {
+      const alpha = (this.K * voltage - this.B * this.omega) / this.J;
+      this.omega += alpha * dt;
+      this.theta += this.omega * dt;
+      return this.theta;
+    }
+    reset() { this.theta = 0; this.omega = 0; }
+  }
+
+  const angleCanvas = document.getElementById("pid-angle") as HTMLCanvasElement;
+  const errorCanvas = document.getElementById("pid-error") as HTMLCanvasElement;
+  const actx = angleCanvas.getContext("2d")!;
+  const ectx = errorCanvas.getContext("2d")!;
+  const kpSlider = document.getElementById("kp") as HTMLInputElement;
+  const kiSlider = document.getElementById("ki") as HTMLInputElement;
+  const kdSlider = document.getElementById("kd") as HTMLInputElement;
+  const spSlider = document.getElementById("sp") as HTMLInputElement;
+  const resetBtn = document.getElementById("pid-reset")!;
+  const kpVal = document.getElementById("kp-val")!;
+  const kiVal = document.getElementById("ki-val")!;
+  const kdVal = document.getElementById("kd-val")!;
+  const spVal = document.getElementById("sp-val")!;
+  const roTheta = document.getElementById("ro-theta")!;
+  const roError = document.getElementById("ro-error")!;
+  const roVoltage = document.getElementById("ro-voltage")!;
+
+  let motor = new DCMotor();
+  let pid = new PID(10, 1, 0.5, Math.PI);
+  let angleHist: number[] = [];
+  let errorHist: number[] = [];
+  let timeHist: number[] = [];
+  let step = 0;
+  let animId = 0;
+
+  function resizeCanvas(canvas: HTMLCanvasElement) {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    const ctx = canvas.getContext("2d")!;
+    ctx.scale(dpr, dpr);
+    return { w: rect.width, h: rect.height };
+  }
+
+  function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, data: number[], time: number[], maxVal: number, color: string, refVal?: number) {
+    ctx.clearRect(0, 0, w, h);
+    const pad = { l: 40, r: 10, t: 10, b: 24 };
+    const cw = w - pad.l - pad.r;
+    const ch = h - pad.t - pad.b;
+
+    ctx.strokeStyle = "#e0e0e0";
+    ctx.lineWidth = 0.5;
+    for (let i = 0; i <= 4; i++) {
+      const y = pad.t + (ch / 4) * i;
+      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
+      ctx.fillStyle = "#999";
+      ctx.font = "9px 'IBM Plex Mono', monospace";
+      ctx.textAlign = "right";
+      ctx.fillText((maxVal - (maxVal / 4) * i).toFixed(1), pad.l - 4, y + 3);
+    }
+
+    if (refVal !== undefined) {
+      const ry = pad.t + ch - (refVal / maxVal) * ch;
+      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "#e74c3c";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad.l, ry); ctx.lineTo(pad.l + cw, ry); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    if (data.length < 2) return;
+    const xScale = cw / maxSteps;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    for (let i = 0; i < data.length; i++) {
+      const x = pad.l + i * xScale;
+      const y = pad.t + ch - (data[i] / maxVal) * ch;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+
+    ctx.fillStyle = "#999";
+    ctx.font = "9px 'IBM Plex Mono', monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("0s", pad.l, h - 4);
+    ctx.fillText("5s", pad.l + cw / 2, h - 4);
+    ctx.fillText("10s", pad.l + cw, h - 4);
+  }
+
+  function doStep() {
+    pid.Kp = parseFloat(kpSlider.value);
+    pid.Ki = parseFloat(kiSlider.value);
+    pid.Kd = parseFloat(kdSlider.value);
+    pid.setpoint = parseFloat(spSlider.value);
+    kpVal.textContent = pid.Kp.toFixed(1);
+    kiVal.textContent = pid.Ki.toFixed(1);
+    kdVal.textContent = pid.Kd.toFixed(1);
+    spVal.textContent = pid.setpoint.toFixed(2);
+
+    const voltage = Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta)));
+    motor.update(voltage);
+    const error = pid.setpoint - motor.theta;
+
+    angleHist.push(motor.theta);
+    errorHist.push(error);
+    timeHist.push(step * dt);
+    step++;
+
+    if (step > maxSteps) {
+      angleHist.shift(); errorHist.shift(); timeHist.shift();
+    }
+  }
+
+  function render() {
+    const a = resizeCanvas(angleCanvas);
+    const e = resizeCanvas(errorCanvas);
+    const sp = pid.setpoint;
+    const maxA = Math.max(sp * 1.5, ...angleHist.map(Math.abs)) || 5;
+    const maxE = Math.max(sp * 1.5, ...errorHist.map(Math.abs)) || 5;
+    drawChart(actx, a.w, a.h, angleHist, timeHist, maxA, "#3b82f6", sp);
+    drawChart(ectx, e.w, e.h, errorHist, timeHist, maxE, "#f59e0b");
+    roTheta.textContent = motor.theta.toFixed(2);
+    roError.textContent = (pid.setpoint - motor.theta).toFixed(2);
+    roVoltage.textContent = (Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta)))).toFixed(2);
+  }
+
+  function loop() {
+    for (let i = 0; i < 3; i++) doStep();
+    render();
+    animId = requestAnimationFrame(loop);
+  }
+
+  function doReset() {
+    motor.reset(); pid.reset();
+    angleHist = []; errorHist = []; timeHist = []; step = 0;
+    render();
+  }
+
+  resetBtn.addEventListener("click", doReset);
+  kpSlider.addEventListener("input", () => { pid.Kp = parseFloat(kpSlider.value); kpVal.textContent = pid.Kp.toFixed(1); });
+  kiSlider.addEventListener("input", () => { pid.Ki = parseFloat(kiSlider.value); kiVal.textContent = pid.Ki.toFixed(1); });
+  kdSlider.addEventListener("input", () => { pid.Kd = parseFloat(kdSlider.value); kdVal.textContent = pid.Kd.toFixed(1); });
+  spSlider.addEventListener("input", () => { pid.setpoint = parseFloat(spSlider.value); spVal.textContent = pid.setpoint.toFixed(2); });
+
+  loop();
+</script>
