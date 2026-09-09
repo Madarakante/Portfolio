@@ -344,7 +344,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         { label: "Setpoint", data: [], borderColor: "#e74c3c", borderWidth: 1, borderDash: [5, 5], pointRadius: 0 }
       ]
     },
-    options: chartOpts("Angle (rad)")
+    options: {
+      ...chartOpts("Angle (rad)"),
+      scales: {
+        ...chartOpts("Angle (rad)").scales,
+        y: { ...chartOpts("Angle (rad)").scales.y, min: -1, max: 7 }
+      }
+    }
   });
 
   const errorChart = new Chart(errorCtx, {
@@ -354,7 +360,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         { label: "Error", data: [], borderColor: "#f59e0b", borderWidth: 1.5, pointRadius: 0, tension: 0.1 }
       ]
     },
-    options: chartOpts("Error (rad)")
+    options: {
+      ...chartOpts("Error (rad)"),
+      scales: {
+        ...chartOpts("Error (rad)").scales,
+        y: { ...chartOpts("Error (rad)").scales.y, min: -3, max: 7 }
+      }
+    }
   });
 
   function doStep() {
@@ -389,15 +401,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     angleChart.data.datasets[0].data = angleData as any;
     angleChart.data.datasets[1].data = spData as any;
-    const maxA = Math.max(pid.setpoint * 1.5, ...angleHist.map(Math.abs)) || 5;
-    (angleChart.options.scales!.y as any).min = -maxA * 0.1;
-    (angleChart.options.scales!.y as any).max = maxA;
     angleChart.update("none");
 
     errorChart.data.datasets[0].data = errorData as any;
-    const maxE = Math.max(pid.setpoint * 1.5, ...errorHist.map(Math.abs)) || 5;
-    (errorChart.options.scales!.y as any).min = -maxE * 0.3;
-    (errorChart.options.scales!.y as any).max = maxE;
     errorChart.update("none");
 
     roTheta.textContent = motor.theta.toFixed(2);
