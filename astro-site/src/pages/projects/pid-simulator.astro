@@ -309,26 +309,25 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   let timeHist: number[] = [];
   let step = 0;
 
-  const chartOpts = (yLabel: string, refLine?: number) => ({
+  const chartOpts = (yLabel: string) => ({
     responsive: true,
     maintainAspectRatio: false,
     animation: { duration: 0 },
     plugins: {
-      legend: { display: false },
-      ...(refLine !== undefined ? {
-        annotation: undefined
-      } : {})
+      legend: { display: false }
     },
     scales: {
       x: {
         type: "linear" as const,
         min: 0,
         max: 10,
+        bounds: "ticks" as const,
         title: { display: true, text: "Time (s)", font: { family: "'IBM Plex Mono'", size: 10 }, color: "#999" },
-        ticks: { font: { family: "'IBM Plex Mono'", size: 9 }, color: "#999", stepSize: 2.5 },
+        ticks: { font: { family: "'IBM Plex Mono'", size: 9 }, color: "#999", stepSize: 2.5, maxTicksLimit: 5 },
         grid: { color: "#eee" }
       },
       y: {
+        beginAtZero: false,
         title: { display: true, text: yLabel, font: { family: "'IBM Plex Mono'", size: 10 }, color: "#999" },
         ticks: { font: { family: "'IBM Plex Mono'", size: 9 }, color: "#999" },
         grid: { color: "#eee" }
