@@ -1,0 +1,191 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="PID Motor Simulator · Ngwashi Anthony" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-07 · Control · Software · 2026</span>
+        <h1 class="h-xl">PID Motor Simulator</h1>
+        <p class="lede">A Python script that simulates a PID controller driving a DC motor to a target position. You can tune the gains with sliders and watch the motor respond in real time. No hardware, no Arduino, just matplotlib and math.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">Control</span><span class="tag">Software</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Personal project</span></div>
+        <div class="meta-row"><span class="k">Language</span><span class="v">Python</span></div>
+        <div class="meta-row"><span class="k">Libraries</span><span class="v">matplotlib, numpy</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Working</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>Why a simulator</h2>
+          <p>PID control is one of those things you read about in a textbook and think you understand, until you try to tune it on a real motor and it oscillates wildly or takes forever to reach the setpoint. I wanted a way to build intuition for what Kp, Ki, and Kd actually do, without needing a motor, a driver, and an oscilloscope. A Python simulation lets you tweak the gains, see the result immediately, and break things without burning out a MOSFET.</p>
+          <p class="mono-note">// goal: build intuition for PID tuning without hardware.</p>
+
+          <h2>The PID algorithm</h2>
+          <p>PID stands for Proportional-Integral-Derivative. It computes an output (voltage) based on three terms:</p>
+
+          <div class="calc-block">
+            <div class="calc-title">PID output formula</div>
+            <div class="calc-eq">output = Kp * error + Ki * integral(error * dt) + Kd * d(error)/dt</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Proportional (P)</div>
+            <div class="calc-eq">P = Kp * error</div>
+            <div class="calc-eq">Responds to "how far off are we right now?"</div>
+            <div class="calc-eq">Higher Kp = faster response, but can oscillate.</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Integral (I)</div>
+            <div class="calc-eq">I = Ki * sum(error * dt)</div>
+            <div class="calc-eq">Responds to "how long have we been off?"</div>
+            <div class="calc-eq">Accumulates past errors to eliminate steady-state offset.</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Derivative (D)</div>
+            <div class="calc-eq">D = Kd * (error - prev_error) / dt</div>
+            <div class="calc-eq">Responds to "are we getting closer or farther away?"</div>
+            <div class="calc-eq">Dampens oscillations by opposing rapid changes.</div>
+          </div>
+
+          <h2>The motor model</h2>
+          <p>The simulated plant is a simplified DC motor using Newton's second law for rotation. The motor has a moment of inertia (J), viscous friction (B), and a torque constant (K). The PID output is the voltage applied to the motor.</p>
+
+          <div class="calc-block">
+            <div class="calc-title">Motor dynamics</div>
+            <div class="calc-eq">J * alpha = K * V - B * omega</div>
+            <div class="calc-eq">alpha = angular acceleration</div>
+            <div class="calc-eq">omega = angular velocity</div>
+            <div class="calc-eq">theta = angular position (what we care about)</div>
+          </div>
+
+          <div class="calc-block">
+            <div class="calc-title">Default parameters</div>
+            <div class="calc-table">
+              <div class="calc-row"><span class="ck">J (inertia)</span><span class="cv">0.01 kg*m^2</span></div>
+              <div class="calc-row"><span class="ck">B (friction)</span><span class="cv">0.1 N*m*s/rad</span></div>
+              <div class="calc-row"><span class="ck">K (torque constant)</span><span class="cv">1.0</span></div>
+              <div class="calc-row"><span class="ck">Setpoint</span><span class="cv">pi rad (180 deg)</span></div>
+              <div class="calc-row"><span class="ck">Default Kp</span><span class="cv">10.0</span></div>
+              <div class="calc-row"><span class="ck">Default Ki</span><span class="cv">1.0</span></div>
+              <div class="calc-row"><span class="ck">Default Kd</span><span class="cv">0.5</span></div>
+              <div class="calc-row"><span class="ck">Voltage clamp</span><span class="cv">[-20, +20] V</span></div>
+            </div>
+          </div>
+
+          <h2>How it works</h2>
+          <p>The simulation runs in a loop at 10ms timesteps (dt = 0.01). Each frame:</p>
+          <p>1. Read the current Kp, Ki, Kd, and setpoint from the sliders.</p>
+          <p>2. Compute the PID output (voltage) based on the error between the motor's current angle and the target.</p>
+          <p>3. Clamp the voltage to [-20, +20] to simulate a real driver's limits.</p>
+          <p>4. Feed the voltage into the motor model to update position and velocity.</p>
+          <p>5. Plot the motor angle vs setpoint (top) and the tracking error (bottom).</p>
+          <p>After 1000 frames (10 seconds of simulated time), the animation resets and loops.</p>
+          <p class="mono-note">// try cranking Kp to 50 and watch it oscillate. then add Kd to dampen it.</p>
+
+          <h2>What I learned</h2>
+          <p>The most useful thing about this simulator is that it makes the PID terms tangible. Turn up Kp and you see the motor snap toward the setpoint but overshoot. Turn up Ki and the steady-state error disappears but it starts drifting. Turn up Kd and the oscillations die down but the response gets sluggish. You can feel the tradeoffs instead of just reading about them. This is the kind of tool I wish I had when I first learned about PID control.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Software</div>
+              <div class="spec-line"><span class="sk">Language</span><span class="sv">Python 3</span></div>
+              <div class="spec-line"><span class="sk">Plotting</span><span class="sv">matplotlib</span></div>
+              <div class="spec-line"><span class="sk">Math</span><span class="sv">numpy</span></div>
+              <div class="spec-line"><span class="sk">Animation</span><span class="sv">FuncAnimation</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Simulation</div>
+              <div class="spec-line"><span class="sk">Timestep</span><span class="sv">10 ms</span></div>
+              <div class="spec-line"><span class="sk">Duration</span><span class="sv">10 s (loops)</span></div>
+              <div class="spec-line"><span class="sk">Plant</span><span class="sv">DC motor model</span></div>
+              <div class="spec-line"><span class="sk">Clamp</span><span class="sv">+/- 20 V</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Interface</div>
+              <div class="spec-line"><span class="sk">Kp slider</span><span class="sv">0.1 - 50.0</span></div>
+              <div class="spec-line"><span class="sk">Ki slider</span><span class="sv">0.0 - 10.0</span></div>
+              <div class="spec-line"><span class="sk">Kd slider</span><span class="sv">0.0 - 5.0</span></div>
+              <div class="spec-line"><span class="sk">Setpoint</span><span class="sv">0.1 - 2pi</span></div>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/pid-simulator" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub →</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/flasher"><span class="arrow">←</span> Relayless Turn Signal Flasher</a>
+        <span></span>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .calc-block { background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 18px 22px; margin: 16px 0; font-family: var(--mono); }
+  .calc-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .calc-eq { font-size: 13px; color: var(--ink-2); padding: 2px 0; line-height: 1.7; }
+  .calc-result { font-size: 14px; font-weight: 600; color: var(--ink); padding-top: 6px; border-top: 1px dashed var(--line-2); margin-top: 6px; }
+  .calc-table { display: flex; flex-direction: column; gap: 0; }
+  .calc-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--line-2); font-size: 13px; }
+  .calc-row:last-child { border-bottom: 0; }
+  .calc-row .ck { color: var(--ink-3); }
+  .calc-row .cv { color: var(--ink); font-weight: 500; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+</style>

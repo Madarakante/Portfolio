@@ -26,9 +26,20 @@
 // ───────────────────────────────────────────────────────────────────────────
 
 // Tags that appear as filter buttons on /projects. Add/remove to taste.
-export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC", "Wireless", "Automotive"];
+export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power", "PLC", "Wireless", "Automotive", "Software"];
 
 export const projects = [
+  {
+    slug: "pid-simulator",
+    num: "07",
+    year: "2026",
+    title: "PID Motor Simulator",
+    blurb: "An interactive Python simulator that visualizes a PID controller driving a DC motor to a target position, with live sliders to tune the gains in real time.",
+    label: "matplotlib: PID motor position control simulation",
+    image: "",
+    featured: false,
+    tags: ["Control", "Software"],
+  },
   {
     slug: "flasher",
     num: "06",
