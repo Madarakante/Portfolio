@@ -137,11 +137,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <div class="sim-charts">
             <div class="sim-chart-box">
               <div class="sim-chart-title">Motor Angle (rad) vs Time</div>
-              <canvas id="pid-angle" width="800" height="220"></canvas>
+              <canvas id="pid-angle"></canvas>
             </div>
             <div class="sim-chart-box">
               <div class="sim-chart-title">Tracking Error (rad) vs Time</div>
-              <canvas id="pid-error" width="800" height="160"></canvas>
+              <canvas id="pid-error"></canvas>
             </div>
           </div>
           <div class="sim-controls">
@@ -231,7 +231,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .sim-chart-box { margin-bottom: 12px; }
   .sim-chart-box:last-child { margin-bottom: 0; }
   .sim-chart-title { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
-  .sim-chart-box canvas { width: 100%; height: auto; display: block; border-radius: 3px; background: var(--paper-2); }
+  .sim-chart-box canvas { width: 100%; height: 180px; display: block; }
   .sim-controls { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
   .sim-slider-group { display: flex; flex-direction: column; gap: 4px; }
   .sim-sl-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; color: var(--ink-3); display: flex; justify-content: space-between; }
@@ -252,6 +252,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 </style>
 
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
 <script>
   const dt = 0.01;
   const maxSteps = 1000;
@@ -288,10 +289,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     reset() { this.theta = 0; this.omega = 0; }
   }
 
-  const angleCanvas = document.getElementById("pid-angle") as HTMLCanvasElement;
-  const errorCanvas = document.getElementById("pid-error") as HTMLCanvasElement;
-  const actx = angleCanvas.getContext("2d")!;
-  const ectx = errorCanvas.getContext("2d")!;
   const kpSlider = document.getElementById("kp") as HTMLInputElement;
   const kiSlider = document.getElementById("ki") as HTMLInputElement;
   const kdSlider = document.getElementById("kd") as HTMLInputElement;
@@ -311,63 +308,57 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   let errorHist: number[] = [];
   let timeHist: number[] = [];
   let step = 0;
-  let animId = 0;
 
-  function resizeCanvas(canvas: HTMLCanvasElement) {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-    const ctx = canvas.getContext("2d")!;
-    ctx.scale(dpr, dpr);
-    return { w: rect.width, h: rect.height };
-  }
-
-  function drawChart(ctx: CanvasRenderingContext2D, w: number, h: number, data: number[], time: number[], maxVal: number, color: string, refVal?: number) {
-    ctx.clearRect(0, 0, w, h);
-    const pad = { l: 40, r: 10, t: 10, b: 24 };
-    const cw = w - pad.l - pad.r;
-    const ch = h - pad.t - pad.b;
-
-    ctx.strokeStyle = "#e0e0e0";
-    ctx.lineWidth = 0.5;
-    for (let i = 0; i <= 4; i++) {
-      const y = pad.t + (ch / 4) * i;
-      ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cw, y); ctx.stroke();
-      ctx.fillStyle = "#999";
-      ctx.font = "9px 'IBM Plex Mono', monospace";
-      ctx.textAlign = "right";
-      ctx.fillText((maxVal - (maxVal / 4) * i).toFixed(1), pad.l - 4, y + 3);
+  const chartOpts = (yLabel: string, refLine?: number) => ({
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: { duration: 0 },
+    plugins: {
+      legend: { display: false },
+      ...(refLine !== undefined ? {
+        annotation: undefined
+      } : {})
+    },
+    scales: {
+      x: {
+        type: "linear" as const,
+        min: 0,
+        max: 10,
+        title: { display: true, text: "Time (s)", font: { family: "'IBM Plex Mono'", size: 10 }, color: "#999" },
+        ticks: { font: { family: "'IBM Plex Mono'", size: 9 }, color: "#999", stepSize: 2.5 },
+        grid: { color: "#eee" }
+      },
+      y: {
+        title: { display: true, text: yLabel, font: { family: "'IBM Plex Mono'", size: 10 }, color: "#999" },
+        ticks: { font: { family: "'IBM Plex Mono'", size: 9 }, color: "#999" },
+        grid: { color: "#eee" }
+      }
     }
+  });
 
-    if (refVal !== undefined) {
-      const ry = pad.t + ch - (refVal / maxVal) * ch;
-      ctx.setLineDash([4, 4]);
-      ctx.strokeStyle = "#e74c3c";
-      ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad.l, ry); ctx.lineTo(pad.l + cw, ry); ctx.stroke();
-      ctx.setLineDash([]);
-    }
+  const angleCtx = (document.getElementById("pid-angle") as HTMLCanvasElement).getContext("2d")!;
+  const errorCtx = (document.getElementById("pid-error") as HTMLCanvasElement).getContext("2d")!;
 
-    if (data.length < 2) return;
-    const xScale = cw / maxSteps;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    for (let i = 0; i < data.length; i++) {
-      const x = pad.l + i * xScale;
-      const y = pad.t + ch - (data[i] / maxVal) * ch;
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
+  const angleChart = new Chart(angleCtx, {
+    type: "line",
+    data: {
+      datasets: [
+        { label: "Motor angle", data: [], borderColor: "#3b82f6", borderWidth: 1.5, pointRadius: 0, tension: 0.1 },
+        { label: "Setpoint", data: [], borderColor: "#e74c3c", borderWidth: 1, borderDash: [5, 5], pointRadius: 0 }
+      ]
+    },
+    options: chartOpts("Angle (rad)")
+  });
 
-    ctx.fillStyle = "#999";
-    ctx.font = "9px 'IBM Plex Mono', monospace";
-    ctx.textAlign = "center";
-    ctx.fillText("0s", pad.l, h - 4);
-    ctx.fillText("5s", pad.l + cw / 2, h - 4);
-    ctx.fillText("10s", pad.l + cw, h - 4);
-  }
+  const errorChart = new Chart(errorCtx, {
+    type: "line",
+    data: {
+      datasets: [
+        { label: "Error", data: [], borderColor: "#f59e0b", borderWidth: 1.5, pointRadius: 0, tension: 0.1 }
+      ]
+    },
+    options: chartOpts("Error (rad)")
+  });
 
   function doStep() {
     pid.Kp = parseFloat(kpSlider.value);
@@ -382,10 +373,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const voltage = Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta)));
     motor.update(voltage);
     const error = pid.setpoint - motor.theta;
+    const t = step * dt;
 
     angleHist.push(motor.theta);
     errorHist.push(error);
-    timeHist.push(step * dt);
+    timeHist.push(t);
     step++;
 
     if (step > maxSteps) {
@@ -394,22 +386,32 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   }
 
   function render() {
-    const a = resizeCanvas(angleCanvas);
-    const e = resizeCanvas(errorCanvas);
-    const sp = pid.setpoint;
-    const maxA = Math.max(sp * 1.5, ...angleHist.map(Math.abs)) || 5;
-    const maxE = Math.max(sp * 1.5, ...errorHist.map(Math.abs)) || 5;
-    drawChart(actx, a.w, a.h, angleHist, timeHist, maxA, "#3b82f6", sp);
-    drawChart(ectx, e.w, e.h, errorHist, timeHist, maxE, "#f59e0b");
+    const angleData = timeHist.map((t, i) => ({ x: t, y: angleHist[i] }));
+    const spData = [{ x: 0, y: pid.setpoint }, { x: 10, y: pid.setpoint }];
+    const errorData = timeHist.map((t, i) => ({ x: t, y: errorHist[i] }));
+
+    angleChart.data.datasets[0].data = angleData as any;
+    angleChart.data.datasets[1].data = spData as any;
+    const maxA = Math.max(pid.setpoint * 1.5, ...angleHist.map(Math.abs)) || 5;
+    (angleChart.options.scales!.y as any).min = -maxA * 0.1;
+    (angleChart.options.scales!.y as any).max = maxA;
+    angleChart.update("none");
+
+    errorChart.data.datasets[0].data = errorData as any;
+    const maxE = Math.max(pid.setpoint * 1.5, ...errorHist.map(Math.abs)) || 5;
+    (errorChart.options.scales!.y as any).min = -maxE * 0.3;
+    (errorChart.options.scales!.y as any).max = maxE;
+    errorChart.update("none");
+
     roTheta.textContent = motor.theta.toFixed(2);
     roError.textContent = (pid.setpoint - motor.theta).toFixed(2);
-    roVoltage.textContent = (Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta)))).toFixed(2);
+    roVoltage.textContent = Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta))).toFixed(2);
   }
 
   function loop() {
     for (let i = 0; i < 3; i++) doStep();
     render();
-    animId = requestAnimationFrame(loop);
+    requestAnimationFrame(loop);
   }
 
   function doReset() {
