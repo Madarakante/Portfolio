@@ -163,9 +163,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </div>
             <button id="pid-reset" class="sim-reset-btn">Reset</button>
             <div class="sim-readout">
-              <span>theta: <strong id="ro-theta">0.00</strong></span>
-              <span>error: <strong id="ro-error">3.14</strong></span>
-              <span>voltage: <strong id="ro-voltage">0.00</strong></span>
+              <span>theta (rad): <strong id="ro-theta">0.00</strong></span>
+              <span>error (rad): <strong id="ro-error">3.14</strong></span>
+              <span>V_motor (PID output): <strong id="ro-voltage">0.00</strong></span>
             </div>
           </div>
         </div>
@@ -308,6 +308,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   let errorHist: number[] = [];
   let timeHist: number[] = [];
   let step = 0;
+  let lastVoltage = 0;
 
   const chartOpts = (yLabel: string) => ({
     responsive: false,
@@ -379,6 +380,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     spVal.textContent = pid.setpoint.toFixed(2);
 
     const voltage = Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta)));
+    lastVoltage = voltage;
     motor.update(voltage);
     const error = pid.setpoint - motor.theta;
     const t = step * dt;
@@ -407,7 +409,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     roTheta.textContent = motor.theta.toFixed(2);
     roError.textContent = (pid.setpoint - motor.theta).toFixed(2);
-    roVoltage.textContent = Math.max(-clampV, Math.min(clampV, pid.compute(motor.theta))).toFixed(2);
+    roVoltage.textContent = lastVoltage.toFixed(2);
   }
 
   function loop() {
