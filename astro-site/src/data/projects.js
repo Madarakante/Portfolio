@@ -36,7 +36,7 @@ export const projects = [
     title: "PID Motor Simulator",
     blurb: "An interactive Python simulator that visualizes a PID controller driving a DC motor to a target position, with live sliders to tune the gains in real time.",
     label: "matplotlib: PID motor position control simulation",
-    image: "",
+    image: "/images/PID.gif",
     featured: false,
     tags: ["Control", "Software"],
   },

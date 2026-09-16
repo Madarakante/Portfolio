@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="PWM Fume Extractor · Ngwashi Anthony" active="projects">
+<BaseLayout title="PWM Fume Extractor · Ngwashi Anthony" description="A 555-based PWM motor speed controller for a solder fume extractor, with a custom PCB and 3D-printed enclosure designed in Fusion 360." image="/images/motor-pcb-3d view.png" active="projects">
   <main data-screen-label="Project detail">
     <div class="wrap crumb"><a href="/projects">← Projects</a></div>
 
@@ -105,6 +105,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="spec-line"><span class="sk">Simulation</span><span class="sv">Proteus ISIS</span></div>
             </div>
             <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/motor-speed-controller" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
               <div class="g-label">Enclosure</div>
               <div class="spec-line"><span class="sk">CAD</span><span class="sv">Fusion 360</span></div>
               <div class="spec-line"><span class="sk">Method</span><span class="sv">3D print (planned)</span></div>
@@ -167,6 +172,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
   .spec-line .sk { color: var(--ink-3); }
   .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
