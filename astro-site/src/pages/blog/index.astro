@@ -68,10 +68,13 @@ const filters = ["Tutorials", "Project Logs", "Reviews", "Notes"];
       <div class="blog-grid" id="grid">
         {rest.map((p) => (
           <a class="post-card" href={p.url} data-cat={groupOf[p.category] ?? p.category}>
-            <div class="pc-meta"><span class="tag">{p.category}</span><span class="mono">·</span></div>
-            <h3>{p.title}</h3>
-            <p class="ex">{p.description}</p>
-            <div class="pc-foot"><span class="meta-inline"><span>{p.date}</span><span class="dot"></span><span>{p.readTime}</span></span></div>
+            {p.heroImage && <div class="pc-img"><img src={p.heroImage} alt={p.heroLabel || p.title} /></div>}
+            <div class="pc-body">
+              <div class="pc-meta"><span class="tag">{p.category}</span><span class="mono">·</span></div>
+              <h3>{p.title}</h3>
+              <p class="ex">{p.description}</p>
+              <div class="pc-foot"><span class="meta-inline"><span>{p.date}</span><span class="dot"></span><span>{p.readTime}</span></span></div>
+            </div>
           </a>
         ))}
       </div>
@@ -126,8 +129,11 @@ const filters = ["Tutorials", "Project Logs", "Reviews", "Notes"];
   .chip.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
   .blog-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .post-card { display: flex; flex-direction: column; padding: 24px; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); transition: border-color .16s, transform .16s, box-shadow .16s; }
+  .post-card { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; transition: border-color .16s, transform .16s, box-shadow .16s; }
   .post-card:hover { border-color: var(--line-2); transform: translateY(-3px); box-shadow: 0 14px 30px -24px rgba(27,26,23,0.5); }
+  .post-card .pc-img { aspect-ratio: 16 / 9; overflow: hidden; border-bottom: 1px solid var(--line); }
+  .post-card .pc-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .post-card .pc-body { padding: 24px; display: flex; flex-direction: column; flex: 1; }
   .post-card .pc-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .post-card h3 { margin: 16px 0 0; font-size: 23px; font-weight: 500; letter-spacing: -0.022em; line-height: 1.12; }
   .post-card .ex { color: var(--ink-2); font-size: 15px; margin: 12px 0 0; }

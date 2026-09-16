@@ -22,5 +22,31 @@ const links = [
         <a href={l.href} class={active === l.key ? "active" : ""}>{l.label}</a>
       ))}
     </nav>
+    <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </header>
+
+<div class="mobile-drawer" id="mobile-drawer">
+  <nav class="drawer-links">
+    {links.map((l) => (
+      <a href={l.href} class={active === l.key ? "active" : ""}>{l.label}</a>
+    ))}
+  </nav>
+</div>
+
+<script>
+  const toggle = document.getElementById("menu-toggle");
+  const drawer = document.getElementById("mobile-drawer");
+  toggle?.addEventListener("click", () => {
+    drawer?.classList.toggle("open");
+    toggle.classList.toggle("open");
+  });
+  drawer?.addEventListener("click", (e) => {
+    if ((e.target as HTMLElement).tagName === "A") {
+      drawer.classList.remove("open");
+      toggle?.classList.remove("open");
+    }
+  });
+</script>

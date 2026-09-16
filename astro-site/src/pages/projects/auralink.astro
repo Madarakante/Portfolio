@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Auralink ¬∑ Ngwashi Anthony" active="projects">
+<BaseLayout title="Auralink ¬∑ Ngwashi Anthony" description="An ESP32-C3 paired with a SIMCom A7670E LTE Cat-1 modem on one board: dual-rail power, RF antenna matching, and a level-shifted UART bridge." image="/images/hero-poured.png" active="projects">
   <main data-screen-label="Project detail">
     <div class="wrap crumb"><a href="/projects">‚Üê Projects</a></div>
 
@@ -99,8 +99,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <div class="spec-group">
               <div class="g-label">Board</div>
               <div class="spec-line"><span class="sk">Layers</span><span class="sv">4, dual GND planes</span></div>
-              <div class="spec-line"><span class="sk">Size</span><span class="sv">116.5 √◊ 52.5 mm</span></div>
+              <div class="spec-line"><span class="sk">Size</span><span class="sv">116.5 ÔøΩÔøΩ 52.5 mm</span></div>
               <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad</span></div>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/auralink" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
             </div>
             <div class="spec-group">
               <div class="g-label">Fab &amp; assembly</div>
@@ -165,6 +170,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
   .spec-line .sk { color: var(--ink-3); }
   .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 

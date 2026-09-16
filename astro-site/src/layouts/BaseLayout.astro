@@ -5,7 +5,15 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
-const { title = "Ngwashi Anthony · Mechatronics Student", active = "" } = Astro.props;
+const {
+  title = "Ngwashi Anthony · Mechatronics Student",
+  description = "Mechatronics student building robots, PCBs, and software. Portfolio of projects in robotics, embedded systems, and control.",
+  image = "/images/hero-3d.png",
+  active = "",
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, "https://madarakante.github.io").href;
+const imageURL = image.startsWith("http") ? image : new URL(image, "https://madarakante.github.io").href;
 ---
 
 <!DOCTYPE html>
@@ -14,6 +22,23 @@ const { title = "Ngwashi Anthony · Mechatronics Student", active = "" } = Astro
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageURL} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:site_name" content="Ngwashi Anthony · Mechatronics Portfolio" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="Relayless Turn Signal Flasher · Ngwashi Anthony" active="projects">
+<BaseLayout title="Relayless Turn Signal Flasher · Ngwashi Anthony" description="A 555 timer-based turn signal flasher that replaces the factory relay with a solid-state MOSFET driver, designed on a custom KiCad PCB." image="/images/flasher3Dview.png" active="projects">
   <main data-screen-label="Project detail">
     <div class="wrap crumb"><a href="/projects">← Projects</a></div>
 
@@ -178,6 +178,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="spec-line"><span class="sk">Decoupling</span><span class="sv">100nF + 10uF</span></div>
             </div>
             <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/digital-flasher-unit" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
               <div class="g-label">Board</div>
               <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10.0.3</span></div>
               <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
@@ -254,6 +259,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
   .spec-line .sk { color: var(--ink-3); }
   .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
