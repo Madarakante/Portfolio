@@ -310,11 +310,13 @@ p { margin: 0 0 1.1em; text-wrap: pretty; }
   z-index: 40;
   padding: 32px var(--gutter);
   opacity: 0;
+  pointer-events: none;
   transform: translateY(-8px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 .mobile-drawer.open {
   opacity: 1;
+  pointer-events: auto;
   transform: translateY(0);
 }
 .drawer-links {
