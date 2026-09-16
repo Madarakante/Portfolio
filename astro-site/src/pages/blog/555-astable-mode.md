@@ -9,12 +9,12 @@ badge: BEGINNER
 order: 9
 heroLabel: 555 astable oscillator schematic
 heroImage: /images/flasherSchematic.png
-heroCaption: The 555 in astable mode. R1, R2, and C2 set the frequency and duty cycle.
+heroCaption: The KiCad schematic. R1, R2, and C2 set the frequency and duty cycle.
 tags: [Tutorial, Electronics, 555 Timer, Beginner]
 prev: { title: "The 555 timer in monostable mode: one shot, one pulse", url: "/blog/555-timer-blink-without-code" }
 ---
 
-In monostable mode the 555 fires once per trigger. In astable mode it fires forever. No button, no外部 input, just power it up and it oscillates. The output swings high and low at a rate set by two resistors and one capacitor. This is the circuit behind turn signal flashers, LED blinkers, tone generators, and clock signals.
+In monostable mode the 555 fires once per trigger. In astable mode it fires forever. No button, no external input, just power it up and it oscillates. The output swings high and low at a rate set by two resistors and one capacitor. This is the circuit behind turn signal flashers, LED blinkers, tone generators, and clock signals.
 
 > Power it on. It oscillates. That is the whole circuit.
 
@@ -33,21 +33,14 @@ Same parts as monostable, just arranged differently.
 
 The astable circuit is almost the same as monostable, but the trigger and threshold pins are tied together and connected to the timing capacitor. The discharge pin sits between R1 and R2.
 
-```
-         VCC
-          |
-         [R1]  (charge resistor)
-          |
-          +----[R2]----+---- Pin 7 (DISCH)
-          |            |
- Pin 6 ---+            |
- Pin 2 ---+            |
-          |           [C]  (timing capacitor)
-          |            |
-         GND          GND
-
- Pin 3 (OUT) ---[220R]--- LED --- GND
-```
+<div class="diagram">
+  <div class="frame">
+    <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+    <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+    <img src="/images/flasherSchematic.png" alt="555 astable mode schematic" style="width:100%;height:100%;object-fit:contain;" />
+  </div>
+  <figcaption>KiCad schematic of the 555 in astable mode. The MOSFET drives the lamps, but for a simple LED blinker you can skip that and connect the LED directly to pin 3.</figcaption>
+</div>
 
 The key difference from monostable: **no trigger button**. Pin 2 (trigger) and pin 6 (threshold) are connected together and tied to the capacitor. The capacitor charges through R1 + R2, then discharges through R2 alone. When it charges to 2/3 VCC, the output goes low and the discharge pin opens. When it discharges to 1/3 VCC, the output goes high and the discharge pin closes. This cycle repeats forever.
 
@@ -56,37 +49,32 @@ The key difference from monostable: **no trigger button**. Pin 2 (trigger) and p
 The 555 astable has two phases:
 
 **Phase 1: Charging (output HIGH)**
+
 The capacitor charges through both R1 and R2. The voltage rises from 1/3 VCC toward 2/3 VCC. The output is HIGH during this phase. The time this takes is:
 
-```
-t_high = 0.693 x (R1 + R2) x C
-```
+<div class="pull-note"><b>t_high</b> = 0.693 x (R1 + R2) x C</div>
 
 **Phase 2: Discharging (output LOW)**
+
 When the capacitor reaches 2/3 VCC, the internal comparator flips. The discharge pin (pin 7) opens, and the capacitor discharges through R2 alone. The voltage drops from 2/3 VCC toward 1/3 VCC. The output is LOW during this phase:
 
-```
-t_low = 0.693 x R2 x C
-```
+<div class="pull-note"><b>t_low</b> = 0.693 x R2 x C</div>
 
 When the capacitor hits 1/3 VCC, the cycle restarts.
 
 ## The math
 
 **Total period:**
-```
-T = t_high + t_low = 0.693 x (R1 + 2 x R2) x C
-```
+
+<div class="pull-note"><b>T</b> = t_high + t_low = 0.693 x (R1 + 2 x R2) x C</div>
 
 **Frequency:**
-```
-f = 1 / T = 1.44 / ((R1 + 2 x R2) x C)
-```
+
+<div class="pull-note"><b>f</b> = 1 / T = 1.44 / ((R1 + 2 x R2) x C)</div>
 
 **Duty cycle:**
-```
-D = (R1 + R2) / (R1 + 2 x R2) x 100%
-```
+
+<div class="pull-note"><b>D</b> = (R1 + R2) / (R1 + 2 x R2) x 100%</div>
 
 Notice that R2 appears in both the charge and discharge paths, but R1 only appears in the charge path. This means the duty cycle is always greater than 50% (the output is HIGH longer than it is LOW). If you need exactly 50%, you need diodes across R2 to separate the charge and discharge paths.
 
@@ -100,15 +88,57 @@ I used this circuit for my [relayless turn signal flasher project](/projects/fla
 
 **Calculations:**
 
-```
-t_high = 0.693 x (15000 + 30000) x 0.000010 = 0.312 seconds
-t_low  = 0.693 x 30000 x 0.000010           = 0.208 seconds
-T      = 0.312 + 0.208                       = 0.520 seconds
-f      = 1 / 0.520                           = 1.92 Hz
-D      = (15000 + 30000) / (15000 + 60000)   = 60%
-```
+<div class="pull-note">
+<b>t_high</b> = 0.693 x (15000 + 30000) x 0.000010 = <b>0.312 seconds</b><br/>
+<b>t_low</b> = 0.693 x 30000 x 0.000010 = <b>0.208 seconds</b><br/>
+<b>T</b> = 0.312 + 0.208 = <b>0.520 seconds</b><br/>
+<b>f</b> = 1 / 0.520 = <b>1.92 Hz</b> (115 flashes per minute)<br/>
+<b>D</b> = (15000 + 30000) / (15000 + 60000) = <b>60%</b>
+</div>
 
 1.92 Hz means the lamps flash about 115 times per minute. The 60% duty cycle means the lamps are ON for 60% of the time and OFF for 40%. This matches typical turn signal behavior.
+
+Here is my hand-drawn sketch of the circuit before I laid it out in KiCad:
+
+<div class="diagram">
+  <div class="frame">
+    <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+    <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+    <img src="/images/flasher handrawn for blog.jpg" alt="Hand-drawn schematic of the 555 flasher circuit" style="width:100%;height:100%;object-fit:contain;" />
+  </div>
+  <figcaption>Hand-drawn sketch of the flasher circuit. Sometimes paper and pen is faster than opening KiCad.</figcaption>
+</div>
+
+## The build
+
+I soldered the board and wired it up to a pair of turn signal lamps. The 555, MOSFET, resistors, and capacitors all fit on a small two-layer PCB designed in KiCad.
+
+<div class="diagram">
+  <div class="frame">
+    <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+    <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+    <img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" style="width:100%;height:100%;object-fit:contain;" />
+  </div>
+  <figcaption>Assembled flasher board. Screw terminals for the car wiring, 555 and MOSFET in the center.</figcaption>
+</div>
+
+<div class="diagram">
+  <div class="frame">
+    <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+    <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+    <img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" style="width:100%;height:100%;object-fit:contain;" />
+  </div>
+  <figcaption>Top view showing component placement and trace routing.</figcaption>
+</div>
+
+And here it is running:
+
+<video controls preload="metadata" style="width:100%;border-radius:4px;margin:28px 0;">
+  <source src="/images/flasher-demo.mp4" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+
+The lamps blink at a steady 1.92 Hz. No relay click, no contact bounce, just clean solid-state switching.
 
 ## Tuning the frequency
 
