@@ -57,52 +57,52 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <div class="calc-block">
             <div class="calc-title">Component values</div>
             <div class="calc-table">
-              <div class="calc-row"><span class="ck">R1 (charge resistor)</span><span class="cv">12 kohm</span></div>
-              <div class="calc-row"><span class="ck">R2 (discharge resistor)</span><span class="cv">24 kohm</span></div>
-              <div class="calc-row"><span class="ck">C2 (timing capacitor)</span><span class="cv">12 uF</span></div>
+              <div class="calc-row"><span class="ck">R1 (charge resistor)</span><span class="cv">15 kohm</span></div>
+              <div class="calc-row"><span class="ck">R2 (discharge resistor)</span><span class="cv">30 kohm</span></div>
+              <div class="calc-row"><span class="ck">C2 (timing capacitor)</span><span class="cv">10 uF</span></div>
             </div>
           </div>
 
           <div class="calc-block">
             <div class="calc-title">Charge time (output HIGH, lamps ON)</div>
             <div class="calc-eq">t_high = 0.693 x (R1 + R2) x C2</div>
-            <div class="calc-eq">t_high = 0.693 x (12000 + 24000) x 0.000012</div>
-            <div class="calc-eq">t_high = 0.693 x 36000 x 0.000012</div>
-            <div class="calc-result">t_high = 0.298 seconds</div>
+            <div class="calc-eq">t_high = 0.693 x (15000 + 30000) x 0.000010</div>
+            <div class="calc-eq">t_high = 0.693 x 45000 x 0.000010</div>
+            <div class="calc-result">t_high = 0.312 seconds</div>
           </div>
 
           <div class="calc-block">
             <div class="calc-title">Discharge time (output LOW, lamps OFF)</div>
             <div class="calc-eq">t_low = 0.693 x R2 x C2</div>
-            <div class="calc-eq">t_low = 0.693 x 24000 x 0.000012</div>
-            <div class="calc-result">t_low = 0.199 seconds</div>
+            <div class="calc-eq">t_low = 0.693 x 30000 x 0.000010</div>
+            <div class="calc-result">t_low = 0.208 seconds</div>
           </div>
 
           <div class="calc-block">
             <div class="calc-title">Total period</div>
             <div class="calc-eq">T = t_high + t_low</div>
-            <div class="calc-eq">T = 0.298 + 0.199</div>
-            <div class="calc-result">T = 0.497 seconds</div>
+            <div class="calc-eq">T = 0.312 + 0.208</div>
+            <div class="calc-result">T = 0.520 seconds</div>
           </div>
 
           <div class="calc-block">
             <div class="calc-title">Frequency</div>
             <div class="calc-eq">f = 1 / T = 1.44 / ((R1 + 2 x R2) x C2)</div>
-            <div class="calc-eq">f = 1.44 / ((12000 + 48000) x 0.000012)</div>
-            <div class="calc-eq">f = 1.44 / (60000 x 0.000012)</div>
-            <div class="calc-eq">f = 1.44 / 0.72</div>
-            <div class="calc-result">f = 2.01 Hz (120 flashes per minute)</div>
+            <div class="calc-eq">f = 1.44 / ((15000 + 60000) x 0.000010)</div>
+            <div class="calc-eq">f = 1.44 / (75000 x 0.000010)</div>
+            <div class="calc-eq">f = 1.44 / 0.75</div>
+            <div class="calc-result">f = 1.92 Hz (115 flashes per minute)</div>
           </div>
 
           <div class="calc-block">
             <div class="calc-title">Duty cycle</div>
             <div class="calc-eq">D = (R1 + R2) / (R1 + 2 x R2) x 100%</div>
-            <div class="calc-eq">D = (12000 + 24000) / (12000 + 48000) x 100%</div>
-            <div class="calc-eq">D = 36000 / 60000 x 100%</div>
-            <div class="calc-result">D = 66.7% ON, 33.3% OFF</div>
+            <div class="calc-eq">D = (15000 + 30000) / (15000 + 60000) x 100%</div>
+            <div class="calc-eq">D = 45000 / 75000 x 100%</div>
+            <div class="calc-result">D = 60% ON, 40% OFF</div>
           </div>
 
-          <p>The lamps are on for about 0.3 seconds and off for about 0.2 seconds, giving a clean flash at roughly 2 Hz. The duty cycle is asymmetric: the lamps stay on longer than they stay off, which is typical for turn signal flashers and matches the behavior of most factory relays.</p>
+          <p>The lamps are on for about 0.31 seconds and off for about 0.21 seconds, giving a clean flash at roughly 1.92 Hz. The duty cycle is 60/40, which means the lamps stay on slightly longer than they stay off. This matches the typical behavior of a turn signal flasher.</p>
 
           <h2>The simulation</h2>
           <p>I ran the circuit in Proteus before ordering the PCB. The oscilloscope shows the 555 output waveform and the MOSFET drain voltage. The square wave is clean, the switching is sharp, and there is no ringing on the transitions. The MOSFET turns on and off in microseconds, far faster than any mechanical relay.</p>
@@ -120,6 +120,31 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <div class="photo-cap">FIG 3: KiCad PCB layout. Compact two-layer board for the fuse box.</div>
           </div>
 
+          <h2>The build</h2>
+          <p>The board came back from the fab and I soldered everything together. The 555, MOSFET, resistors, and capacitors all fit neatly on the small two-layer PCB. I used screw terminals for the car wiring so I can easily connect and disconnect it without desoldering.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" class="expandable" /></div>
+              <div class="photo-cap">FIG 4: Assembled board, front view. Screw terminals for car wiring.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" class="expandable" /></div>
+              <div class="photo-cap">FIG 5: Top view showing component placement and trace routing.</div>
+            </div>
+          </div>
+
+          <h2>The demo</h2>
+          <p>The video shows the flasher in action. The lamps blink at a steady 1.92 Hz, matching the calculated frequency. No relay click, no contact bounce, just clean solid-state switching. The MOSFET handles the lamp current silently and reliably.</p>
+
+          <div class="video-wrap">
+            <video controls preload="metadata" class="expandable">
+              <source src="/images/flasher-demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            <div class="photo-cap">FIG 6: Demo video. Turn signal flasher running at 1.92 Hz with solid-state MOSFET switching.</div>
+          </div>
+
           <h2>What I learned</h2>
           <p>This was my first time using the 555 in astable mode. Before this I had only used it in monostable mode for simple timing tasks, like the setup I wrote about in the <a href="/blog/555-timer-blink-without-code">555 timer blog post</a>. Astable is a different beast: instead of triggering one pulse, it runs continuously, generating a square wave that keeps repeating. Once I understood the charge and discharge paths through R1 and R2, the math clicked. The same 555 chip, the same pins, just wired differently to do a completely different job.</p>
         </article>
@@ -131,8 +156,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="g-label">Circuit</div>
               <div class="spec-line"><span class="sk">Timer IC</span><span class="sv">NE555P</span></div>
               <div class="spec-line"><span class="sk">Mode</span><span class="sv">Astable</span></div>
-              <div class="spec-line"><span class="sk">Frequency</span><span class="sv">2.01 Hz</span></div>
-              <div class="spec-line"><span class="sk">Duty cycle</span><span class="sv">66.7%</span></div>
+              <div class="spec-line"><span class="sk">Frequency</span><span class="sv">1.92 Hz</span></div>
+              <div class="spec-line"><span class="sk">Duty cycle</span><span class="sv">60%</span></div>
             </div>
             <div class="spec-group">
               <div class="g-label">Switching</div>
@@ -142,9 +167,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </div>
             <div class="spec-group">
               <div class="g-label">Timing</div>
-              <div class="spec-line"><span class="sk">R1</span><span class="sv">12 kohm</span></div>
-              <div class="spec-line"><span class="sk">R2</span><span class="sv">24 kohm</span></div>
-              <div class="spec-line"><span class="sk">C2</span><span class="sv">12 uF</span></div>
+              <div class="spec-line"><span class="sk">R1</span><span class="sv">15 kohm</span></div>
+              <div class="spec-line"><span class="sk">R2</span><span class="sv">30 kohm</span></div>
+              <div class="spec-line"><span class="sk">C2</span><span class="sv">10 uF</span></div>
               <div class="spec-line"><span class="sk">C1</span><span class="sv">10 nF</span></div>
             </div>
             <div class="spec-group">
@@ -206,6 +231,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
   .photo-single { margin: 28px 0; }
   .photo-single .frame { aspect-ratio: 16 / 9; }
+
+  .video-wrap { margin: 28px 0; }
+  .video-wrap video { width: 100%; border-radius: 4px; background: #000; }
 
   .calc-block { background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 18px 22px; margin: 16px 0; font-family: var(--mono); }
   .calc-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
