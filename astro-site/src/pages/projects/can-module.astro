@@ -67,11 +67,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
 
           <h2>The MCP2551 transceiver</h2>
-          <p>The MCP2515 talks logic levels (3.3V or 5V). The bus talks differential voltages. The MCP2551 bridges the two. It takes TXD from the controller and drives CAN_H/CAN_L on the bus. It takes the bus differential and outputs RXD back to the controller.</p>
+          <p>The MCP2515 talks logic levels (3.3V or 5V). The bus talks differential voltages. The MCP2551 bridges the two. It has its own dedicated TXD and RXD pins that connect to the MCP2515's TX0 and RX0. On the bus side, it drives CAN_H/CAN_L and reads the differential voltage. The transceiver is a separate IC from the controller, with its own power supply pin (VDD) and ground.</p>
           <p>The transceiver also handles slope control through the Rs pin. A resistor to ground sets the slew rate of the output, which reduces EMI at the cost of maximum speed. For learning at 125 kbps or 250 kbps, a higher slope resistor is fine. For full 1 Mbps, use a lower value or tie Rs directly to ground.</p>
 
           <h2>Bus termination</h2>
-          <p>CAN buses need 120Ω termination resistors at both ends. This matches the characteristic impedance of the twisted-pair cable and prevents signal reflections. On my module, R1 is a 120Ω resistor across CAN_H and CAN_L, placed as SMD so it can be easily omitted when the module is not at a bus endpoint.</p>
+          <p>CAN buses need 120Ω termination resistors at both ends. This matches the characteristic impedance of the twisted-pair cable and prevents signal reflections. On my module, R1 is a 120Ω THT resistor across CAN_H and CAN_L, placed as through-hole so it can be easily omitted or swapped when the module is not at a bus endpoint.</p>
           <p>If you have two nodes on a bus, each module should have the termination enabled. If you have three or more nodes, only the two end nodes should have termination. The middle nodes leave it off.</p>
 
           <div class="photo-single">
@@ -80,7 +80,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
 
           <h2>Breaking out TX and RX</h2>
-          <p>The MCP2515 has three transmit pins (TX0, TX1, TX2) and two receive pins (RX0, RX1). The standard MCP2515 modules connect TX0/RX0 to the transceiver and leave the rest unused. I broke all of them out to a header so I can:</p>
+          <p>The MCP2515 has three transmit pins (TX0, TX1, TX2) and two receive pins (RX0, RX1). The MCP2551 transceiver connects to TX0 and RX0 through its own dedicated TXD and RXD pins. The remaining pins (TX1, TX2, RX1) are broken out to a separate header so I can:</p>
           <ul>
             <li>Directly observe TX/RX activity with a logic analyzer</li>
             <li>Use the extra transmit channels for alternate protocols</li>
@@ -143,7 +143,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </div>
             <div class="spec-group">
               <div class="g-label">Bus</div>
-              <div class="spec-line"><span class="sk">Termination</span><span class="sv">120 ohm (SMD, omittable)</span></div>
+              <div class="spec-line"><span class="sk">Termination</span><span class="sv">120 ohm THT (omittable)</span></div>
               <div class="spec-line"><span class="sk">Connector</span><span class="sv">2-pin screw terminal</span></div>
               <div class="spec-line"><span class="sk">Wiring</span><span class="sv">CAN_H, CAN_L, GND</span></div>
             </div>
@@ -153,7 +153,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="spec-line"><span class="sk">Logic</span><span class="sv">5V</span></div>
             </div>
             <div class="spec-group">
-              <div class="g-label">Breakout</div>
+              <div class="g-label">Breakout (MCP2515)</div>
               <div class="spec-line"><span class="sk">TX pins</span><span class="sv">TX0, TX1, TX2</span></div>
               <div class="spec-line"><span class="sk">RX pins</span><span class="sv">RX0, RX1</span></div>
             </div>
