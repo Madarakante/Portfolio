@@ -1,0 +1,290 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="CAN Bus Module · Ngwashi Anthony" description="A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with broken-out TX/RX pins for flexibility. Designed for learning CAN protocol and EV communications." image="/images/CAN 3d.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-08 · PCB · Automotive · Embedded · 2026</span>
+        <h1 class="h-xl">CAN Bus Module</h1>
+        <p class="lede">A compact SPI-to-CAN bus module built around the MCP2515 controller and MCP2551 transceiver. Designed as a learning tool for CAN protocol and EV communications, with broken-out TX/RX pins for direct access and flexibility.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">Automotive</span><span class="tag">Embedded</span><span class="tag">PCB</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Learning module</span></div>
+        <div class="meta-row"><span class="k">Controller</span><span class="v">MCP2515 (SPI)</span></div>
+        <div class="meta-row"><span class="k">Transceiver</span><span class="v">MCP2551</span></div>
+        <div class="meta-row"><span class="k">Bus speed</span><span class="v">up to 1 Mbps</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">PCB designed, not yet fabricated</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/CAN 3d.png" alt="3D render of the CAN bus module PCB" class="expandable" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>Why CAN</h2>
+          <p>CAN (Controller Area Network) is the backbone of automotive communication. Every ECU in a car, from the engine controller to the door module, talks CAN. It is a multi-master, message-based protocol where every node sees every message, and each message has a priority based on its identifier. No addressing needed, no central hub, just two wires and every node listens.</p>
+          <p>I wanted to understand how this works at the hardware level, not just library calls. Building a module from scratch, from schematic to PCB, forced me to learn the difference between the controller (MCP2515) and the transceiver (MCP2551), what the SPI interface actually does, and why the physical layer matters at high speeds.</p>
+          <p class="mono-note">// goal: understand CAN at the hardware level, from schematic to bus.</p>
+
+          <h2>What is CAN</h2>
+          <p>CAN is a two-wire differential bus. CAN_H and CAN_L swing around 2.5V, and the receiver looks at the difference between them. This makes it very noise-immune, which is why cars use it. A dominant bit (logic 0) pulls the differential voltage apart, a recessive bit (logic 1) lets the bus float back to idle.</p>
+          <p>Key properties:</p>
+          <ul>
+            <li>Multi-master: any node can transmit when the bus is idle</li>
+            <li>Message-based: messages have IDs, not addresses</li>
+            <li>Priority: lower ID = higher priority, non-destructive arbitration</li>
+            <li>Error detection: CRC, bit stuffing, acknowledgement</li>
+            <li>Speeds up to 1 Mbps (CAN 2.0B), 8 Mbps (CAN FD)</li>
+          </ul>
+
+          <h2>The MCP2515 controller</h2>
+          <p>The MCP2515 is a stand-alone CAN controller with an SPI interface. It handles all the CAN protocol logic: message framing, arbitration, error detection, filtering, and masking. Your MCU just sends and receives messages over SPI, and the MCP2515 does the hard work on the bus side.</p>
+          <p>It has two receive buffers and three transmit buffers, so you can queue up messages without your MCU having to service every interrupt immediately. The interrupt pin (INT) goes low when a valid message is received, so your MCU does not have to poll.</p>
+
+          <div class="calc-block">
+            <div class="calc-title">SPI interface pins</div>
+            <div class="calc-table">
+              <div class="calc-row"><span class="ck">SI (MOSI)</span><span class="cv">Master out, slave in</span></div>
+              <div class="calc-row"><span class="ck">SO (MISO)</span><span class="cv">Master in, slave out</span></div>
+              <div class="calc-row"><span class="ck">SCK</span><span class="cv">SPI clock</span></div>
+              <div class="calc-row"><span class="ck">CS</span><span class="cv">Chip select (active low)</span></div>
+              <div class="calc-row"><span class="ck">INT</span><span class="cv">Interrupt output</span></div>
+            </div>
+          </div>
+
+          <h2>The MCP2551 transceiver</h2>
+          <p>The MCP2515 talks logic levels (3.3V or 5V). The bus talks differential voltages. The MCP2551 bridges the two. It takes TXD from the controller and drives CAN_H/CAN_L on the bus. It takes the bus differential and outputs RXD back to the controller.</p>
+          <p>The transceiver also handles slope control through the Rs pin. A resistor to ground sets the slew rate of the output, which reduces EMI at the cost of maximum speed. For learning at 125 kbps or 250 kbps, a higher slope resistor is fine. For full 1 Mbps, use a lower value or tie Rs directly to ground.</p>
+
+          <h2>Bus termination</h2>
+          <p>CAN buses need 120Ω termination resistors at both ends. This matches the characteristic impedance of the twisted-pair cable and prevents signal reflections. On my module, R1 is a 120Ω resistor across CAN_H and CAN_L, placed as SMD so it can be easily omitted when the module is not at a bus endpoint.</p>
+          <p>If you have two nodes on a bus, each module should have the termination enabled. If you have three or more nodes, only the two end nodes should have termination. The middle nodes leave it off.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/CAN schematic.png" alt="KiCad schematic of the CAN bus module" class="expandable" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. MCP2515 controller on the left, MCP2551 transceiver on the right, 8MHz crystal, and decoupling caps.</div>
+          </div>
+
+          <h2>Breaking out TX and RX</h2>
+          <p>The MCP2515 has three transmit pins (TX0, TX1, TX2) and two receive pins (RX0, RX1). The standard MCP2515 modules connect TX0/RX0 to the transceiver and leave the rest unused. I broke all of them out to a header so I can:</p>
+          <ul>
+            <li>Directly observe TX/RX activity with a logic analyzer</li>
+            <li>Use the extra transmit channels for alternate protocols</li>
+            <li>Connect to external transceivers for a multi-bus setup</li>
+            <li>Debug by tapping the raw CAN signals before the transceiver</li>
+          </ul>
+
+          <h2>Crystal and clock</h2>
+          <p>The MCP2515 needs an 8MHz crystal for its internal oscillator. The crystal load capacitors (C2, C3) are 22pF, matching the typical load capacitance for an HC-49S package. The clock accuracy matters because CAN timing is derived from it. The bit time is divided into time segments, and a drift of even a few percent will cause bit errors on the bus.</p>
+
+          <div class="calc-block">
+            <div class="calc-title">CAN bit timing at 8 MHz crystal, 125 kbps</div>
+            <div class="calc-eq">Time quanta (TQ) = 8 MHz / (125 kbps x prescaler)</div>
+            <div class="calc-eq">With prescaler = 2: TQ = 8 MHz / 250 kbps = 32 TQ per bit</div>
+            <div class="calc-eq">Typical segment split: Sync + Prop + Phase1 + Phase2</div>
+            <div class="calc-result">= 1 + 6 + 13 + 12 = 32 TQ per bit</div>
+          </div>
+
+          <h2>Decoupling and power</h2>
+          <p>The module runs on 5V, with decoupling caps close to each IC. C1 (10uF bulk) handles low-frequency ripple, C4 and C5 (100nF) filter high-frequency noise. The power LED (D1) with a 1k series resistor (R4) gives a visual indication that the board is powered. Simple, but useful when you are probing signals and wondering if the module is even on.</p>
+
+          <h2>PCB layout</h2>
+          <p>The board is compact, with the SPI header on one end and the CAN terminal on the other. The crystal sits close to the MCP2515 to minimize trace length. The 120Ω termination resistor is placed near the CAN terminal so it is easy to desolder if needed. Mounting holes at both ends allow the module to be secured in a test fixture or enclosure.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/CAN pcb.png" alt="PCB layout of the CAN bus module" class="expandable" /></div>
+              <div class="photo-cap">FIG 2: KiCad PCB layout. SPI header on the left, CAN terminal on the right.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/CAN 3d.png" alt="3D render of the CAN bus module" class="expandable" /></div>
+              <div class="photo-cap">FIG 3: 3D render. Compact board with clear silkscreen labels.</div>
+            </div>
+          </div>
+
+          <h2>How to use it</h2>
+          <p>Wire the SPI header to any microcontroller. On Arduino, that is MOSI (pin 11), MISO (pin 12), SCK (pin 13), CS (pin 10), and INT (pin 2). The MCP2515 library handles the register-level setup. You configure the baud rate, set up masks and filters, and then you can send and receive CAN frames.</p>
+          <p>For a quick test, connect two modules to the same bus (CAN_H to CAN_H, CAN_L to CAN_L, GND to GND). Load a send sketch on one and a receive sketch on the other. You will see messages appearing on the serial monitor. Add a third node and you start to understand why CAN is so robust, every node sees every message, and the arbitration handles who gets to talk when.</p>
+
+          <h2>What I learned</h2>
+          <p>The biggest takeaway is that CAN is not just a protocol, it is a physical layer standard. The differential signaling, the termination, the bit timing, the error handling, all of it matters. You cannot just wire two Arduinos together and call it CAN. You need the transceiver, the termination, and the right cable. But once you get it working, it is remarkably reliable. Cars run millions of CAN messages per day without issues, and now I understand why.</p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Controller</div>
+              <div class="spec-line"><span class="sk">IC</span><span class="sv">MCP2515</span></div>
+              <div class="spec-line"><span class="sk">Interface</span><span class="sv">SPI</span></div>
+              <div class="spec-line"><span class="sk">Crystal</span><span class="sv">8 MHz</span></div>
+              <div class="spec-line"><span class="sk">TX buffers</span><span class="sv">3</span></div>
+              <div class="spec-line"><span class="sk">RX buffers</span><span class="sv">2</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Transceiver</div>
+              <div class="spec-line"><span class="sk">IC</span><span class="sv">MCP2551</span></div>
+              <div class="spec-line"><span class="sk">Max speed</span><span class="sv">1 Mbps</span></div>
+              <div class="spec-line"><span class="sk">Slope ctrl</span><span class="sv">Rs pin</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Bus</div>
+              <div class="spec-line"><span class="sk">Termination</span><span class="sv">120 ohm (SMD, omittable)</span></div>
+              <div class="spec-line"><span class="sk">Connector</span><span class="sv">2-pin screw terminal</span></div>
+              <div class="spec-line"><span class="sk">Wiring</span><span class="sv">CAN_H, CAN_L, GND</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">SPI header</div>
+              <div class="spec-line"><span class="sk">Pins</span><span class="sv">VCC, GND, SI, SO, CS, SCK, INT</span></div>
+              <div class="spec-line"><span class="sk">Logic</span><span class="sv">5V</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Breakout</div>
+              <div class="spec-line"><span class="sk">TX pins</span><span class="sv">TX0, TX1, TX2</span></div>
+              <div class="spec-line"><span class="sk">RX pins</span><span class="sv">RX0, RX1</span></div>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/can-module" target="_blank" rel="noopener">
+                <span class="sk">Source code</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10.0.3</span></div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects/pid-simulator"><span class="arrow">←</span> PID Motor Simulator</a>
+        <span></span>
+      </div>
+    </div>
+
+    <div id="lightbox" class="lightbox">
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
+  .frame img.expandable:hover { opacity: 0.85; }
+
+  .hero-frame { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame { aspect-ratio: 16 / 9; }
+
+  .calc-block { background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 18px 22px; margin: 16px 0; font-family: var(--mono); }
+  .calc-title { font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .calc-eq { font-size: 13px; color: var(--ink-2); padding: 2px 0; line-height: 1.7; }
+  .calc-result { font-size: 14px; font-weight: 600; color: var(--ink); padding-top: 6px; border-top: 1px dashed var(--line-2); margin-top: 6px; }
+  .calc-table { display: flex; flex-direction: column; gap: 0; }
+  .calc-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed var(--line-2); font-size: 13px; }
+  .calc-row:last-child { border-bottom: 0; }
+  .calc-row .ck { color: var(--ink-3); }
+  .calc-row .cv { color: var(--ink); font-weight: 500; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    cursor: zoom-out;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
+
+<script>
+  const lightbox = document.getElementById("lightbox");
+  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
+    img.addEventListener("click", () => {
+      lightboxImg.src = img.src;
+      lightboxImg.alt = img.alt;
+      lightbox?.classList.add("open");
+    });
+  });
+
+  lightbox?.addEventListener("click", () => {
+    lightbox.classList.remove("open");
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") lightbox?.classList.remove("open");
+  });
+</script>
