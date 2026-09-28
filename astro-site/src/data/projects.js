@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "can-module",
+    num: "08",
+    year: "2026",
+    title: "CAN Bus Module",
+    blurb: "A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with broken-out TX/RX pins for flexibility. Designed for learning CAN protocol and EV communications.",
+    label: "3D render: CAN bus module PCB",
+    image: "/images/CAN 3d.png",
+    featured: false,
+    tags: ["Automotive", "Embedded", "PCB"],
+  },
+  {
     slug: "pid-simulator",
     num: "07",
     year: "2026",
