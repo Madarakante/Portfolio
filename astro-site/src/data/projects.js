@@ -34,7 +34,7 @@ export const projects = [
     num: "08",
     year: "2026",
     title: "CAN Bus Module",
-    blurb: "A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with broken-out TX/RX pins for flexibility. Designed for learning CAN protocol and EV communications.",
+    blurb: "A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with the controller's buffer-control pins broken out to a header. Designed for learning CAN protocol and EV communications.",
     label: "3D render: CAN bus module PCB",
     image: "/images/CAN 3d.png",
     featured: false,
