@@ -25,7 +25,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/plc-editor-overview.gif" alt="OpenPLC editor showing the conveyor control program" class="expandable" />
+        <img src="/images/plc-editor-overview.gif" alt="OpenPLC editor showing the conveyor control program" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -44,11 +44,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><img src="/images/plc-ladder-logic.gif" alt="Ladder logic diagram for the conveyor pusher control" class="expandable" /></div>
+              <div class="frame"><img src="/images/plc-ladder-logic.gif" alt="Ladder logic diagram for the conveyor pusher control" /></div>
               <div class="photo-cap">FIG 1: Ladder logic program controlling the sensor and pusher</div>
             </div>
             <div>
-              <div class="frame"><img src="/images/plc-factory-io.gif" alt="Conveyor system with boxes being pushed between belts" class="expandable" /></div>
+              <div class="frame"><img src="/images/plc-factory-io.gif" alt="Conveyor system with boxes being pushed between belts" /></div>
               <div class="photo-cap">FIG 2: The conveyor setup with sensor and pusher mechanism</div>
             </div>
           </div>
@@ -59,7 +59,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-single">
             <div class="frame">
-              <img src="/images/plc-factory-io.gif" alt="Animation of boxes being pushed from one conveyor to another" class="expandable" />
+              <img src="/images/plc-factory-io.gif" alt="Animation of boxes being pushed from one conveyor to another" />
               <span class="frame-corner tl"></span><span class="frame-corner tr"></span><span class="frame-corner bl"></span><span class="frame-corner br"></span>
             </div>
             <div class="photo-cap">FIG 3: Simulation showing the full sensor-push-reset cycle in action</div>
@@ -99,10 +99,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <a class="txtlink" href="/projects/fume-extractor">PWM Fume Extractor <span class="arrow">→</span></a>
       </div>
     </div>
-
-    <div id="lightbox" class="lightbox">
-      <img id="lightbox-img" src="" alt="" />
-    </div>
   </main>
 </BaseLayout>
 
@@ -121,11 +117,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .meta-row .v { font-size: 15px; font-weight: 500; }
 
   .frame { position: relative; overflow: hidden; background: var(--paper-2); }
-  .frame img { display: block; width: 100%; height: 100%; object-fit: contain; }
-  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
-  .frame img.expandable:hover { opacity: 0.85; }
 
-  .hero-frame { aspect-ratio: 21 / 9; }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 21 / 9; }
 
   .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
   .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
@@ -134,10 +127,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
 
   .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
-  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
   .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
   .photo-single { margin: 28px 0; }
-  .photo-single .frame { aspect-ratio: 16 / 8; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 8; }
 
   .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
   .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
@@ -151,25 +144,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
-  .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.88);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    cursor: zoom-out;
-  }
-  .lightbox.open { display: flex; }
-  .lightbox img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-  }
 
   @media (max-width: 900px) {
     .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
@@ -179,23 +153,3 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
 </style>
 
-<script>
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
-
-  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
-    img.addEventListener("click", () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox?.classList.add("open");
-    });
-  });
-
-  lightbox?.addEventListener("click", () => {
-    lightbox.classList.remove("open");
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") lightbox?.classList.remove("open");
-  });
-</script>

@@ -41,7 +41,15 @@ public/images/               all images (filenames may contain spaces)
 `BaseLayout(title="… · Ngwashi Anthony", description, image, active="projects")`
 → `.crumb` `← Projects` → `.proj-head` (`.kicker` `PROJ-09 · Tag · Tag · 2026`, `h1.h-xl`,
 `.lede`, `.tags`, `.head-meta` rows) → hero `.frame.hero-frame` → `.body-grid`
-(`article.writeup` + `aside.specs`, sticky) → `.nextprev` → `#lightbox` script.
+(`article.writeup` + `aside.specs`, sticky) → `.nextprev`.
+
+Images are handled globally — no per-page lightbox, no `.expandable` class:
+- an `<img>` fills its frame at its **own** aspect ratio (`width:100%; height:auto`),
+  so nothing is cropped and no grey bars appear;
+- a `.frame` that is still a placeholder keeps its ratio via
+  `:not(:has(> img))` — write it as `.hero-frame:not(:has(> img)) { aspect-ratio: 16/9 }`;
+- every image is zoomable (click → fit to screen, click again → 100%, Esc → close).
+  The lightbox markup + script live in `BaseLayout.astro`.
 
 Writeup building blocks (styles are **copied into each page** — keep them in sync):
 
@@ -52,7 +60,6 @@ Writeup building blocks (styles are **copied into each page** — keep them in s
 | `.calc-block` > `.calc-table` > `.calc-row` > `.ck` / `.cv` | pin/part tables |
 | `.photo-single` / `.photo-pair` > `.frame` + `.photo-cap` | figures, caption `FIG 1: …` |
 | `.frame` + `.frame-corner tl/tr/bl/br` + `.frame-label` | image placeholder |
-| `.expandable` on `<img>` | click-to-zoom (needs the lightbox block) |
 | `.specs` > `.specs-head` > `.spec-group` > `.g-label` + `.spec-line.sk/.sv` | sidebar |
 | `.spec-link` | sidebar GitHub link |
 
@@ -105,6 +112,9 @@ next: { title: "Newer post", url: "/blog/newer-slug" }
 - Layout: `.wrap` (1180px) / `.wrap-narrow` (760px). Type: `.display .h-xl .h-lg .h-md
   .lede .mono .kicker`. Buttons: `.btn .btn-ghost .txtlink`. Cards: `.card`.
 - Restraint is the style: hairlines, mono metadata, one accent, no extra colours.
+- `global.css` also owns **image fit** (`.frame > img`, `.card-img img`, … → `width:100%;
+  height:auto`) and the **lightbox** (`.lightbox`, `.lightbox.actual`, `.lightbox-hint`).
+  Never re-add `object-fit: cover` / fixed `height:100%` on content images — it crops.
 - Breakpoints used across pages: 920/900/860px (stack grids), 760px (footer), 560/520px
   (single column + hamburger).
 

@@ -54,12 +54,12 @@ The 555 has 8 pins and they are not in the order you would expect. Here is the o
 In monostable mode, the important pins are 1 (GND), 2 (TRIG), 3 (OUT), 4 (RESET), 6 (THR), 7 (DIS), and 8 (Vcc). Pin 5 gets a small capacitor to ground for stability, if you have one.
 
 <figure class="diagram">
-  <img src="/images/555-pinout-datasheet.jpg" alt="555 timer pin configuration from the TI datasheet" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-pinout-datasheet.jpg" alt="555 timer pin configuration from the TI datasheet" />
   <figcaption>FIG 2: 555 pin configuration from the TI datasheet. The notch indicates pin 1.</figcaption>
 </figure>
 
 <figure class="diagram">
-  <img src="/images/555-pinout-handwritten.jpg" alt="hand-drawn 555 pinout diagram on yellow paper" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-pinout-handwritten.jpg" alt="hand-drawn 555 pinout diagram on yellow paper" />
   <figcaption>FIG 3: my own pinout reference, drawn before I started wiring. Drawing it out helps it stick.</figcaption>
 </figure>
 
@@ -81,11 +81,11 @@ When you press the button, pin 2 (trigger) gets pulled below 1/3 Vcc. The 555 se
 Eight connections and you have a one-shot timer.
 
 <figure class="diagram">
-  <img src="/images/555-ic-breadboard.jpg" alt="NE555P IC placed on the breadboard ready for wiring" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-ic-breadboard.jpg" alt="NE555P IC placed on the breadboard ready for wiring" />
   <figcaption>FIG 4: the NE555P sitting on the breadboard, ready to be wired up. Pin 1 is at the bottom left.</figcaption>
 </figure>
 
-<video controls style="width:100%;border-radius:4px;margin:24px 0;">
+<video controls>
   <source src="/images/555-monostablestable-demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
@@ -117,7 +117,7 @@ For a quick flash (like a notification blip), try R1 = 1k, C1 = 1uF. For a long 
 ## What I got wrong
 
 <figure class="diagram">
-  <img src="/images/555-monostable-breadboard-1.jpg" alt="full breadboard view of the monostable circuit with all wiring" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-monostable-breadboard-1.jpg" alt="full breadboard view of the monostable circuit with all wiring" />
   <figcaption>FIG 5: the complete monostable circuit on the breadboard. Every wire has a purpose, and one of them was lying to me.</figcaption>
 </figure>
 
@@ -132,7 +132,7 @@ This is a breadboard problem nobody warns you about. The holes are tiny, they al
 The second mistake was putting the LED in backwards. The 555 output pin (3) sources current (pushes out positive voltage), so the LED anode connects to the output side. If you wire it the other way, the LED just does nothing. No damage, no smoke, just silence.
 
 <figure class="diagram">
-  <img src="/images/555-closeup.jpg" alt="close-up of the 555 timer and resistors on the breadboard" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-closeup.jpg" alt="close-up of the 555 timer and resistors on the breadboard" />
   <figcaption>FIG 6: close-up of the wiring around the 555. The resistors and push button are visible on the right side.</figcaption>
 </figure>
 
@@ -141,7 +141,7 @@ The second mistake was putting the LED in backwards. The 555 output pin (3) sour
 ## What I learned
 
 <figure class="diagram">
-  <img src="/images/555-monostable-breadboard-2.jpg" alt="alternate angle of the monostable circuit on the breadboard" style="width:100%;border-radius:4px;" />
+  <img src="/images/555-monostable-breadboard-2.jpg" alt="alternate angle of the monostable circuit on the breadboard" />
   <figcaption>FIG 7: another angle of the finished circuit. The push button and LED are on the right side of the board.</figcaption>
 </figure>
 
