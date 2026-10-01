@@ -48,7 +48,8 @@ Images are handled globally — no per-page lightbox, no `.expandable` class:
   so nothing is cropped and no grey bars appear;
 - a `.frame` that is still a placeholder keeps its ratio via
   `:not(:has(> img))` — write it as `.hero-frame:not(:has(> img)) { aspect-ratio: 16/9 }`;
-- every image is zoomable (click → fit to screen, click again → 100%, Esc → close).
+- every image is zoomable (click → fit to screen, click again → 100%, Esc → close);
+  images inside a link (home/projects/blog cards) are excluded and navigate instead.
   The lightbox markup + script live in `BaseLayout.astro`.
 
 Writeup building blocks (styles are **copied into each page** — keep them in sync):

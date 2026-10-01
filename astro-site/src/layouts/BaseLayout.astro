@@ -60,7 +60,8 @@ const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
 
     <script>
       // Site-wide image zoom: click any image to open it, click the image again
-      // for 100% pixels, click the backdrop (or Esc) to close.
+      // for 100% pixels, click the backdrop (or Esc) to close. Images inside a
+      // link (cards, thumbnails) are excluded — clicking them follows the link.
       const lightbox = document.getElementById("lightbox");
       const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
 
@@ -98,7 +99,8 @@ const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
 
         const img = target.closest("img") as HTMLImageElement | null;
         if (!img) return;
-        // Stop the click from also following the card/post link it sits in.
+        // An image inside a link (cards, thumbnails) belongs to the link: let it navigate.
+        if (img.closest("a[href]")) return;
         e.preventDefault();
         e.stopPropagation();
         open(img);
