@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="CAN Bus Module · Ngwashi Anthony" description="A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with broken-out TX/RX pins for flexibility. Designed for learning CAN protocol and EV communications." image="/images/CAN 3d.png" active="projects">
+  <BaseLayout title="CAN Bus Module · Ngwashi Anthony" description="A compact SPI-to-CAN bus module using MCP2515 and MCP2551, with the controller's buffer-control pins broken out to a header. Designed for learning CAN protocol and EV communications." image="/images/CAN 3d.png" active="projects">
   <main data-screen-label="Project detail">
     <div class="wrap crumb"><a href="/projects">← Projects</a></div>
 
@@ -10,7 +10,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       <div>
         <span class="kicker">PROJ-08 · PCB · Automotive · Embedded · 2026</span>
         <h1 class="h-xl">CAN Bus Module</h1>
-        <p class="lede">A compact SPI-to-CAN bus module built around the MCP2515 controller and MCP2551 transceiver. Designed as a learning tool for CAN protocol and EV communications, with broken-out TX/RX pins for direct access and flexibility.</p>
+        <p class="lede">A compact SPI-to-CAN bus module built around the MCP2515 controller and MCP2551 transceiver. Designed as a learning tool for CAN protocol and EV communications, with the controller's buffer-control pins broken out to a header.</p>
         <div class="tags" style="margin-top:24px;">
           <span class="tag tag-accent">Automotive</span><span class="tag">Embedded</span><span class="tag">PCB</span>
         </div>
@@ -67,8 +67,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </div>
 
           <h2>The MCP2551 transceiver</h2>
-          <p>The MCP2515 talks logic levels (3.3V or 5V). The bus talks differential voltages. The MCP2551 bridges the two. It has its own dedicated TXD and RXD pins that connect to the MCP2515's TX0 and RX0. On the bus side, it drives CAN_H/CAN_L and reads the differential voltage. The transceiver is a separate IC from the controller, with its own power supply pin (VDD) and ground.</p>
-          <p>The transceiver also handles slope control through the Rs pin. A resistor to ground sets the slew rate of the output, which reduces EMI at the cost of maximum speed. For learning at 125 kbps or 250 kbps, a higher slope resistor is fine. For full 1 Mbps, use a lower value or tie Rs directly to ground.</p>
+          <p>The MCP2515 talks logic levels. The bus talks differential voltages. The MCP2551 bridges the two. Its TXD pin is an <em>input</em>, driven by the MCP2515's TXCAN output, and its RXD pin is an <em>output</em>, feeding the MCP2515's RXCAN input: TX to TX, RX to RX, no crossover. On the bus side, it drives CAN_H/CAN_L and reads the differential voltage back. The transceiver is a separate IC from the controller, with its own supply pin (VDD) and ground (VSS).</p>
+          <p>One thing worth knowing about the supply: the MCP2551 only runs from 4.5 V to 5.5 V, so this board is 5 V end to end. The MCP2515 on its own is happy down to 2.7 V, but paired with this transceiver there is no 3.3 V option. Check the voltage of your MCU before you wire it up.</p>
+          <p>The transceiver also handles slope control through the Rs pin. A resistor to ground sets the slew rate of the output, which reduces EMI at the cost of maximum speed. This board ships with R2 at 10 kΩ, which puts the driver in slope-control mode: comfortable at 125 or 250 kbps, and quieter on the spectrum. If you want the full 1 Mbps on a longer bus, bridge R2 so Rs sits straight at ground and the transceiver runs in high-speed mode.</p>
 
           <h2>Bus termination</h2>
           <p>CAN buses need 120Ω termination resistors at both ends. This matches the characteristic impedance of the twisted-pair cable and prevents signal reflections. On my module, R1 is a 120Ω THT resistor across CAN_H and CAN_L, placed as through-hole so it can be easily omitted or swapped when the module is not at a bus endpoint.</p>
@@ -79,24 +80,36 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             <div class="photo-cap">FIG 1: KiCad schematic. MCP2515 controller on the left, MCP2551 transceiver on the right, 8MHz crystal, and decoupling caps.</div>
           </div>
 
-          <h2>Breaking out TX and RX</h2>
-          <p>The MCP2515 has three transmit pins (TX0, TX1, TX2) and two receive pins (RX0, RX1). The MCP2551 transceiver connects to TX0 and RX0 through its own dedicated TXD and RXD pins. The remaining pins (TX1, TX2, RX1) are broken out to a separate header so I can:</p>
+          <h2>What is actually broken out</h2>
+          <p>The MCP2515 has three transmit <em>buffers</em> and two receive <em>buffers</em>, but only one pair of CAN signal pins: TXCAN, the transmit output, and RXCAN, the receive input. Those two go straight to the transceiver's TXD and RXD, so there are no spare TX/RX signal pins left over.</p>
+          <p>What I did break out is the auxiliary header, J2. Its silkscreen shortens the names to RX0, RX1, TX0, TX1, TX2, which is misleading on its own, so here is what each pin really is:</p>
+
+          <div class="calc-block">
+            <div class="calc-title">Breakout header J2</div>
+            <div class="calc-table">
+              <div class="calc-row"><span class="ck">RX0, RX1</span><span class="cv">RX0BF, RX1BF: receive-buffer-full outputs</span></div>
+              <div class="calc-row"><span class="ck">TX0, TX1, TX2</span><span class="cv">TX0RTS, TX1RTS, TX2RTS: request-to-send inputs</span></div>
+            </div>
+          </div>
+
+          <p>These are status and control lines, not raw bus signals, and that is exactly what makes them useful:</p>
           <ul>
-            <li>Directly observe TX/RX activity with a logic analyzer</li>
-            <li>Use the extra transmit channels for alternate protocols</li>
-            <li>Connect to external transceivers for a multi-bus setup</li>
-            <li>Debug by tapping the raw CAN signals before the transceiver</li>
+            <li>RXnBF can be configured as an active-low interrupt that fires the moment a valid message lands in buffer 0 or 1, so the MCU never has to poll</li>
+            <li>TXnRTS triggers transmission of one specific buffer, latched on a falling edge, as an alternative to writing to it over SPI</li>
+            <li>The two are meant to work together: wire an RXnBF pin straight to a TXnRTS pin and the board retransmits the instant it receives, with no MCU in the loop</li>
+            <li>Unconfigured, all five pins double as general-purpose digital I/O</li>
           </ul>
 
           <h2>Crystal and clock</h2>
-          <p>The MCP2515 needs an 8MHz crystal for its internal oscillator. The crystal load capacitors (C2, C3) are 22pF, matching the typical load capacitance for an HC-49S package. The clock accuracy matters because CAN timing is derived from it. The bit time is divided into time segments, and a drift of even a few percent will cause bit errors on the bus.</p>
+          <p>The MCP2515 is clocked by a crystal across OSC1 and OSC2; this board uses 8 MHz, the standard choice for a bus running from 125 kbps up to 1 Mbps. The load capacitors (C2, C3) are 22 pF, which is what a typical HC-49S crystal wants. Clock accuracy matters because CAN timing is derived from it. The bit time is divided into time segments, and a drift of even a few percent will cause bit errors on the bus.</p>
 
           <div class="calc-block">
             <div class="calc-title">CAN bit timing at 8 MHz crystal, 125 kbps</div>
-            <div class="calc-eq">Time quanta (TQ) = 8 MHz / (125 kbps x prescaler)</div>
-            <div class="calc-eq">With prescaler = 2: TQ = 8 MHz / 250 kbps = 32 TQ per bit</div>
-            <div class="calc-eq">Typical segment split: Sync + Prop + Phase1 + Phase2</div>
-            <div class="calc-result">= 1 + 6 + 13 + 12 = 32 TQ per bit</div>
+            <div class="calc-eq">TQ per bit = Fosc / (baud rate x prescaler)</div>
+            <div class="calc-eq">= 8 MHz / (125 kbps x 2) = 32 TQ per bit, each TQ 250 ns</div>
+            <div class="calc-eq">Segment split: Sync + Prop + Phase1 + Phase2</div>
+            <div class="calc-eq">= 1 + 7 + 20 + 4 = 32 TQ</div>
+            <div class="calc-result">sample point = (1 + 7 + 20) / 32 = 87.5%</div>
           </div>
 
           <h2>Decoupling and power</h2>
@@ -118,7 +131,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <h2>How to use it</h2>
           <p>Wire the SPI header to any microcontroller. On Arduino, that is MOSI (pin 11), MISO (pin 12), SCK (pin 13), CS (pin 10), and INT (pin 2). The MCP2515 library handles the register-level setup. You configure the baud rate, set up masks and filters, and then you can send and receive CAN frames.</p>
-          <p>For a quick test, connect two modules to the same bus (CAN_H to CAN_H, CAN_L to CAN_L, GND to GND). Load a send sketch on one and a receive sketch on the other. You will see messages appearing on the serial monitor. Add a third node and you start to understand why CAN is so robust, every node sees every message, and the arbitration handles who gets to talk when.</p>
+          <p>For a quick test, connect two modules to the same bus: CAN_H to CAN_H and CAN_L to CAN_L. On the board the two terminal positions are marked CAN_P and CAN_N, which are CAN_H and CAN_L respectively. The screw terminal only carries those two wires, so the nodes also need a shared ground, which is easiest to get by powering both boards from the same supply. Load a send sketch on one and a receive sketch on the other. You will see messages appearing on the serial monitor. Add a third node and you start to understand why CAN is so robust, every node sees every message, and the arbitration handles who gets to talk when.</p>
 
           <h2>What I learned</h2>
           <p>The biggest takeaway is that CAN is not just a protocol, it is a physical layer standard. The differential signaling, the termination, the bit timing, the error handling, all of it matters. You cannot just wire two Arduinos together and call it CAN. You need the transceiver, the termination, and the right cable. But once you get it working, it is remarkably reliable. Cars run millions of CAN messages per day without issues, and now I understand why.</p>
@@ -145,7 +158,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="g-label">Bus</div>
               <div class="spec-line"><span class="sk">Termination</span><span class="sv">120 ohm THT (omittable)</span></div>
               <div class="spec-line"><span class="sk">Connector</span><span class="sv">2-pin screw terminal</span></div>
-              <div class="spec-line"><span class="sk">Wiring</span><span class="sv">CAN_H, CAN_L, GND</span></div>
+              <div class="spec-line"><span class="sk">Wiring</span><span class="sv">CAN_H, CAN_L only</span></div>
             </div>
             <div class="spec-group">
               <div class="g-label">SPI header</div>
@@ -153,9 +166,9 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
               <div class="spec-line"><span class="sk">Logic</span><span class="sv">5V</span></div>
             </div>
             <div class="spec-group">
-              <div class="g-label">Breakout (MCP2515)</div>
-              <div class="spec-line"><span class="sk">TX pins</span><span class="sv">TX0, TX1, TX2</span></div>
-              <div class="spec-line"><span class="sk">RX pins</span><span class="sv">RX0, RX1</span></div>
+              <div class="g-label">Breakout header J2</div>
+              <div class="spec-line"><span class="sk">RX0, RX1</span><span class="sv">RX0BF / RX1BF outputs</span></div>
+              <div class="spec-line"><span class="sk">TX0, TX1, TX2</span><span class="sv">TX0RTS / TX1RTS / TX2RTS inputs</span></div>
             </div>
             <div class="spec-group">
               <a class="spec-link" href="https://github.com/Madarakante/can-module" target="_blank" rel="noopener">
@@ -173,7 +186,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
       <div class="nextprev">
         <a class="txtlink" href="/projects/pid-simulator"><span class="arrow">←</span> PID Motor Simulator</a>
-        <span></span>
+        <a class="txtlink" href="/projects">All projects <span class="arrow">→</span></a>
       </div>
     </div>
 

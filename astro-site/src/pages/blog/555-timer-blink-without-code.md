@@ -12,6 +12,7 @@ heroImage: /images/555-simulation.gif
 heroCaption: Simulation of the 555 monostable circuit. Press the trigger, the output goes high for a set duration, then drops back to low.
 tags: [Tutorial, Electronics, 555 Timer, Beginner]
 prev: { title: "Getting your first servo moving with Arduino", url: "/blog/getting-your-first-servo-moving-with-arduino" }
+next: { title: "The 555 timer in astable mode: continuous oscillation", url: "/blog/555-astable-mode" }
 ---
 
 The 555 timer has been around since 1972 and it is still one of the first things people reach for when they get into electronics. Not because it is the best at anything, but because it works, the parts are cheap, and you do not need to write a single line of code.

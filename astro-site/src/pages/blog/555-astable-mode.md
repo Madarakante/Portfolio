@@ -6,7 +6,7 @@ category: Tutorial
 date: 16 SEP 2026
 readTime: 10 MIN READ
 badge: BEGINNER
-order: 9
+order: 11
 heroLabel: 555 astable oscillator schematic
 heroImage: /images/flasherSchematic.png
 heroCaption: The KiCad schematic. R1, R2, and C2 set the frequency and duty cycle.

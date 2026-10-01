@@ -12,8 +12,10 @@ const {
   active = "",
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, "https://madarakante.github.io").href;
-const imageURL = image.startsWith("http") ? image : new URL(image, "https://madarakante.github.io").href;
+// Canonical/OG URLs come from `site` in astro.config.mjs — one place to change the domain.
+const site = Astro.site ?? new URL("https://madarakante.github.io");
+const canonicalURL = new URL(Astro.url.pathname, site).href;
+const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
 ---
 
 <!DOCTYPE html>
