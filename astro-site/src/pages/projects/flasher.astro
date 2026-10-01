@@ -26,7 +26,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     <div class="wrap">
       <div class="frame hero-frame">
-        <img src="/images/flasher3Dview.png" alt="3D render of the relayless turn signal flasher PCB" class="expandable" />
+        <img src="/images/flasher3Dview.png" alt="3D render of the relayless turn signal flasher PCB" />
         <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
         <span class="frame-corner bl"></span><span class="frame-corner br"></span>
       </div>
@@ -47,7 +47,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p>Two diodes inside the 555 steer the charge and discharge paths through separate resistors, giving independent control over the on-time and off-time. A 10k pull-down resistor on the gate ensures the MOSFET stays off when the circuit is unpowered. Decoupling capacitors on the power rail filter out noise from the car's electrical system.</p>
 
           <div class="photo-single">
-            <div class="frame"><img src="/images/flasherSchematic.png" alt="KiCad schematic of the 555 timer turn signal flasher" class="expandable" /></div>
+            <div class="frame"><img src="/images/flasherSchematic.png" alt="KiCad schematic of the 555 timer turn signal flasher" /></div>
             <div class="photo-cap">FIG 1: KiCad schematic. The NE555P oscillates in astable mode, driving an IRLZ44N MOSFET to switch the lamps.</div>
           </div>
 
@@ -108,7 +108,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p>I ran the circuit in Proteus before ordering the PCB. The oscilloscope shows the 555 output waveform and the MOSFET drain voltage. The square wave is clean, the switching is sharp, and there is no ringing on the transitions. The MOSFET turns on and off in microseconds, far faster than any mechanical relay.</p>
 
           <div class="photo-single">
-            <div class="frame"><img src="/images/flasherProteusSim.gif" alt="Proteus simulation of the 555 flasher circuit" class="expandable" /></div>
+            <div class="frame"><img src="/images/flasherProteusSim.gif" alt="Proteus simulation of the 555 flasher circuit" /></div>
             <div class="photo-cap">FIG 2: Proteus simulation. The oscilloscope shows the 555 output driving the MOSFET gate.</div>
           </div>
 
@@ -116,7 +116,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p>The PCB is a small two-layer board designed in KiCad. I kept it compact enough to fit in the fuse box area. The screw terminals on the left accept the car's wiring, the 555 and passives are grouped in the center, and the MOSFET sits alongside them with thick copper traces carrying the lamp current.</p>
 
           <div class="photo-single">
-            <div class="frame"><img src="/images/flashePCB.png" alt="PCB layout of the turn signal flasher" class="expandable" /></div>
+            <div class="frame"><img src="/images/flashePCB.png" alt="PCB layout of the turn signal flasher" /></div>
             <div class="photo-cap">FIG 3: KiCad PCB layout. Compact two-layer board for the fuse box.</div>
           </div>
 
@@ -125,11 +125,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
           <div class="photo-pair">
             <div>
-              <div class="frame"><img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" class="expandable" /></div>
+              <div class="frame"><img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" /></div>
               <div class="photo-cap">FIG 4: Assembled board, front view. Screw terminals for car wiring.</div>
             </div>
             <div>
-              <div class="frame"><img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" class="expandable" /></div>
+              <div class="frame"><img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" /></div>
               <div class="photo-cap">FIG 5: Top view showing component placement and trace routing.</div>
             </div>
           </div>
@@ -138,7 +138,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           <p>The video shows the flasher in action. The lamps blink at a steady 1.92 Hz, matching the calculated frequency. No relay click, no contact bounce, just clean solid-state switching. The MOSFET handles the lamp current silently and reliably.</p>
 
           <div class="video-wrap">
-            <video controls preload="metadata" class="expandable">
+            <video controls preload="metadata">
               <source src="/images/flasher-demo.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
@@ -197,10 +197,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
         <a class="txtlink" href="/projects/pid-simulator">PID Motor Simulator <span class="arrow">→</span></a>
       </div>
     </div>
-
-    <div id="lightbox" class="lightbox">
-      <img id="lightbox-img" src="" alt="" />
-    </div>
   </main>
 </BaseLayout>
 
@@ -219,11 +215,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .meta-row .v { font-size: 15px; font-weight: 500; }
 
   .frame { position: relative; overflow: hidden; background: var(--paper-2); }
-  .frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .frame img.expandable { cursor: zoom-in; transition: opacity 0.15s ease; }
-  .frame img.expandable:hover { opacity: 0.85; }
 
-  .hero-frame { aspect-ratio: 16 / 9; }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
 
   .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
   .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
@@ -232,10 +225,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
 
   .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
-  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
   .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
   .photo-single { margin: 28px 0; }
-  .photo-single .frame { aspect-ratio: 16 / 9; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
 
   .video-wrap { margin: 28px 0; }
   .video-wrap video { width: 100%; border-radius: 4px; background: #000; }
@@ -264,25 +257,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
   .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
 
-  .lightbox {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.88);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    padding: 40px;
-    cursor: zoom-out;
-  }
-  .lightbox.open { display: flex; }
-  .lightbox img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-    border-radius: 4px;
-  }
 
   @media (max-width: 900px) {
     .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
@@ -292,23 +266,3 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
 </style>
 
-<script>
-  const lightbox = document.getElementById("lightbox");
-  const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
-
-  document.querySelectorAll<HTMLImageElement>("img.expandable").forEach((img) => {
-    img.addEventListener("click", () => {
-      lightboxImg.src = img.src;
-      lightboxImg.alt = img.alt;
-      lightbox?.classList.add("open");
-    });
-  });
-
-  lightbox?.addEventListener("click", () => {
-    lightbox.classList.remove("open");
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") lightbox?.classList.remove("open");
-  });
-</script>

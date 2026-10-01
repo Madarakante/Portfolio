@@ -37,7 +37,7 @@ The astable circuit is almost the same as monostable, but the trigger and thresh
   <div class="frame">
     <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
     <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-    <img src="/images/flasherSchematic.png" alt="555 astable mode schematic" style="width:100%;height:100%;object-fit:contain;" />
+    <img src="/images/flasherSchematic.png" alt="555 astable mode schematic" />
   </div>
   <figcaption>KiCad schematic of the 555 in astable mode. The MOSFET drives the lamps, but for a simple LED blinker you can skip that and connect the LED directly to pin 3.</figcaption>
 </div>
@@ -104,7 +104,7 @@ Here is my hand-drawn sketch of the circuit before I laid it out in KiCad:
   <div class="frame">
     <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
     <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-    <img src="/images/flasher handrawn for blog.jpg" alt="Hand-drawn schematic of the 555 flasher circuit" style="width:100%;height:100%;object-fit:contain;" />
+    <img src="/images/flasher handrawn for blog.jpg" alt="Hand-drawn schematic of the 555 flasher circuit" />
   </div>
   <figcaption>Hand-drawn sketch of the flasher circuit. Sometimes paper and pen is faster than opening KiCad.</figcaption>
 </div>
@@ -117,7 +117,7 @@ I soldered the board and wired it up to a pair of turn signal lamps. The 555, MO
   <div class="frame">
     <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
     <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-    <img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" style="width:100%;height:100%;object-fit:contain;" />
+    <img src="/images/flasher front view.jpg" alt="Assembled flasher board front view" />
   </div>
   <figcaption>Assembled flasher board. Screw terminals for the car wiring, 555 and MOSFET in the center.</figcaption>
 </div>
@@ -126,14 +126,14 @@ I soldered the board and wired it up to a pair of turn signal lamps. The 555, MO
   <div class="frame">
     <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
     <span class="frame-corner bl"></span><span class="frame-corner br"></span>
-    <img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" style="width:100%;height:100%;object-fit:contain;" />
+    <img src="/images/flasher top view.jpg" alt="Assembled flasher board top view" />
   </div>
   <figcaption>Top view showing component placement and trace routing.</figcaption>
 </div>
 
 And here it is running:
 
-<video controls preload="metadata" style="width:100%;border-radius:4px;margin:28px 0;">
+<video controls preload="metadata">
   <source src="/images/flasher-demo.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>

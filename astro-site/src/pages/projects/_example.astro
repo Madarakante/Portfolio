@@ -13,6 +13,8 @@
 // Every grey ".frame" box is an image placeholder. To use a real photo, put it
 // in  public/images/  and swap the <div class="frame">…</div> for:
 //      <img src="/images/your-photo.jpg" alt="describe the photo" />
+// The image fills the frame at its own aspect ratio, and every image on the
+// site is zoomable: click to open, click again for 100%, Esc to close.
 // ─────────────────────────────────────────────────────────────────────────
 import BaseLayout from "../../layouts/BaseLayout.astro";
 ---
@@ -93,19 +95,19 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             </div>
             <div class="spec-group">
               <div class="g-label">Sensors</div>
-              <div class="spec-line"><span class="sk">Line</span><span class="sv">5�� IR reflectance</span></div>
+              <div class="spec-line"><span class="sk">Line</span><span class="sv">5× IR reflectance</span></div>
               <div class="spec-line"><span class="sk">Mounting</span><span class="sv">Front bar, ~8 mm</span></div>
             </div>
             <div class="spec-group">
               <div class="g-label">Actuators</div>
-              <div class="spec-line"><span class="sk">Motors</span><span class="sv">2�� TT gear, 6 V</span></div>
+              <div class="spec-line"><span class="sk">Motors</span><span class="sv">2× TT gear, 6 V</span></div>
               <div class="spec-line"><span class="sk">Driver</span><span class="sv">L298N H-bridge</span></div>
               <div class="spec-line"><span class="sk">Drive</span><span class="sv">2WD + caster</span></div>
             </div>
             <div class="spec-group">
               <div class="g-label">Body &amp; power</div>
               <div class="spec-line"><span class="sk">Chassis</span><span class="sv">Laser-cut acrylic</span></div>
-              <div class="spec-line"><span class="sk">Battery</span><span class="sv">4�� AA (6 V)</span></div>
+              <div class="spec-line"><span class="sk">Battery</span><span class="sv">4× AA (6 V)</span></div>
               <div class="spec-line"><span class="sk">Mass</span><span class="sv">~320 g</span></div>
             </div>
           </div>
@@ -134,7 +136,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
   .meta-row .v { font-size: 15px; font-weight: 500; }
 
-  .hero-frame { aspect-ratio: 21 / 9; }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 21 / 9; }
 
   .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
   .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
@@ -143,10 +145,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
 
   .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
-  .photo-pair .frame { aspect-ratio: 4 / 3; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
   .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
   .photo-single { margin: 28px 0; }
-  .photo-single .frame { aspect-ratio: 16 / 8; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 8; }
 
   .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
   .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }

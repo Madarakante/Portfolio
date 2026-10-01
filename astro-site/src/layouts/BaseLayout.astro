@@ -52,5 +52,61 @@ const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
     <Header active={active} />
     <slot />
     <Footer />
+
+    <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Zoomed image">
+      <img id="lightbox-img" alt="" />
+      <span class="lightbox-hint">click image for 100% · click outside or press esc to close</span>
+    </div>
+
+    <script>
+      // Site-wide image zoom: click any image to open it, click the image again
+      // for 100% pixels, click the backdrop (or Esc) to close.
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
+
+      const open = (img: HTMLImageElement) => {
+        if (!lightbox || !lightboxImg) return;
+        lightboxImg.src = img.currentSrc || img.src;
+        lightboxImg.alt = img.alt || "";
+        lightbox.classList.add("open");
+        lightbox.classList.remove("actual");
+        lightbox.scrollTop = 0;
+        lightbox.scrollLeft = 0;
+        document.body.classList.add("lb-open");
+      };
+
+      const close = () => {
+        lightbox?.classList.remove("open", "actual");
+        document.body.classList.remove("lb-open");
+      };
+
+      document.addEventListener("click", (e) => {
+        if (!lightbox || !lightboxImg) return;
+        const target = e.target as HTMLElement | null;
+        if (!target) return;
+
+        if (lightbox.contains(target)) {
+          if (target === lightboxImg) {
+            lightbox.classList.toggle("actual");
+            lightbox.scrollTop = 0;
+            lightbox.scrollLeft = 0;
+          } else {
+            close();
+          }
+          return;
+        }
+
+        const img = target.closest("img") as HTMLImageElement | null;
+        if (!img) return;
+        // Stop the click from also following the card/post link it sits in.
+        e.preventDefault();
+        e.stopPropagation();
+        open(img);
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") close();
+      });
+    </script>
   </body>
 </html>

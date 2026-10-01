@@ -62,7 +62,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-img { display: block; max-width: 100%; }
+img { display: block; max-width: 100%; height: auto; }
 
 a { color: inherit; text-decoration: none; }
 
@@ -345,3 +345,57 @@ p { margin: 0 0 1.1em; text-wrap: pretty; }
   .mobile-drawer { display: block; }
   .footer-in { grid-template-columns: 1fr; }
 }
+
+/* ---------- images: fill their frame at their real size -------------------- */
+/* An image defines its own height, so its frame grows to it — no cropping,
+   no letterboxing. Frames WITHOUT an image keep their placeholder ratio via
+   `:not(:has(> img))` in the page that owns them. */
+.frame > img,
+.frame > video,
+.card-img img,
+.featured-img img,
+.pc-img img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+img:not(#lightbox-img) { cursor: zoom-in; }
+
+/* ---------- lightbox: click to zoom, click again for 100% ----------------- */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.92);
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 4vw, 48px);
+  overflow: auto;
+  cursor: zoom-out;
+}
+.lightbox.open { display: flex; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 4px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  cursor: zoom-in;
+}
+/* 1:1 mode — native pixels, scrollable from the top-left */
+.lightbox.actual img { max-width: none; max-height: none; margin: auto; }
+.lightbox-hint {
+  position: fixed;
+  left: 0; right: 0; bottom: 18px;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  pointer-events: none;
+}
+body.lb-open { overflow: hidden; }

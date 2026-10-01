@@ -101,7 +101,8 @@ const {
   .byline .bl-name { font-size: 15px; font-weight: 500; color: var(--ink); }
 
   .lead-fig { margin: 8px 0 44px; }
-  .lead-fig .frame { aspect-ratio: 16 / 8; }
+  .lead-fig .frame:not(:has(> img)) { aspect-ratio: 16 / 8; }
+  .lead-fig img { width: 100%; height: auto; border-radius: 4px; }
   figcaption { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 9px; }
 
   /* article body: markdown output is slotted, so target it with :global() */
@@ -129,7 +130,8 @@ const {
   .article :global(.pull-note) { font-family: var(--mono); font-size: 13px; line-height: 1.6; color: var(--ink-2); background: var(--paper-2); border: 1px solid var(--line); border-radius: 5px; padding: 16px 18px; margin: 28px 0; }
   .article :global(.pull-note b) { color: var(--accent); }
   .article :global(.diagram) { margin: 32px 0; }
-  .article :global(.diagram .frame) { aspect-ratio: 16 / 7; }
+  .article :global(.diagram .frame:not(:has(> img))) { aspect-ratio: 16 / 7; }
+  .article :global(figure img) { width: 100%; height: auto; border-radius: 4px; }
   .article :global(figure) { margin: 28px 0; }
 
   .post-foot { border-top: 1px solid var(--line); margin-top: 56px; padding-top: 28px; }
