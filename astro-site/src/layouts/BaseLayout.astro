@@ -5,17 +5,73 @@ import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import "../styles/global.css";
 
+const DESCRIPTION =
+  "Mechatronics student building robots, PCBs, and software. Portfolio of projects in robotics, embedded systems, and control.";
+
 const {
   title = "Ngwashi Anthony · Mechatronics Student",
-  description = "Mechatronics student building robots, PCBs, and software. Portfolio of projects in robotics, embedded systems, and control.",
+  description = DESCRIPTION,
   image = "/images/hero-3d.png",
   active = "",
+  // "article" for blog posts — sets og:type, article:published_time and a
+  // BlogPosting JSON-LD block. Everything else stays "website".
+  type = "website",
+  date,
 } = Astro.props;
 
+const MONTHS = {
+  JAN: 0, FEB: 1, MAR: 2, APR: 3, MAY: 4, JUN: 5,
+  JUL: 6, AUG: 7, SEP: 8, OCT: 9, NOV: 10, DEC: 11,
+};
+
+// Frontmatter dates are display-only ("16 SEP 2026").
+function parseDate(value) {
+  const m = /^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/.exec(String(value ?? "").trim());
+  if (!m) return undefined;
+  const month = MONTHS[m[2].toUpperCase()];
+  if (month === undefined) return undefined;
+  return new Date(Date.UTC(Number(m[3]), month, Number(m[1])));
+}
+
 // Canonical/OG URLs come from `site` in astro.config.mjs — one place to change the domain.
-const site = Astro.site ?? new URL("https://madarakante.github.io");
+const site = Astro.site ?? new URL("https://anthonycodes.tech");
 const canonicalURL = new URL(Astro.url.pathname, site).href;
 const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
+const published = date ? parseDate(date) : undefined;
+
+const author = { "@type": "Person", name: "Ngwashi Anthony", url: site.href };
+const graph = [
+  {
+    "@type": "WebSite",
+    name: "Ngwashi Anthony · Mechatronics Portfolio",
+    url: site.href,
+    description: DESCRIPTION,
+    inLanguage: "en",
+  },
+  {
+    "@type": "Person",
+    name: "Ngwashi Anthony",
+    url: site.href,
+    jobTitle: "Mechatronics Student",
+    sameAs: ["https://github.com/Madarakante"],
+  },
+];
+
+if (type === "article") {
+  graph.push({
+    "@type": "BlogPosting",
+    headline: title,
+    description,
+    image: imageURL,
+    mainEntityOfPage: canonicalURL,
+    ...(published ? { datePublished: published.toISOString() } : {}),
+    author,
+    publisher: { "@type": "Person", name: "Ngwashi Anthony", url: site.href },
+    inLanguage: "en",
+  });
+}
+
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph });
 ---
 
 <!DOCTYPE html>
@@ -28,18 +84,22 @@ const imageURL = image.startsWith("http") ? image : new URL(image, site).href;
     <link rel="canonical" href={canonicalURL} />
 
     <!-- Open Graph -->
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={type} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={imageURL} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:site_name" content="Ngwashi Anthony · Mechatronics Portfolio" />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
+
+    <link rel="alternate" type="application/rss+xml" title="Ngwashi Anthony · Build notes" href="/rss.xml" />
+    <script type="application/ld+json" set:html={jsonLd} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
