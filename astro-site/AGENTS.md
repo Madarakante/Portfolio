@@ -121,8 +121,19 @@ next: { title: "Newer post", url: "/blog/newer-slug" }
 
 ## Site config
 
-- `astro.config.mjs` → `site: 'https://madarakante.github.io'`. **This is the only place
-  the domain lives** — `BaseLayout` derives canonical/OG URLs from `Astro.site`.
+- `astro.config.mjs` → `site: 'https://anthonycodes.tech'`. **This is the only place the
+  domain lives** — `BaseLayout` derives canonical/OG URLs from `Astro.site`, and the
+  sitemap and `robots.txt` are generated from it too.
+- SEO tooling, all build-time:
+  - `@astrojs/sitemap` → `sitemap-index.xml` (the 404 page is filtered out).
+  - `public/robots.txt` → crawler rules + the sitemap pointer.
+  - `src/pages/rss.xml.js` → `/rss.xml`; posts are sorted by `order` (higher = newer).
+  - `src/integrations/seo-media.mjs` → after the build it stamps every `<img>` with
+    `decoding="async"`, `loading="lazy"`, intrinsic `width`/`height` read from
+    `public/images`, and `loading="eager" fetchpriority="high"` on the first image in
+    `<main>` (the LCP one). **Don't hand-write those attributes** — this owns them.
+  - `BaseLayout` emits JSON-LD (`WebSite` + `Person` everywhere, `BlogPosting` when it
+    is given `type="article"`, which `BlogPost` passes along with `date`).
 - Deploy: `wrangler.jsonc` serves `./dist` as static assets (`wrangler deploy`).
 - Markdown highlight theme: `vitesse-dark`.
 
