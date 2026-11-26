@@ -12,6 +12,10 @@ const count = String(projects.length).padStart(2, "0");
       <span class="kicker">Things I've built, 2023–2026</span>
       <h1 class="h-xl">Projects</h1>
       <p class="lede">Coursework, club builds, and weekend experiments, where I learned to make a circuit, a chassis, and some code actually agree. Most have a build log on the blog.</p>
+      <div class="status-note">
+        <span class="sn-label">Status</span>
+        <p>Most of these are design-complete rather than built. Parts are expensive, slow to import, or simply not stocked where I am, so a project goes to hardware when the components allow it. Each page says where it stands, and gets updated when a build happens.</p>
+      </div>
     </section>
 
     <div class="wrap">
@@ -87,6 +91,10 @@ const count = String(projects.length).padStart(2, "0");
   .page-head h1 { margin-top: 16px; }
   .page-head .lede { margin-top: 22px; max-width: 52ch; }
 
+  .status-note { margin-top: 30px; display: grid; grid-template-columns: 84px 1fr; gap: 20px; max-width: 76ch; }
+  .status-note .sn-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); padding-top: 3px; }
+  .status-note p { margin: 0; font-size: 15px; color: var(--ink-2); max-width: 62ch; }
+
   .filterbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 16px 0; margin-bottom: 40px; }
   .filterbar .fb-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-3); margin-right: 8px; }
   .chip { font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; padding: 7px 13px; border: 1px solid var(--line-2); border-radius: 3px; background: var(--paper); color: var(--ink-2); cursor: pointer; transition: all 0.14s ease; }
@@ -111,5 +119,8 @@ const count = String(projects.length).padStart(2, "0");
   .coming-soon p { color: var(--ink-2); margin: 16px auto 28px; max-width: 46ch; }
 
   @media (max-width: 920px) { .proj-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .proj-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) {
+    .proj-grid { grid-template-columns: 1fr; }
+    .status-note { grid-template-columns: 1fr; gap: 8px; }
+  }
 </style>
