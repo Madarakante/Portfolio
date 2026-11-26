@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "lumi-ya-dc",
+    num: "13",
+    year: "2026",
+    title: "LUMIYA DC Light Controller",
+    blurb: "A 12 V DC light controller that switches a load using an AM312 PIR and a TEMT6000 ambient light sensor. Built around an ATtiny202 with a 3.3 V buck converter and MOSFET output, designed in KiCad.",
+    label: "KiCad: LUMIYA DC light controller",
+    image: "/images/lumi-ya-dc-3d.png",
+    featured: false,
+    tags: ["PCB", "Embedded"],
+  },
+  {
     slug: "smoke-alarm",
     num: "12",
     year: "2026",

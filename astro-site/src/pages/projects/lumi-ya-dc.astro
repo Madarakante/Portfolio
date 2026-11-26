@@ -1,0 +1,155 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="LUMIYA DC Light Controller · Ngwashi Anthony" description="A 12 V DC light controller with PIR motion and ambient-light sensing, built around an ATtiny202 and designed in KiCad." image="/images/lumi-ya-dc-3d.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-13 · PCB · Embedded · 2026</span>
+        <h1 class="h-xl">LUMIYA DC Light Controller</h1>
+        <p class="lede">A 12 V DC light controller that switches a load on when it detects motion, using an AM312 PIR and a TEMT6000 ambient-light sensor so it only runs when it is dark. Built around an ATtiny202 with a 3.3 V buck converter.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Embedded</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">PCB design</span></div>
+        <div class="meta-row"><span class="k">Board</span><span class="v">Circular, ≈40.5 mm</span></div>
+        <div class="meta-row"><span class="k">MCU</span><span class="v">ATtiny202-SS</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">KiCad 10</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Designed</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/lumi-ya-dc-3d.png" alt="KiCad 3D render of the LUMIYA DC light controller" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>A small circular board that controls a 12 V DC load. The PIR detects motion, the TEMT6000 measures ambient light, and the ATtiny202 decides when to switch the output MOSFETs. Two trimpots set the hold time and the light threshold.</p>
+          <p class="mono-note">// this is the DC version; the AC version is a separate board.</p>
+
+          <h2>The circuit</h2>
+          <p>Power comes in on a 3-pin terminal block and is stepped down from 12 V to 3.3 V by the AP63203WU buck converter. The ATtiny202 reads the PIR and light sensor, then drives a pair of A03400A MOSFETs as a low-side switch for the load. A UPDI header is there for programming.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-dc-schematic.png" alt="KiCad schematic of the LUMIYA DC light controller" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. ATtiny202, AP63203WU buck, PIR, light sensor, and MOSFET output.</div>
+          </div>
+
+          <h2>The board</h2>
+          <p>The PCB is a 40.5 mm circle with the PIR and light sensor grouped together, the terminal block on one edge, and the buck converter and MOSFETs around the centre.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-dc-pcb.png" alt="KiCad PCB layout of the LUMIYA DC light controller" /></div>
+            <div class="photo-cap">FIG 2: PCB layout. Circular 2-layer board.</div>
+          </div>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-dc-3d.png" alt="3D render of the LUMIYA DC light controller" /></div>
+            <div class="photo-cap">FIG 3: 3D render.</div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The KiCad project is on GitHub. Open it in KiCad 10 to view the schematic, board, or 3D model.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/LUMIYA_DC" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Shape</span><span class="sv">Circular</span></div>
+              <div class="spec-line"><span class="sk">Diameter</span><span class="sv">≈ 40.5 mm</span></div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Circuit</div>
+              <div class="spec-line"><span class="sk">MCU</span><span class="sv">ATtiny202-SS</span></div>
+              <div class="spec-line"><span class="sk">Power</span><span class="sv">AP63203WU</span></div>
+              <div class="spec-line"><span class="sk">PIR</span><span class="sv">AM312</span></div>
+              <div class="spec-line"><span class="sk">Light</span><span class="sv">TEMT6000X01</span></div>
+              <div class="spec-line"><span class="sk">Output</span><span class="sv">2× A03400A</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Power &amp; control</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">12 V DC</span></div>
+              <div class="spec-line"><span class="sk">Rail</span><span class="sv">3.3 V</span></div>
+              <div class="spec-line"><span class="sk">Adjust</span><span class="sv">TIME / LUX</span></div>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/LUMIYA_DC" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/smoke-alarm">Smoke Alarm <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+</style>
