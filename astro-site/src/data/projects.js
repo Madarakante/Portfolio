@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "odm",
+    num: "10",
+    year: "2026",
+    title: "ODM",
+    blurb: "A detailed sword model built in Fusion 360 and exported as a STEP file. Three bodies, roughly 1.2 m long, with an ornate guard and a grooved blade.",
+    label: "Fusion 360: ODM sword model",
+    image: "/images/odm-sword.png",
+    featured: false,
+    tags: ["CAD"],
+  },
+  {
     slug: "nema17-bracket",
     num: "09",
     year: "2026",
