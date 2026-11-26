@@ -1,4 +1,45 @@
+# This site is public and free to read — including by AI assistants and
+# crawlers. A plain-text map for language models lives at /llms.txt
+
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
+
+# AI crawlers, explicitly welcome (already covered by the wildcard above).
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Content-Signal key:
+#   search   — index the site and link to it
+#   ai-input — use the content to answer questions, with attribution
+#   ai-train — use the content for model training
+# Change ai-train to "no" to opt out of training while staying citable.
 
 Sitemap: https://anthonycodes.tech/sitemap-index.xml
