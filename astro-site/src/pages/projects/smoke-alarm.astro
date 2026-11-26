@@ -1,0 +1,166 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Smoke Alarm · Ngwashi Anthony" description="A circular photoelectric smoke alarm PCB built around the RE46C140E16F detector IC, designed in KiCad with a 3D-printed optical chamber." image="/images/smoke-alarm-3d-chamber.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-12 · PCB · Embedded · 2026</span>
+        <h1 class="h-xl">Smoke Alarm</h1>
+        <p class="lede">A circular photoelectric smoke alarm PCB built around the RE46C140E16F detector IC. It uses an IR emitter/detector pair inside a 3D-printed optical chamber, with a buzzer and a test button. Designed in KiCad.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Embedded</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">PCB design</span></div>
+        <div class="meta-row"><span class="k">Board</span><span class="v">Circular, ≈74 mm</span></div>
+        <div class="meta-row"><span class="k">Detector</span><span class="v">RE46C140E16F</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">KiCad 10</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Designed</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/smoke-alarm-3d-chamber.png" alt="KiCad 3D render of the smoke alarm PCB with the green optical chamber fitted" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>A two-layer circular board for a photoelectric smoke alarm. The RE46C140E16F handles the detection logic and alarm output, while a BPW40 phototransistor and an IR LED sit inside the optical chamber to sense smoke. A buzzer, status LED, test button, and 9 V battery complete the build.</p>
+          <p class="mono-note">// the optical chamber is a separate Fusion 360 model, used here for the 3D view.</p>
+
+          <h2>The schematic</h2>
+          <p>The circuit is built around the RE46C140E16F, with the IR LED driven through a transistor and the phototransistor feeding the detector input. The horn output drives the buzzer, and the push button provides the test function.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/smoke-alarm-schematic.png" alt="KiCad schematic of the smoke alarm" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. RE46C140E16F with the optical sensor pair, buzzer, and test button.</div>
+          </div>
+
+          <h2>The board</h2>
+          <p>The PCB is a 74 mm circle with the sensor pair grouped in the centre so the optical chamber can sit over them. The battery, buzzer, and switch sit around the edge.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/smoke-alarm-pcb.png" alt="KiCad PCB layout of the smoke alarm" /></div>
+            <div class="photo-cap">FIG 2: PCB layout. Circular 2-layer board with the optical chamber footprint in the middle.</div>
+          </div>
+
+          <h2>3D view</h2>
+          <p>The 3D render places the optical chamber over the sensor pair. The chamber model is on GitHub too.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/smoke-alarm-3d-front.png" alt="3D render of the smoke alarm PCB" /></div>
+              <div class="photo-cap">FIG 3: Board on its own.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/smoke-alarm-3d-chamber.png" alt="3D render of the smoke alarm PCB with the optical chamber" /></div>
+              <div class="photo-cap">FIG 4: With the optical chamber fitted.</div>
+            </div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The KiCad project is on GitHub. Open it in KiCad 10 to view the schematic, board, or 3D model.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/smoke-alarm" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Shape</span><span class="sv">Circular</span></div>
+              <div class="spec-line"><span class="sk">Diameter</span><span class="sv">≈ 74 mm</span></div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Circuit</div>
+              <div class="spec-line"><span class="sk">Detector IC</span><span class="sv">RE46C140E16F</span></div>
+              <div class="spec-line"><span class="sk">Sensor</span><span class="sv">BPW40 + IR LED</span></div>
+              <div class="spec-line"><span class="sk">Output</span><span class="sv">Buzzer</span></div>
+              <div class="spec-line"><span class="sk">Power</span><span class="sv">9 V battery</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">3D model</div>
+              <a class="spec-link" href="/projects/optical-chamber">
+                <span class="sk">Optical chamber</span><span class="sv accent">Project &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/smoke-alarm" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/optical-chamber">Optical Chamber <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>

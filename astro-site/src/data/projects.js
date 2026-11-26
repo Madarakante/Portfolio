@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "smoke-alarm",
+    num: "12",
+    year: "2026",
+    title: "Smoke Alarm",
+    blurb: "A circular photoelectric smoke alarm PCB built around the RE46C140E16F detector IC, with an IR emitter/detector pair, a buzzer, and a test button. Designed in KiCad and paired with a 3D-printed optical chamber.",
+    label: "KiCad: circular smoke alarm PCB",
+    image: "/images/smoke-alarm-3d-chamber.png",
+    featured: false,
+    tags: ["PCB", "Embedded"],
+  },
+  {
     slug: "optical-chamber",
     num: "11",
     year: "2026",
