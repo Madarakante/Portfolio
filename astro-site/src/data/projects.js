@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "optical-chamber",
+    num: "11",
+    year: "2026",
+    title: "Optical Chamber",
+    blurb: "A circular optical chamber with a ring of internal baffles and three mounting tabs, modelled in Fusion 360 and exported as a STEP file.",
+    label: "Fusion 360: optical chamber",
+    image: "/images/optical-chamber.png",
+    featured: false,
+    tags: ["CAD"],
+  },
+  {
     slug: "odm",
     num: "10",
     year: "2026",
