@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="LUMIYA AC Enclosure · Ngwashi Anthony" description="A two-part FreeCAD enclosure for the LUMIYA AC light controller PCB, with the board and its components modelled inside." image="/images/lumi-ya-ac-case-top.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-15 · CAD · 2026</span>
+        <h1 class="h-xl">LUMIYA AC Enclosure</h1>
+        <p class="lede">A two-part box for the LUMIYA AC board. The lid carries the openings for the PIR dome and the light sensor; the tray holds the mains terminal block. The PCB and every component on it are modelled inside, so the fit is checked in 3D rather than on paper.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">CAD</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Enclosure</span></div>
+        <div class="meta-row"><span class="k">Size</span><span class="v">≈ 72 × 44 × 47 mm</span></div>
+        <div class="meta-row"><span class="k">Parts</span><span class="v">Lid + tray</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">FreeCAD</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Modelled</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/lumi-ya-ac-case-top.png" alt="FreeCAD view of the LUMIYA AC enclosure with the transparent lid and the PCB inside" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>A closed box for the AC light controller, sized around the board rather than the other way round. The PCB came in as a STEP import, the tall parts — the HLK-PM01 module, the triac, the two pots — were placed on it, and the two shells were drawn to clear them.</p>
+          <p class="mono-note">// this was my first FreeCAD model. I hadn't worked out the exploded-view feature yet, so the lid is left semi-transparent instead — you can see the board and the parts sitting in it without moving anything.</p>
+
+          <h2>The two halves</h2>
+          <p>The lid is 70 × 42 × 25 mm with 3 mm corner fillets and a 1 mm step so it registers into the tray. The tray is slightly larger at 72 × 44 × 22 mm and takes the terminal block on its mains side. Assembled, the case is about 47 mm tall.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-ac-case-rear.png" alt="Rear view of the enclosure, showing the terminal block and the openings in the lid" /></div>
+            <div class="photo-cap">FIG 1: Rear. The terminal block sits on the tray; the lid openings line up over the sensors.</div>
+          </div>
+
+          <h2>Looking inside</h2>
+          <p>From the top you can see the whole board through the lid: the mains module on the left, the trimpots and the PIR in the middle, and the triac and optotriac on the right. The posts inside the lid land on the board's mounting holes.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-ac-case-top.png" alt="Top view of the enclosure with the PCB visible through the lid" /></div>
+              <div class="photo-cap">FIG 2: Top, with the lid transparent.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-ac-case-bottom.png" alt="Bottom view of the enclosure tray" /></div>
+              <div class="photo-cap">FIG 3: Underside of the tray.</div>
+            </div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The FreeCAD document is on GitHub — one file, with the enclosure and the board assembly in it. Open it in FreeCAD to inspect or change the walls.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/lumiya-ac-case" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Enclosure</div>
+              <div class="spec-line"><span class="sk">Assembled</span><span class="sv">72 × 44 × 47 mm</span></div>
+              <div class="spec-line"><span class="sk">Lid</span><span class="sv">70 × 42 × 25 mm</span></div>
+              <div class="spec-line"><span class="sk">Tray</span><span class="sv">72 × 44 × 22 mm</span></div>
+              <div class="spec-line"><span class="sk">Fillets</span><span class="sv">R3 corners</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Inside</div>
+              <div class="spec-line"><span class="sk">PCB</span><span class="sv">63 × 38 mm</span></div>
+              <div class="spec-line"><span class="sk">Components</span><span class="sv">Modelled</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">FreeCAD</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Related</div>
+              <a class="spec-link" href="/projects/lumi-ya-ac">
+                <span class="sk">LUMIYA AC board</span><span class="sv accent">Project &rarr;</span>
+              </a>
+              <a class="spec-link" href="/projects/lumi-ya-dc-case">
+                <span class="sk">DC enclosure</span><span class="sv accent">Project &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/lumiya-ac-case" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/lumi-ya-ac">LUMIYA AC board <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 46ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>

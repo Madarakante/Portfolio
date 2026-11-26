@@ -30,6 +30,28 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "lumi-ya-dc-case",
+    num: "16",
+    year: "2026",
+    title: "LUMIYA DC Enclosure",
+    blurb: "A round FreeCAD case for the LUMIYA DC board — a domed lid over a shallow tray, with the PCB and its components modelled inside to check the fit. The lid is left semi-transparent instead of an exploded view.",
+    label: "FreeCAD: round enclosure for the LUMIYA DC board",
+    image: "/images/lumi-ya-dc-case-iso.png",
+    featured: false,
+    tags: ["CAD"],
+  },
+  {
+    slug: "lumi-ya-ac-case",
+    num: "15",
+    year: "2026",
+    title: "LUMIYA AC Enclosure",
+    blurb: "A two-part FreeCAD box for the LUMIYA AC board, with the PCB and its parts modelled inside. The lid carries the PIR and light-sensor openings; the tray takes the mains terminal block.",
+    label: "FreeCAD: two-part enclosure for the LUMIYA AC board",
+    image: "/images/lumi-ya-ac-case-top.png",
+    featured: false,
+    tags: ["CAD"],
+  },
+  {
     slug: "lumi-ya-ac",
     num: "14",
     year: "2026",

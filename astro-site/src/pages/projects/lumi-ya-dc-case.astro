@@ -1,0 +1,160 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="LUMIYA DC Enclosure · Ngwashi Anthony" description="A round two-part FreeCAD enclosure for the LUMIYA DC light controller PCB, with the board and its components modelled inside." image="/images/lumi-ya-dc-case-iso.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-16 · CAD · 2026</span>
+        <h1 class="h-xl">LUMIYA DC Enclosure</h1>
+        <p class="lede">A round case for the LUMIYA DC board — a domed lid over a shallow tray, sized to the 40.5 mm PCB. The lid has an opening over the PIR and two posts that pick up the board's mounting holes. The board and its parts are modelled inside so the height of the tall components is checked against the dome.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">CAD</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">Enclosure</span></div>
+        <div class="meta-row"><span class="k">Size</span><span class="v">≈ Ø47 × 25 mm</span></div>
+        <div class="meta-row"><span class="k">Parts</span><span class="v">Lid + tray</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">FreeCAD</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Modelled</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/lumi-ya-dc-case-iso.png" alt="FreeCAD view of the LUMIYA DC enclosure with the transparent dome and the PCB inside" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>A round enclosure for the DC board, with a dome tall enough to clear the two electrolytics and the buck converter. The PCB is a STEP import with the components placed on it, and the two shells were drawn around that assembly.</p>
+          <p class="mono-note">// like the AC case, this was early days in FreeCAD — the dome is set semi-transparent instead of using an exploded view. Same look inside, fewer steps.</p>
+
+          <h2>The two halves</h2>
+          <p>The tray is a 47 mm disc, 12 mm deep, with a central opening and two side holes for wiring. The lid is a 45 mm dome, 15 mm tall, with a 10 mm opening over the PIR and two screw posts. Stacked together they come to about 25 mm.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-dc-case-top.png" alt="Top view of the DC enclosure with the PCB visible through the dome" /></div>
+              <div class="photo-cap">FIG 1: Top, with the dome transparent.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-dc-case-bottom.png" alt="Bottom view of the DC enclosure tray" /></div>
+              <div class="photo-cap">FIG 2: Underside of the tray.</div>
+            </div>
+          </div>
+
+          <h2>Fitting the board</h2>
+          <p>From the top you can see how the parts sit: the terminal block and the two capacitors along the sides, the trimpots near the edge, and the PIR under its opening. The dome has enough headroom that nothing touches the inside of the lid.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-dc-case-iso.png" alt="Three-quarter view of the DC enclosure with the PCB inside" /></div>
+            <div class="photo-cap">FIG 3: The assembled case, lid made transparent.</div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The FreeCAD document is on GitHub — the enclosure and the board assembly in one file. Open it in FreeCAD to inspect or change the walls.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/lumiya-dc-case" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Enclosure</div>
+              <div class="spec-line"><span class="sk">Assembled</span><span class="sv">Ø47 × 25 mm</span></div>
+              <div class="spec-line"><span class="sk">Lid</span><span class="sv">Ø45 × 15 mm</span></div>
+              <div class="spec-line"><span class="sk">Tray</span><span class="sv">Ø47 × 12 mm</span></div>
+              <div class="spec-line"><span class="sk">Shape</span><span class="sv">Round, domed</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Inside</div>
+              <div class="spec-line"><span class="sk">PCB</span><span class="sv">Ø40.5 mm</span></div>
+              <div class="spec-line"><span class="sk">Components</span><span class="sv">Modelled</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">FreeCAD</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Related</div>
+              <a class="spec-link" href="/projects/lumi-ya-dc">
+                <span class="sk">LUMIYA DC board</span><span class="sv accent">Project &rarr;</span>
+              </a>
+              <a class="spec-link" href="/projects/lumi-ya-ac-case">
+                <span class="sk">AC enclosure</span><span class="sv accent">Project &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/lumiya-dc-case" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/lumi-ya-dc">LUMIYA DC board <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 46ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
