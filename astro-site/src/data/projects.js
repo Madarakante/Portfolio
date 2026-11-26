@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "nema17-bracket",
+    num: "09",
+    year: "2026",
+    title: "NEMA 17 Mounting Bracket",
+    blurb: "A single-piece L-bracket for mounting a NEMA 17 stepper motor, modelled in Fusion 360 with slotted holes for adjustment and 45° gussets for rigidity.",
+    label: "Fusion 360: NEMA 17 mounting bracket",
+    image: "/images/nema17-bracket.png",
+    featured: false,
+    tags: ["CAD", "Robotics"],
+  },
+  {
     slug: "can-module",
     num: "08",
     year: "2026",

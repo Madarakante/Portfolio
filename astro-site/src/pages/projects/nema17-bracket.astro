@@ -1,0 +1,139 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="NEMA 17 Mounting Bracket · Ngwashi Anthony" description="A single-piece L-bracket for mounting a NEMA 17 stepper motor, modelled in Fusion 360." image="/images/nema17-bracket.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-09 · CAD · Robotics · 2026</span>
+        <h1 class="h-xl">NEMA 17 Mounting Bracket</h1>
+        <p class="lede">A single-piece L-bracket for mounting a NEMA 17 stepper motor. It has slotted holes so the motor can be adjusted, and 45° gussets to keep the upright stiff. Modelled in Fusion 360.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">CAD</span><span class="tag">Robotics</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">CAD model</span></div>
+        <div class="meta-row"><span class="k">Motor</span><span class="v">NEMA 17</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">Fusion 360</span></div>
+        <div class="meta-row"><span class="k">Units</span><span class="v">Millimetres</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Model complete</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/nema17-bracket.png" alt="Fusion 360 screenshot of the NEMA 17 mounting bracket" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>An L-shaped bracket that holds a NEMA 17 stepper motor square to a base plate. The upright carries the motor's four mounting screws and a Ø24 mm centre clearance hole; the base bolts down through two slots.</p>
+          <p class="mono-note">// slotted holes let you slide the motor to tension a belt or line up a shaft.</p>
+
+          <h2>Design notes</h2>
+          <p>The motor face uses the standard NEMA 17 pattern: 31 mm between mounting holes, arranged in four radial slots so the screws have a little play. Two 45° gussets tie the upright to the base and stop it flexing under belt load. The base slots are 20 mm long for adjustment, and the outside corners are rounded (R5 / R3) so nothing catches.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/nema17-drawing.png" alt="Dimensioned 2D drawing of the NEMA 17 mounting bracket" /></div>
+            <div class="photo-cap">Dimensioned drawing. Overall 64 × 60 × 60 mm.</div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The STEP model and a dimensioned PDF drawing are on GitHub. If you want to make one, grab the files there and check the dimensions against your own motor before printing or machining.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/nema17-mounting-bracket" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Motor</div>
+              <div class="spec-line"><span class="sk">Frame</span><span class="sv">NEMA 17</span></div>
+              <div class="spec-line"><span class="sk">Hole spacing</span><span class="sv">31 mm</span></div>
+              <div class="spec-line"><span class="sk">Centre hole</span><span class="sv">Ø24 mm</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Bracket</div>
+              <div class="spec-line"><span class="sk">Overall</span><span class="sv">64 × 60 × 60 mm</span></div>
+              <div class="spec-line"><span class="sk">Motor face</span><span class="sv">60 × 60 mm</span></div>
+              <div class="spec-line"><span class="sk">Gussets</span><span class="sv">45°</span></div>
+              <div class="spec-line"><span class="sk">Corner radii</span><span class="sv">R5 / R3</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Base</div>
+              <div class="spec-line"><span class="sk">Size</span><span class="sv">64 × 60 mm</span></div>
+              <div class="spec-line"><span class="sk">Slots</span><span class="sv">2 × 20 mm</span></div>
+              <div class="spec-line"><span class="sk">Slot spacing</span><span class="sv">30 mm</span></div>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/nema17-mounting-bracket" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/can-module">CAN Bus Module <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 40ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-single { margin: 28px 0; }
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+</style>
