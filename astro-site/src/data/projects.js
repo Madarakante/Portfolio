@@ -30,6 +30,17 @@ export const filters = ["Robotics", "PCB", "Control", "CAD", "Embedded", "Power"
 
 export const projects = [
   {
+    slug: "lumi-ya-ac",
+    num: "14",
+    year: "2026",
+    title: "LUMIYA AC Light Controller",
+    blurb: "The mains version of LUMIYA: an AM312 PIR and TEMT6000 ambient light sensor feed an ATtiny202, which fires a MOC3041 optotriac and BTA06 triac to switch an AC load. Designed in KiCad with an isolation slot between the mains and low-voltage sides.",
+    label: "KiCad: LUMIYA AC light controller",
+    image: "/images/lumi-ya-ac-3d-front.png",
+    featured: false,
+    tags: ["PCB", "Power", "Embedded"],
+  },
+  {
     slug: "lumi-ya-dc",
     num: "13",
     year: "2026",

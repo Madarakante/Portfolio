@@ -1,0 +1,174 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="LUMIYA AC Light Controller · Ngwashi Anthony" description="A mains AC light controller with PIR motion and ambient-light sensing, built around an ATtiny202 with an optotriac and triac output, designed in KiCad." image="/images/lumi-ya-ac-3d-front.png" active="projects">
+  <main data-screen-label="Project detail">
+    <div class="wrap crumb"><a href="/projects">← Projects</a></div>
+
+    <section class="wrap proj-head">
+      <div>
+        <span class="kicker">PROJ-14 · PCB · Power · Embedded · 2026</span>
+        <h1 class="h-xl">LUMIYA AC Light Controller</h1>
+        <p class="lede">The mains version of LUMIYA. An AM312 PIR and a TEMT6000 ambient-light sensor feed an ATtiny202, which fires a MOC3041 optotriac and a BTA06 triac to switch an AC load. Same logic as the DC board, different output stage.</p>
+        <div class="tags" style="margin-top:24px;">
+          <span class="tag tag-accent">PCB</span><span class="tag">Power</span><span class="tag">Embedded</span>
+        </div>
+      </div>
+      <div class="head-meta">
+        <div class="meta-row"><span class="k">Type</span><span class="v">PCB design</span></div>
+        <div class="meta-row"><span class="k">Board</span><span class="v">Rectangular, ≈63 × 38 mm</span></div>
+        <div class="meta-row"><span class="k">MCU</span><span class="v">ATtiny202-SS</span></div>
+        <div class="meta-row"><span class="k">Output</span><span class="v">Triac, mains AC</span></div>
+        <div class="meta-row"><span class="k">Tool</span><span class="v">KiCad 10</span></div>
+        <div class="meta-row"><span class="k">Status</span><span class="v accent">Designed</span></div>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <div class="frame hero-frame">
+        <img src="/images/lumi-ya-ac-3d-front.png" alt="KiCad 3D render of the LUMIYA AC light controller board" />
+        <span class="frame-corner tl"></span><span class="frame-corner tr"></span>
+        <span class="frame-corner bl"></span><span class="frame-corner br"></span>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="body-grid">
+        <article class="writeup">
+          <h2>What it is</h2>
+          <p>A board that switches a mains AC light on when it detects motion, but only when it is dark. The PIR and the light sensor do the sensing, the ATtiny202 makes the decision, and an optotriac plus triac do the switching. Two trimpots set the hold time and the light threshold.</p>
+          <p class="mono-note">// this is the AC version; the 12 V DC version is a separate, smaller round board.</p>
+
+          <h2>The circuit</h2>
+          <p>Mains comes in on a 3-pin screw terminal (AC/L, AC/N, LOAD). An HLK-PM01 module drops it to 5 V and an XC6206 regulator takes that to 3.3 V for the ATtiny202. The MCU reads the AM312 PIR and the TEMT6000 light sensor, then drives the MOC3041M optotriac, which fires the BTA06-600C triac in series with the load. RV1 and RV2 set time and lux, and a UPDI header handles programming.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-ac-schematic.png" alt="KiCad schematic of the LUMIYA AC light controller" /></div>
+            <div class="photo-cap">FIG 1: KiCad schematic. HLK-PM01, XC6206, ATtiny202, PIR, light sensor, optotriac and triac.</div>
+          </div>
+
+          <h2>The board</h2>
+          <p>A 63 × 38 mm rectangle with rounded corners. The mains side is kept on the left behind a milled slot and a wide creepage gap, with the screw terminal, HLK-PM01, triac and optotriac there. Everything low-voltage — the MCU, sensors, trimpots, and programming header — sits on the right.</p>
+
+          <div class="photo-single">
+            <div class="frame"><img src="/images/lumi-ya-ac-pcb.png" alt="KiCad PCB layout of the LUMIYA AC light controller" /></div>
+            <div class="photo-cap">FIG 2: PCB layout. 2-layer, with the isolation slot separating mains from the low-voltage side.</div>
+          </div>
+
+          <h2>3D view</h2>
+          <p>The renders show the mains module and triac standing off the board, with the PIR dome and the two trimpots on the low-voltage side.</p>
+
+          <div class="photo-pair">
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-ac-3d-front.png" alt="3D render of the LUMIYA AC board, front" /></div>
+              <div class="photo-cap">FIG 3: Front.</div>
+            </div>
+            <div>
+              <div class="frame"><img src="/images/lumi-ya-ac-3d-back.png" alt="3D render of the LUMIYA AC board, back" /></div>
+              <div class="photo-cap">FIG 4: Back, showing the mains module footprint.</div>
+            </div>
+          </div>
+
+          <h2>The files</h2>
+          <p>The KiCad project is on GitHub. Open it in KiCad 10 to view the schematic, board, or 3D model.</p>
+          <p><a class="btn" href="https://github.com/Madarakante/LUMIYA_AC" target="_blank" rel="noopener">View files on GitHub <span class="arrow">→</span></a></p>
+        </article>
+
+        <aside>
+          <div class="specs">
+            <div class="specs-head"><span class="t">Specifications</span><span class="mono mono-accent">v1</span></div>
+            <div class="spec-group">
+              <div class="g-label">Board</div>
+              <div class="spec-line"><span class="sk">Shape</span><span class="sv">Rounded rectangle</span></div>
+              <div class="spec-line"><span class="sk">Size</span><span class="sv">≈ 63 × 38 mm</span></div>
+              <div class="spec-line"><span class="sk">Layers</span><span class="sv">2</span></div>
+              <div class="spec-line"><span class="sk">CAD</span><span class="sv">KiCad 10</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Circuit</div>
+              <div class="spec-line"><span class="sk">MCU</span><span class="sv">ATtiny202-SS</span></div>
+              <div class="spec-line"><span class="sk">Power</span><span class="sv">HLK-PM01 + XC6206</span></div>
+              <div class="spec-line"><span class="sk">PIR</span><span class="sv">AM312</span></div>
+              <div class="spec-line"><span class="sk">Light</span><span class="sv">TEMT6000X01</span></div>
+              <div class="spec-line"><span class="sk">Switch</span><span class="sv">MOC3041 + BTA06</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Power &amp; control</div>
+              <div class="spec-line"><span class="sk">Input</span><span class="sv">Mains AC</span></div>
+              <div class="spec-line"><span class="sk">Load</span><span class="sv">AC, triac-switched</span></div>
+              <div class="spec-line"><span class="sk">Adjust</span><span class="sv">TIME / LUX</span></div>
+            </div>
+            <div class="spec-group">
+              <div class="g-label">Related</div>
+              <a class="spec-link" href="/projects/lumi-ya-dc">
+                <span class="sk">LUMIYA DC version</span><span class="sv accent">Project &rarr;</span>
+              </a>
+            </div>
+            <div class="spec-group">
+              <a class="spec-link" href="https://github.com/Madarakante/LUMIYA_AC" target="_blank" rel="noopener">
+                <span class="sk">Source files</span><span class="sv accent">GitHub &rarr;</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nextprev">
+        <a class="txtlink" href="/projects"><span class="arrow">←</span> All projects</a>
+        <a class="txtlink" href="/projects/lumi-ya-dc">LUMIYA DC <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .crumb { padding-block: 28px 0; }
+  .crumb a { font-family: var(--mono); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  .crumb a:hover { color: var(--accent); }
+
+  .proj-head { padding-block: 26px 34px; display: grid; grid-template-columns: 1.6fr 1fr; gap: 48px; align-items: end; }
+  .proj-head h1 { margin: 16px 0 0; }
+  .proj-head .lede { margin-top: 20px; max-width: 44ch; }
+  .head-meta { display: flex; flex-direction: column; gap: 0; }
+  .meta-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px dashed var(--line-2); }
+  .meta-row:first-child { border-top: 1px dashed var(--line-2); }
+  .meta-row .k { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-3); }
+  .meta-row .v { font-size: 15px; font-weight: 500; }
+
+  .frame { position: relative; overflow: hidden; background: var(--paper-2); }
+  .hero-frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+
+  .body-grid { display: grid; grid-template-columns: 1fr 320px; gap: 56px; padding: 56px 0 0; align-items: start; }
+  .writeup h2 { margin: 42px 0 14px; font-size: 28px; }
+  .writeup h2:first-child { margin-top: 0; }
+  .writeup p { color: var(--ink-2); }
+  .writeup .mono-note { font-family: var(--mono); font-size: 13px; color: var(--ink-3); border-left: 2px solid var(--accent); padding: 4px 0 4px 16px; margin: 22px 0; line-height: 1.6; }
+
+  .photo-cap { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; color: var(--ink-3); margin-top: 8px; }
+  .photo-single { margin: 28px 0; }
+  .photo-single .frame:not(:has(> img)) { aspect-ratio: 16 / 9; }
+  .photo-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+  .photo-pair .frame:not(:has(> img)) { aspect-ratio: 4 / 3; }
+
+  .specs { position: sticky; top: calc(var(--nav-h) + 20px); border: 1px solid var(--line); border-radius: 5px; background: var(--paper); overflow: hidden; }
+  .specs-head { padding: 16px 20px; border-bottom: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; background: var(--paper-2); }
+  .specs-head .t { font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+  .spec-group { padding: 16px 20px; border-bottom: 1px solid var(--line); }
+  .spec-group:last-child { border-bottom: 0; }
+  .spec-group .g-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 10px; }
+  .spec-line { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; }
+  .spec-line .sk { color: var(--ink-3); }
+  .spec-line .sv { color: var(--ink); text-align: right; font-weight: 500; }
+  .spec-link { display: flex; justify-content: space-between; gap: 16px; padding: 5px 0; font-size: 14px; text-decoration: none; cursor: pointer; }
+  .spec-link:hover .sv { color: var(--accent); }
+
+  .nextprev { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); margin-top: 64px; padding: 28px 0; }
+
+  @media (max-width: 900px) {
+    .proj-head { grid-template-columns: 1fr; gap: 28px; align-items: start; }
+    .body-grid { grid-template-columns: 1fr; gap: 40px; }
+    .specs { position: static; }
+  }
+  @media (max-width: 560px) { .photo-pair { grid-template-columns: 1fr; } }
+</style>
